@@ -4,6 +4,7 @@ import HelloWorld from '../components/HelloWorld'
 import Upload from '../components/Record/Upload'
 import Login from '../components/userManage/login'
 import Nav from '../components/NavHeader'
+import VideoList from '../components/Record/video_list'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/Nav',
       name: 'Nav',
       component: Nav
+    },
+    {
+      path: '/videolist',
+      name: 'video_list',
+      component: VideoList
     }
   ]
 })
