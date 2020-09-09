@@ -17,6 +17,10 @@
                   密码：
                   <el-input v-model="passwd" placeholder="请输入密码" class="input" type="password"></el-input>
                 </div>
+                <div class="submit-btn">
+                  <el-button type="info" class="btn">登录
+                  </el-button>
+                </div>
               </el-tab-pane>
               <el-tab-pane label="用户注册" name="second">
                 <div class="input-item">
@@ -34,6 +38,10 @@
                 <div class="input-item">
                   确认密码：
                   <el-input v-model="conPasswd" placeholder="请输入重新输入密码" class="input" type="password"></el-input>
+                </div>
+                <div class="submit-btn">
+                  <el-button type="info" class="btn">注册用户
+                  </el-button>
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -63,6 +71,14 @@
     width: 70%;
     margin-right: 30px;
   }
+  .submit-btn{
+    margin-top: 30px;
+    width: 100%;
+    align-items: center;
+  }
+  .btn{
+    width: 70%;
+  }
 </style>
 <script>
     export default {
@@ -74,6 +90,9 @@
                 passwd:'',
                 conPasswd:''
             };
+        },
+        mounted(){
+          console.log(this.$route)
         },
         methods: {
             handleClick(tab, event) {

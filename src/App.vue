@@ -1,7 +1,13 @@
 <template>
   <div id="app">
-    <navHeader/>
-    <router-view/>
+<!--      <div v-if="!this.$route.name!='Login'">-->
+<!--        <navHeader/>-->
+<!--      </div>-->
+        <router-view/>
+<!--      <div v-else>-->
+<!--        <navHeader/>-->
+<!--        <router-view/>-->
+<!--      </div>-->
   </div>
 </template>
 
@@ -11,7 +17,13 @@ export default {
   name: 'App',
    components:{
        navHeader
-   }
+   },
+    mounted(){
+      // alert(this.$route.name == 'Login')
+       console.log(this.$route.meta.showNav)
+    },
+    methods:{
+    }
 }
 
 </script>

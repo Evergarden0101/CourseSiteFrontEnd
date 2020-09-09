@@ -6,34 +6,39 @@ import Login from '../components/userManage/login'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
 
+import Index from '../components/Index'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path:'/Index',
+      name:'Index',
+      redirect:'/hello',
+      component:Index,
+      children:[
+        {
+          path: '/hello',
+          name: 'HelloWorld',
+          component: HelloWorld
+        },
+        {
+          path: '/upload',
+          name: 'Upload',
+          component: Upload
+        },
+      ]
     },
     {
-      path: '/upload',
-      name: 'Upload',
-      component: Upload
+      path:'/',
+      name:'/login',
+      component:Login,
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path:'/login',
+      name:'/login',
+      component:Login,
     },
-    {
-      path: '/Nav',
-      name: 'Nav',
-      component: Nav
-    },
-    {
-      path: '/videolist',
-      name: 'video_list',
-      component: VideoList
-    }
+
   ]
 })
