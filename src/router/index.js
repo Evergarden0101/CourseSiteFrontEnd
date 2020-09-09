@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
 import Upload from '../components/Record/Upload'
 import Login from '../components/userManage/login'
+import Nav from '../components/NavHeader'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/Nav',
+      name: 'Nav',
+      component: Nav
     }
   ]
 })

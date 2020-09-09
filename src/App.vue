@@ -1,13 +1,19 @@
 <template>
   <div id="app">
+    <navHeader/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import navHeader from '@/components/NavHeader'
 export default {
-  name: 'App'
+  name: 'App',
+   components:{
+       navHeader
+   }
 }
+
 </script>
 
 <style>
@@ -17,6 +23,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
