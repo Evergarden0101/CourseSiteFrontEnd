@@ -12,6 +12,9 @@
 
 <script>
   export default {
-    name: 'Upload'
+    name: 'Upload',
+    mounted() {
+        console.log(this.$route.name)
+    }
   }
 </script>
