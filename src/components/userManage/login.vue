@@ -40,7 +40,7 @@
                   <el-input v-model="conPasswd" placeholder="请输入重新输入密码" class="input" type="password"></el-input>
                 </div>
                 <div class="submit-btn">
-                  <el-button type="info" class="btn">注册用户
+                  <el-button type="info" class="btn" @click="signup">注册用户
                   </el-button>
                 </div>
               </el-tab-pane>
@@ -97,6 +97,22 @@
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
+            },
+            signup(){
+                this.axios({
+                    method:'post',
+                    data:{
+                        userName:this.userName,
+                        passwd:this.paswd,
+                        stuId:this.stuId
+                    },
+                    url:'user/signup'
+                }).catch(res=>{
+                    if(res.code == 1)
+                        alert("注册成功")
+                    else
+                        alert("注册失败")
+                })
             }
         }
     };
