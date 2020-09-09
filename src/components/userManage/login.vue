@@ -99,6 +99,13 @@
                 console.log(tab, event);
             },
             signup(){
+                if(this.passwd != this.conPasswd){
+                    this.$message({
+                        type:'info',
+                        message:"两次密码不一致"
+                    })
+                    return
+                }
                 this.axios({
                     method:'post',
                     data:{
