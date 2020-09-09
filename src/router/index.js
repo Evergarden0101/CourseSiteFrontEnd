@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
 import Upload from '../components/Record/Upload'
 import Login from '../components/userManage/login'
-import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
 
 import Index from '../components/Index'
@@ -27,6 +26,11 @@ export default new Router({
           name: 'Upload',
           component: Upload
         },
+        {
+          path: '/videolist',
+          name: 'video_list',
+          component: VideoList
+        }
       ]
     },
     {
