@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
 import Upload from '../components/Record/Upload'
 import Login from '../components/userManage/login'
+import InCircle from '../components/community/InCircle'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
 
@@ -27,6 +28,11 @@ export default new Router({
           name: 'Upload',
           component: Upload
         },
+        {
+          path: '/videolist',
+          name: 'video_list',
+          component: VideoList
+        }
       ]
     },
     {
@@ -39,6 +45,10 @@ export default new Router({
       name:'/login',
       component:Login,
     },
-
+    {
+      path: '/inCircle',
+      name: 'inCircle',
+      component: InCircle
+    }
   ]
 })
