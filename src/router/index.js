@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
-import Upload from '../components/Recording_and_broadcasting/Upload'
+import Upload from '../components/Record/Upload'
+import login from '../components/userManage/login'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/hello',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -16,6 +17,11 @@ export default new Router({
       path: '/upload',
       name: 'Upload',
       component: Upload
-    }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
   ]
 })
