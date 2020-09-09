@@ -32,6 +32,11 @@ export default new Router({
           path: '/videolist',
           name: 'video_list',
           component: VideoList
+        },
+        {
+          path: '/inCircle',
+          name: 'inCircle',
+          component: InCircle
         }
       ]
     },
@@ -44,11 +49,6 @@ export default new Router({
       path:'/login',
       name:'/login',
       component:Login,
-    },
-    {
-      path: '/inCircle',
-      name: 'inCircle',
-      component: InCircle
     }
   ]
 })
