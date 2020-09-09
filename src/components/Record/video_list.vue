@@ -5,7 +5,7 @@
         <div class="tasklist">
           <div class="task-item">
             <div>{{"视频名称"}}</div>
-            <div>发布人：{{"李景熙"}}    发布时间：{{"2020.09.09"}}</div>
+            <div>发布人：{{"李景熙"}}      发布时间：{{"2020.09.09"}}</div>
             <el-button class="task-enter-btn1" type="primary" plain @click="get_lecture_detail">查看课程详情</el-button>
           </div>
         </div>
@@ -32,7 +32,7 @@
     },
     methods: {
       get_lecture_detail(){
-        alert("成功进入课程详情界面")
+        alert("播放成功！")
       }
     }
   }
