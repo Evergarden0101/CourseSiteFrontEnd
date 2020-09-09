@@ -1,0 +1,52 @@
+@mixin container {
+  padding: 40px 10% 100px 10%;
+  min-width: $min-width;
+  min-height: 600px;
+  overflow:hidden;
+  background-color: $bg-color;
+}
+@mixin whiteBoard {
+  background-color: white;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+@mixin taskhall-container {
+  @include container;
+  .taskhall-left{
+    padding: 30px 20px 30px 20px;
+    @include whiteBoard;
+    .tasklist-container{
+      .tasklist{
+        .task-item{
+          border-bottom: 1px solid $divider-color;
+          text-align: left;
+          padding: 10px 0px 22px;
+          position: relative;
+          div:first-of-type{
+            font-size: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+          }
+          div:last-of-type{
+            font-size: 14px;
+            color: #959595;
+          }
+          .task-enter-btn1{
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+          }
+          .task-enter-btn2{
+            position: absolute;
+            right: 120px;
+            bottom: 10px;
+          }
+          .task-enter-btn3{
+            position: absolute;
+            right: 190px;
+            bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+}
