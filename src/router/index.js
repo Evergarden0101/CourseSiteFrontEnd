@@ -6,6 +6,7 @@ import Login from '../components/userManage/login'
 import InCircle from '../components/community/InCircle'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
+import VideoList2 from '../components/Record/videolist2'
 
 import Index from '../components/Index'
 Vue.use(Router)
@@ -37,6 +38,11 @@ export default new Router({
           path: '/inCircle',
           name: 'inCircle',
           component: InCircle
+        },
+        {
+          path: '/videolist2',
+          name: 'videolist2',
+          component: VideoList2
         }
       ]
     },
