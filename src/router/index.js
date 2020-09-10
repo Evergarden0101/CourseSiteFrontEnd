@@ -7,6 +7,7 @@ import InCircle from '../components/community/InCircle'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
 import Community from '../components/community/community'
+import VideoList2 from '../components/Record/videolist2'
 
 import Index from '../components/Index'
 Vue.use(Router)
@@ -42,7 +43,12 @@ export default new Router({
         {
           path: '/community',
           name: 'community',
-          component:Community
+          component: Community
+        },
+        {
+          path: '/videolist2',
+          name: 'videolist2',
+          component: VideoList2
         }
       ]
     },

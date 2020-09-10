@@ -27,7 +27,7 @@
                         <el-row style="border-bottom:1px solid #C0C4CC;height: 40%;padding-bottom: 5px;padding-top:1px">
                           {{item.name}}
                         </el-row>
-                        <el-row style="height: 60%;padding-top: 5px;padding-top:1px">
+                        <el-row style="height: 60%;padding-top: 5px;padding-top:1px;padding-right: 5px">
                          <font size="1">圈子简介：{{item.introduce}}</font>
                         </el-row>
                       </el-col>
@@ -75,7 +75,8 @@
                     introduce:"faaaaaaafa"
                 },
                 {
-
+                    name:'lxh',
+                    introduce:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
                 },
                 {
                     name:"cyk",
