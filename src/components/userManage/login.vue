@@ -103,7 +103,7 @@
             };
         },
         mounted(){
-          // console.log(this.$route)
+          console.log(this.$store.state.count)
         },
         methods: {
             handleClick(tab, event) {
@@ -123,6 +123,10 @@
                           type:'info',
                           message:'登录成功'
                       })
+                      alert("111")
+                      // console.log(res.data)
+                      this.$store.commit('setUserInfo',res.data.data)
+                      console.log(this.$store.state)
                       // this.$router.push({path: '/'});
                   }
                   else{

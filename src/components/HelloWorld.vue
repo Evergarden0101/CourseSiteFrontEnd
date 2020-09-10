@@ -86,6 +86,9 @@
 <script>
 export default {
   name: 'HelloWorld',
+  mounted(){
+    console.log(this.$store.state)
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
