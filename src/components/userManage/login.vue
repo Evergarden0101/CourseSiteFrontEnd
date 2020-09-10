@@ -18,7 +18,7 @@
                   <el-input v-model="passwd" placeholder="请输入密码" class="input" type="password"></el-input>
                 </div>
                 <div class="submit-btn">
-                  <el-button type="info" class="btn">登录
+                  <el-button type="info" class="btn" @click="signin">登录
                   </el-button>
                 </div>
               </el-tab-pane>
@@ -30,6 +30,14 @@
                 <div class="input-item">
                   学号：
                   <el-input v-model="stuId" placeholder="请输入学号" class="input"></el-input>
+                </div>
+                <div class="input-item">
+                  手机号：
+                  <el-input v-model="phoneNum" placeholder="请输入手机号" class="input"></el-input>
+                </div>
+                <div class="input-item">
+                  邮箱：
+                  <el-input v-model="email" placeholder="请输入邮箱" class="input"></el-input>
                 </div>
                 <div class="input-item">
                   密码：
@@ -81,6 +89,7 @@
   }
 </style>
 <script>
+
     export default {
         data() {
             return {
@@ -88,17 +97,44 @@
                 userName:'',
                 stuId:'',
                 passwd:'',
-                conPasswd:''
+                conPasswd:'',
+                phoneNum:'',
+                email:''
             };
         },
         mounted(){
-          console.log(this.$route)
+          // console.log(this.$route)
         },
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
             },
+            signin(){
+              this.axios({
+                  method:'post',
+                  data:{
+                      id:this.userName,
+                      password:this.passwd
+                  },
+                  url:'/login'
+              }).then(res=>{
+                  if(res.data.code == 1001){
+                      this.$message({
+                          type:'info',
+                          message:'登录成功'
+                      })
+                      // this.$router.push({path: '/'});
+                  }
+                  else{
+                      this.$message({
+                          type:'info',
+                          message:'登录失败'
+                      })
+                  }
+              })
+            },
             signup(){
+                // console.log(this.passwd)
                 if(this.passwd != this.conPasswd){
                     this.$message({
                         type:'info',
@@ -109,16 +145,28 @@
                 this.axios({
                     method:'post',
                     data:{
-                        userName:this.userName,
-                        passwd:this.paswd,
-                        stuId:this.stuId
+                        username:this.userName,
+                        id:this.stuId,
+                        password:this.passwd,
+                        phone:this.phoneNum,
+                        email: this.email
                     },
-                    url:'user/signup'
-                }).catch(res=>{
-                    if(res.code == 1)
-                        alert("注册成功")
-                    else
-                        alert("注册失败")
+                    url:'/register'
+                }).then(res=>{
+                    console.log(res.data.code)
+                    if(res.data.code == 1001){
+                        this.$message({
+                            type:'info',
+                            message:'注册成功'
+                        })
+                        // this.$router.push({path: '/'});
+                    }
+                    else{
+                        this.$message({
+                            type:'info',
+                            message:'注册失败'
+                        })
+                    }
                 })
             }
         }

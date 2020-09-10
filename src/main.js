@@ -8,14 +8,9 @@ import App from './App.vue';
 import '../static/gloabl.css';
 
 
-Vue.use(VueAxios, axios)
-// // import axios from 'axios'
-// // import VueAxios from 'vue-axios'
-// //
-// // Vue.use(VueAxios, axios)
-// Vue.prototype.axios = axios
-
 Vue.use(ElementUI);
+Vue.use(VueAxios, axios);
+axios.defaults.baseURL='/api'
 Vue.config.productionTip = false
 
 new Vue({

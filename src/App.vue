@@ -19,8 +19,6 @@ export default {
        navHeader
    },
     mounted(){
-      // alert(this.$route.name == 'Login')
-       console.log(this.$route.meta.showNav)
     },
     methods:{
     }
