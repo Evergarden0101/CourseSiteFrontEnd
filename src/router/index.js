@@ -6,6 +6,7 @@ import Login from '../components/userManage/login'
 import InCircle from '../components/community/InCircle'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
+import Community from '../components/community/community'
 
 import Index from '../components/Index'
 Vue.use(Router)
@@ -15,7 +16,7 @@ export default new Router({
     {
       path:'/Index',
       name:'Index',
-      redirect:'/hello',
+      redirect:'/community',
       component:Index,
       children:[
         {
@@ -37,6 +38,11 @@ export default new Router({
           path: '/inCircle',
           name: 'inCircle',
           component: InCircle
+        },
+        {
+          path: '/community',
+          name: 'community',
+          component:Community
         }
       ]
     },
