@@ -34,6 +34,7 @@
           :auto-upload="true"
           :before-upload="before_upload"
           :on-success="successCommit"
+          :http-request="upload"
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
@@ -56,6 +57,7 @@
     data(){
       return{
         lecture:{
+          id: '1',
           name: '课程名称',
           creator: '李景熙',
           date: '2020.09.10',
@@ -106,6 +108,23 @@
       successCommit(){
         location.reload()
       },
+      upload(File){
+        alert("上传中。。。")
+        let formData = new FormData();
+        formData.append("file", File.file);
+        formData.append("lecture_id", this.lecture.id);
+        this.axios.post("/files/upload",formData,{
+          headers:{
+            "Content-type":"multipart/form-data"
+          }
+        }).then(res=>{
+          if(res.code == 0)
+            alert("文件上传失败，请规定格式重新上传");
+          else{
+            alert("文件上传成功");
+          }
+        })
+      }
     }
   }
 </script>
