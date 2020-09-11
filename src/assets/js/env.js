@@ -1,4 +1,4 @@
-var baseURL = 'http://localhost:8084/api'
+var baseURL = 'http://localhost:8080/api'
 
 export {
   baseURL

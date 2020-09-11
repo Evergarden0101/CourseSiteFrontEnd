@@ -51,6 +51,10 @@ export default new Router({
           path: '/videolist2',
           name: 'videolist2',
           component: VideoList2
+        },{
+          path:'/community',
+          name: 'community',
+          component: Community
         }
       ]
     },
