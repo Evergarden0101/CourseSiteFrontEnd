@@ -17,6 +17,7 @@
           <p>上传时间：{{item.date}}</p>
           <br>
           <p>视频时长：{{item.duration}}</p>
+          <br>
         </div>
         <div class="button">
           <ul>
@@ -100,6 +101,7 @@
         display: flex;
         border-bottom: 1px solid #DCDFE6;
         .videoinfo{
+          margin:20px;
           width: 80%;
           text-align: left;
           font-size:15px;
