@@ -11,7 +11,7 @@ import 'video.js/dist/video-js.css'
 import store from './store'
 import VideoPlayer from 'vue-video-player'
 Vue.use(VideoPlayer)
-require('vue-video-player/src/custom-theme.css')
+require('../src/assets/scss/custom-theme.css')
 Vue.prototype.$video = Video
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);

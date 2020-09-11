@@ -118,8 +118,8 @@
         <div class="infinite-list-wrapper" style="overflow:auto;">
           <ul class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;"
-                    v-for="i in count" class="list-item">
+            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;">
+<!--                    v-for="i in count" class="list-item">-->
               <el-row>
                 <el-col span="21"
                         style="padding-left: 15px;height: 30px;text-align: left;font-size: 25px;font-weight: bolder;background-color: #21ef00;border-radius: 6px">
