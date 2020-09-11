@@ -93,7 +93,7 @@
         </el-row>
 
         <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-          <el-row v-for="i in count" class="infinite-list-item">{{ i }}</el-row>
+<!--          <el-row v-for="i in count" class="infinite-list-item">{{ i }}</el-row>-->
         </ul>
 
       </el-col>

@@ -4,8 +4,9 @@
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
         <el-row style="margin-top: 30px">
-          <el-col span="8" v-if="userInfo.usertype == 'teacher'">
-            <el-button type="info" >创建课程圈子</el-button>
+<!--          <el-col span="8" v-if="userInfo.usertype == 'teacher'">-->
+          <el-col span="8" >
+            <el-button type="info" plain @click="create">创建课程圈子</el-button>
           </el-col>
           <el-col span="8" style="float: right">
               <el-input v-model="search_inf" style="width: 60%"></el-input>
@@ -46,6 +47,26 @@
         </el-row>
       </el-main>
     </el-container>
+    <!--  创建课程圈子表单-->
+    <el-dialog title="创建课程圈子" :visible.sync="visibleCreateButton">
+      <el-form ref="curriculumForm" v-model="curriculumForm" label-width="80px">
+        <el-form-item label="课程名称" >
+          <el-input v-model="curriculumForm.name" placeholder="请输入课程名称"></el-input>
+        </el-form-item>
+        <el-form-item label="课程规则" >
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.introduction" maxlength="300" show-word-limit placeholder="请输入课程名称">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="社区规则">
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.regulation" maxlength="300" show-word-limit>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="info" @click="onSubmit()">创建课程</el-button>
+          <el-button type="info" plain @click="visibleCreateButton = false">取消创建</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -59,6 +80,7 @@
         },
         data(){
             return{
+                visibleCreateButton:false,
                 userInfo:null,
                 search_inf:'',
                 alreadyJoinCommunity:[
@@ -86,9 +108,43 @@
                     name:"yzl",
                     introduce:"ctrl"
                 }],
-
+                //创建课程信息表单
+                curriculumForm:{
+                    name:'',//课程名称
+                    introduction:'',//课程介绍
+                    regulation:'',//社区规则
+                },
                 allCommunity:[],
                 applyingCommunity:[]
+            }
+        },
+        methods:{
+            create(){
+                this.visibleCreateButton = true
+            },
+            onSubmit(){
+                if(this.curriculumForm.name == ''){
+                    this.$message({
+                        type:'info',
+                        message:'请输入课程名称'
+                    })
+                }
+                else if(this.curriculumForm.introduction == ''){
+                    this.$message({
+                        type:'info',
+                        message:'请输入课程简介'
+                    })
+                }
+                this.axios({
+                    method:'POST',
+                    url:'/createcourse',
+                    headers:{'token':this.$store.state.userInfo.token},
+                    params:{
+                        name:this.curriculumForm.name,
+                        detail:this.curriculumForm.introduction,
+                        rule:this.curriculumForm.regulation
+                    }
+                })
             }
         }
     }

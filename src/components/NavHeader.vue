@@ -4,15 +4,13 @@
              class="el-menu-demo"
              mode="horizontal"
              @select="handleSelect"
-             background-color="#545c64"
-             text-color="#fff"
              active-text-color="#ffd04b"
     >
-      <el-menu-item index="/community">社区论坛</el-menu-item>
-      <el-menu-item index="2">处理中心</el-menu-item>
-      <el-menu-item index="3">处理中心</el-menu-item>
-      <el-menu-item index="4">个人空间</el-menu-item>
-      <el-menu-item class="logout-btn" index="/">退出登录</el-menu-item>
+      <el-menu-item index="/community" style="font-size: 1.5em">社区论坛</el-menu-item>
+      <el-menu-item index="2" style="font-size: 1.2em">处理中心</el-menu-item>
+      <el-menu-item index="3" style="font-size: 1.7em">处理中心</el-menu-item>
+      <el-menu-item index="4" style="font-size: 2em">个人空间</el-menu-item>
+      <el-menu-item class="logout-btn" index="/" style="font-size: 1em">退出登录</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -36,6 +34,9 @@ const index = new Set(['/community'])
 <style scoped>
   .nav-header-container{
     background-color: #606266;
+    font-family: KaiTi;
+    font-size: 1em;
+    font-weight: bold;
   }
   .logout-btn{
     float: right;

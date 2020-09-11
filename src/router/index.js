@@ -50,6 +50,11 @@ export default new Router({
           path: '/videolist2',
           name: 'videolist2',
           component: VideoList2
+        },
+        {
+          path:'/post',
+          name:'post',
+          component:post,
         }
       ]
     },
@@ -63,11 +68,7 @@ export default new Router({
       name:'/login',
       component:Login,
     },
-    {
-      path:'/post',
-      name:'/post',
-      component:post,
-    }
+
 
   ]
 })
