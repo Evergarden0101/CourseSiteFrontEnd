@@ -3,14 +3,18 @@
     <el-container>
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
-        <el-row style="margin-top: 30px">
-<!--          <el-col span="8" v-if="userInfo.usertype == 'teacher'">-->
-          <el-col span="8" >
-            <el-button type="info" plain @click="create">创建课程圈子</el-button>
-          </el-col>
-          <el-col span="8" style="float: right">
-              <el-input v-model="search_inf" style="width: 60%"></el-input>
-              <el-button type="info" plain style="margin-left: 10px;width: 30%">搜索圈子</el-button>
+<!--        <el-row style="margin-top: 30px">-->
+<!--&lt;!&ndash;          <el-col span="8" v-if="userInfo.usertype == 'teacher'">&ndash;&gt;-->
+
+<!--          <el-col span="8" style="float: right">-->
+<!--              <el-input v-model="search_inf" style="width: 60%"></el-input>-->
+<!--              <el-button type="info" plain style="margin-left: 10px;width: 30%">搜索圈子</el-button>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+        <el-row justify="end">
+          <el-col  span="8" style="float:right;margin-top: 30px;">
+            <el-button type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
+            <el-button type="info" plain @click="indetify" style="float: inherit;width: 40%;">教师认证</el-button>
           </el-col>
         </el-row>
         <!--      圈子内容-->
@@ -29,7 +33,7 @@
                           {{item.name}}
                         </el-row>
                         <el-row style="height: 60%;padding-top: 5px;padding-top:1px;padding-right: 5px">
-                         <font size="1">圈子简介：{{item.introduce}}</font>
+                         <font size="1">圈子简介：{{item.detail}}</font>
                         </el-row>
                       </el-col>
                     </el-row>
@@ -54,11 +58,11 @@
           <el-input v-model="curriculumForm.name" placeholder="请输入课程名称"></el-input>
         </el-form-item>
         <el-form-item label="课程规则" >
-          <el-input type="textarea" :rows="7" v-model="curriculumForm.introduction" maxlength="300" show-word-limit placeholder="请输入课程名称">
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.detail" maxlength="300" show-word-limit placeholder="请输入课程名称">
           </el-input>
         </el-form-item>
         <el-form-item label="社区规则">
-          <el-input type="textarea" :rows="7" v-model="curriculumForm.regulation" maxlength="300" show-word-limit>
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.rule" maxlength="300" show-word-limit>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -74,9 +78,26 @@
     export default {
         name: "community",
         mounted(){
+            this.axios({
+              method:'post',
+              url:'getAllCircle',
+              headers: {'token':this.$store.state.userInfo.token}
+            }).then(res=>{
+                if(res.code == 1001){
+                    this.alreadyJoinCommunity = res.data.alreadyJoinCommunity,
+                    this.allCommunity = res.data.allCommunity,
+                    this.applyingCommunity = res.data.applyingCommunity
+                }
+                else{
+                    this.$message({
+                        type:'info',
+                        message:"获取圈子信息失败"
+                    })
+                }
+            })
             this.userInfo = this.$store.state.userInfo
             console.log(this.$store.state)
-            console.log(this.userInfo.usertype == 'student')
+            // console.log(this.userInfo.usertype == 'student')
         },
         data(){
             return{
@@ -86,33 +107,33 @@
                 alreadyJoinCommunity:[
                 {
                     name:'jyf',
-                    introduce:"this is a house"
+                    detail:"this is a house"
                 },
                 {
                     name:'lyf',
-                    introduce:"this is a home"
+                    detail:"this is a home"
                 },
                 {
                     name:'cly',
-                    introduce:"faaaaaaafa"
+                    detail:"faaaaaaafa"
                 },
                 {
                     name:'lxh',
-                    introduce:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+                    detail:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
                 },
                 {
                     name:"cyk",
-                    introduce:"play lol"
+                    detail:"play lol"
                 },
                 {
                     name:"yzl",
-                    introduce:"ctrl"
+                    detail:"ctrl"
                 }],
                 //创建课程信息表单
                 curriculumForm:{
                     name:'',//课程名称
-                    introduction:'',//课程介绍
-                    regulation:'',//社区规则
+                    detail:'',//课程介绍
+                    rule:'',//社区规则
                 },
                 allCommunity:[],
                 applyingCommunity:[]
@@ -121,6 +142,9 @@
         methods:{
             create(){
                 this.visibleCreateButton = true
+            },
+            identify(){
+
             },
             onSubmit(){
                 if(this.curriculumForm.name == ''){
@@ -141,8 +165,22 @@
                     headers:{'token':this.$store.state.userInfo.token},
                     params:{
                         name:this.curriculumForm.name,
-                        detail:this.curriculumForm.introduction,
-                        rule:this.curriculumForm.regulation
+                        detail:this.curriculumForm.detail,
+                        rule:this.curriculumForm.rule
+                    }
+                }).then(res=>{
+                    if(res.data.code == 1001){
+                        this.$message({
+                            type:"info",
+                            message:"创建课程成功"
+                        })
+                        this.alreadyJoinCommunity = res.data.data
+                    }
+                    else{
+                        this.$message({
+                            type:"info",
+                            message:"创建课程失败"
+                        })
                     }
                 })
             }
