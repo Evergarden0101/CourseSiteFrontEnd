@@ -7,21 +7,24 @@
       <br>
       <p style="font-size:15px">创建时间：{{lecture.date}}</p>
       <el-divider></el-divider>
-      <div class="videolist" v-for="item in videos">
+      <div class="videolist" v-for="(item,i) in videos">
 <!--        <div class="videoimage">-->
 <!--          <img src="../../assets/logo.png">-->
 <!--        </div>-->
         <div class="videoinfo">
           <h3>{{item.name}}</h3>
           <br>
-          <p>上传时间：{{item.date}}</p>
+          <p>上传时间：{{item.time}}</p>
           <br>
-          <p>视频时长：{{item.duration}}</p>
+          <p>视频简介：{{item.detail}}</p>
           <br>
         </div>
         <div class="button">
           <ul>
-            <li><i class="el-icon-video-play"  @click="play_the_video()"></i></li>
+            <li>
+              <i class="el-icon-video-play"  @click="play_the_video()"></i>
+              <i class="el-icon-delete" @click="delete_the_video(i)"></i>
+            </li>
           </ul>
         </div>
       </div>
@@ -33,7 +36,6 @@
           accept=".mp4, .txt"
           :auto-upload="true"
           :before-upload="before_upload"
-          :on-success="successCommit"
           :http-request="upload"
         >
           <i class="el-icon-upload"></i>
@@ -57,7 +59,7 @@
     data(){
       return{
         lecture:{
-          id: '1',
+          id: '111',
           name: '课程名称',
           creator: '李景熙',
           date: '2020.09.10',
@@ -68,34 +70,96 @@
         ],
         videos:[
           {
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
-          },
-          {
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
+            id: "9",
+            courseid: "111",
+            userid: "17373273",
+            name: "2.jpg",
+            detail: "",
+            path: "./upload2.jpg",
+            time: "2020-09-11T09:41:26.19Z"
           },{
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
+            id: "9",
+            courseid: "111",
+            userid: "17373273",
+            name: "2.jpg",
+            detail: "",
+            path: "./upload2.jpg",
+            time: "2020-09-11T09:41:26.19Z"
           },{
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
+            id: "9",
+            courseid: "111",
+            userid: "17373273",
+            name: "2.jpg",
+            detail: "",
+            path: "./upload2.jpg",
+            time: "2020-09-11T09:41:26.19Z"
           },{
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
+            id: "9",
+            courseid: "111",
+            userid: "17373273",
+            name: "2.jpg",
+            detail: "",
+            path: "./upload2.jpg",
+            time: "2020-09-11T09:41:26.19Z"
+          },{
+            id: "9",
+            courseid: "111",
+            userid: "17373273",
+            name: "2.jpg",
+            detail: "",
+            path: "./upload2.jpg",
+            time: "2020-09-11T09:41:26.19Z"
           },
         ],
       }
     },
     beforeMount(){
       alert("进入视频列表页面")
+      alert(this.$store.state.userInfo.token)
+      this.axios({
+        method: 'post',
+        url: '/getvideos',
+        data:{
+          courseid: '111',
+        },
+        headers:{
+          'token':this.$store.state.userInfo.token,
+        }
+      }).then(res =>{
+        if(res.code == '1001'){
+          alert("获取列表成功")
+          alert(res.code)
+          this.videos = res.data
+        }
+        else{
+          alert(res.code)
+          alert("获取失败")
+        }
+      })
     },
     methods: {
+      delete_the_video(i){
+        alert(i)
+        this.axios({
+          method: 'post',
+          url: '/deletevideo',
+          data:{
+            'id': this.videos[i].id,
+          },
+          headers:{
+            'token':this.$store.state.userInfo.token,
+          }
+        }).then(res =>{
+          if(res.code == '1001'){
+            alert("删除成功")
+            alert(res.code)
+          }
+          else{
+            alert(res.code)
+            alert("删除失败")
+          }
+        })
+      },
       play_the_video(){
         alert("播放成功！！！！")
       },
@@ -108,25 +172,24 @@
           alert("文件大小超过100Mb，不能上传.")
         }
       },
-      successCommit(){
-        location.reload()
-      },
       upload(File){
         alert("上传中。。。")
         let formData = new FormData();
-        formData.append("file", File.file);
-        formData.append("lecture_id", this.lecture.id);
-        this.axios.post("/files/upload",formData,{
+        formData.append("video", File.file);
+        formData.append("courseid", this.lecture.id);
+        this.axios.post("/fileupload",formData,{
           headers:{
-            "Content-type":"multipart/form-data"
+            "Content-type":"multipart/form-data",
+            "token":this.this.$store.state.userInfo.token,
           }
         }).then(res=>{
-          if(res.code == 0)
-            alert("文件上传失败，请按照规定格式重新上传");
-          else{
+          if(res.code == '1001')
             alert("文件上传成功");
+          else{
+            alert("文件上传失败，请按照规定格式重新上传");
           }
         })
+        this.reload()
       }
     }
   }
