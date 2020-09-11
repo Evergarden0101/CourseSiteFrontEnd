@@ -8,8 +8,8 @@ import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
 import post from '../components/post'
 import Community from '../components/community/community'
+import Player from '../components/Record/Player'
 import VideoList2 from '../components/Record/videolist2'
-import Lecture_List from '../components/Record/Lecture_List'
 
 import Index from '../components/Index'
 Vue.use(Router)
@@ -28,6 +28,11 @@ export default new Router({
           component: HelloWorld
         },
         {
+          path:'/player',
+          name:'player',
+          component:Player
+        },
+        {
           path: '/upload',
           name: 'Upload',
           component: Upload
@@ -43,24 +48,9 @@ export default new Router({
           component: InCircle
         },
         {
-          path: '/community',
-          name: 'community',
-          component: Community
-        },
-        {
           path: '/videolist2',
           name: 'videolist2',
           component: VideoList2
-        },
-        {
-          path:'/post',
-          name:'post',
-          component:post,
-        },
-        {
-          path:'/lecturelist',
-          name:'lecturelist',
-          component: Lecture_List,
         }
       ]
     },
@@ -73,8 +63,6 @@ export default new Router({
       path:'/login',
       name:'/login',
       component:Login,
-    },
-
-
+    }
   ]
 })
