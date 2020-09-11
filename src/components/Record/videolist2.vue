@@ -92,6 +92,9 @@
         ],
       }
     },
+    beforeMount(){
+      alert("进入视频列表页面")
+    },
     methods: {
       play_the_video(){
         alert("播放成功！！！！")
@@ -99,7 +102,7 @@
       before_upload(file){
         const isOverSize = file.size/1024/1024 < 100
         if(isOverSize){
-          alert("上传成功！")
+          alert("文件大小符合规定，允许上传")
         }
         else{
           alert("文件大小超过100Mb，不能上传.")
@@ -119,7 +122,7 @@
           }
         }).then(res=>{
           if(res.code == 0)
-            alert("文件上传失败，请规定格式重新上传");
+            alert("文件上传失败，请按照规定格式重新上传");
           else{
             alert("文件上传成功");
           }
