@@ -9,6 +9,7 @@ import VideoList from '../components/Record/video_list'
 import post from '../components/post'
 import Community from '../components/community/community'
 import VideoList2 from '../components/Record/videolist2'
+import Lecture_List from '../components/Record/Lecture_List'
 
 import Index from '../components/Index'
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
           path:'/post',
           name:'post',
           component:post,
+        },
+        {
+          path:'/lecturelist',
+          name:'lecturelist',
+          component: Lecture_List,
         }
       ]
     },
