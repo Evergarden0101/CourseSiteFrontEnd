@@ -68,54 +68,10 @@
           {notice: '公告1：该课程截止时间为2020.09.31，请同学尽快添加课程'},
           {notice: '公告2：作业2已发布，请同学尽快完成提交'}
         ],
-        videos:[
-          {
-            id: "9",
-            courseid: "111",
-            userid: "17373273",
-            name: "2.jpg",
-            detail: "",
-            path: "./upload2.jpg",
-            time: "2020-09-11T09:41:26.19Z"
-          },{
-            id: "9",
-            courseid: "111",
-            userid: "17373273",
-            name: "2.jpg",
-            detail: "",
-            path: "./upload2.jpg",
-            time: "2020-09-11T09:41:26.19Z"
-          },{
-            id: "9",
-            courseid: "111",
-            userid: "17373273",
-            name: "2.jpg",
-            detail: "",
-            path: "./upload2.jpg",
-            time: "2020-09-11T09:41:26.19Z"
-          },{
-            id: "9",
-            courseid: "111",
-            userid: "17373273",
-            name: "2.jpg",
-            detail: "",
-            path: "./upload2.jpg",
-            time: "2020-09-11T09:41:26.19Z"
-          },{
-            id: "9",
-            courseid: "111",
-            userid: "17373273",
-            name: "2.jpg",
-            detail: "",
-            path: "./upload2.jpg",
-            time: "2020-09-11T09:41:26.19Z"
-          },
-        ],
+        videos:[],
       }
     },
     beforeMount(){
-      alert("进入视频列表页面")
-      alert(this.$store.state.userInfo.token)
       this.axios({
         method: 'post',
         url: '/getvideos',
@@ -126,20 +82,15 @@
           'token':this.$store.state.userInfo.token,
         }
       }).then(res =>{
-        if(res.code == '1001'){
-          alert("获取列表成功")
-          alert(res.code)
-          this.videos = res.data
+        if(res.data.code == 1001){
+          this.videos = res.data.data
         }
         else{
-          alert(res.code)
-          alert("获取失败")
         }
       })
     },
     methods: {
       delete_the_video(i){
-        alert(i)
         this.axios({
           method: 'post',
           url: '/deletevideo',
@@ -150,15 +101,14 @@
             'token':this.$store.state.userInfo.token,
           }
         }).then(res =>{
-          if(res.code == '1001'){
+          if(res.data.code == 1001){
             alert("删除成功")
-            alert(res.code)
           }
           else{
-            alert(res.code)
             alert("删除失败")
           }
         })
+        location.reload()
       },
       play_the_video(){
         alert("播放成功！！！！")
@@ -173,23 +123,22 @@
         }
       },
       upload(File){
-        alert("上传中。。。")
         let formData = new FormData();
         formData.append("video", File.file);
         formData.append("courseid", this.lecture.id);
         this.axios.post("/fileupload",formData,{
           headers:{
             "Content-type":"multipart/form-data",
-            "token":this.this.$store.state.userInfo.token,
+            "token":this.$store.state.userInfo.token,
           }
         }).then(res=>{
-          if(res.code == '1001')
+          if(res.data.code == 1001)
             alert("文件上传成功");
           else{
             alert("文件上传失败，请按照规定格式重新上传");
           }
         })
-        this.reload()
+        location.reload()
       }
     }
   }
