@@ -28,12 +28,16 @@
       <div class="upload-container">
         <el-upload
           class="upload-demo"
+          action="https://localhost/8080/"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
+          accept=".mp4, .txt"
+          :auto-upload="true"
+          :before-upload="before_upload"
+          :on-success="successCommit"
+        >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
-          <h4>注意：只能上传mp4文件</h4>
+          <h5>注意：只能上传mp4文件</h5>
         </el-upload>
       </div>
     </div>
@@ -70,6 +74,18 @@
             name: '视频名称',
             date: '2020.09.10',
             duration: '01:27:33',
+          },{
+            name: '视频名称',
+            date: '2020.09.10',
+            duration: '01:27:33',
+          },{
+            name: '视频名称',
+            date: '2020.09.10',
+            duration: '01:27:33',
+          },{
+            name: '视频名称',
+            date: '2020.09.10',
+            duration: '01:27:33',
           },
         ],
       }
@@ -77,7 +93,19 @@
     methods: {
       play_the_video(){
         alert("播放成功！！！！")
-      }
+      },
+      before_upload(file){
+        const isOverSize = file.size/1024/1024 < 100
+        if(isOverSize){
+          alert("上传成功！")
+        }
+        else{
+          alert("文件大小超过100Mb，不能上传.")
+        }
+      },
+      successCommit(){
+        location.reload()
+      },
     }
   }
 </script>
@@ -101,7 +129,7 @@
         display: flex;
         border-bottom: 1px solid #DCDFE6;
         .videoinfo{
-          margin:20px;
+          margin:12px;
           width: 80%;
           text-align: left;
           font-size:15px;
