@@ -123,10 +123,11 @@
                           type:'info',
                           message:'登录成功'
                       })
-                      alert("111")
+                      // alert("111")
                       // console.log(res.data)
                       this.$store.commit('setUserInfo',res.data.data)
-                      console.log(this.$store.state)
+                      this.$router.push('/community')
+                      // console.log(this.$store.state)
                       // this.$router.push({path: '/'});
                   }
                   else{
@@ -149,6 +150,7 @@
                 this.axios({
                     method:'post',
                     data:{
+                        input:this.input,
                         username:this.userName,
                         id:this.stuId,
                         password:this.passwd,
@@ -163,6 +165,8 @@
                             type:'info',
                             message:'注册成功'
                         })
+                        this.$store.commit('setUserInfo',res.data.data)
+                        this.$router.push('/community')
                         // this.$router.push({path: '/'});
                     }
                     else{
