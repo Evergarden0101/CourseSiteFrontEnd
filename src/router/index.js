@@ -6,6 +6,7 @@ import Login from '../components/userManage/login'
 import InCircle from '../components/community/InCircle'
 import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
+import post from '../components/post'
 import Community from '../components/community/community'
 import VideoList2 from '../components/Record/videolist2'
 
@@ -17,7 +18,7 @@ export default new Router({
     {
       path:'/Index',
       name:'Index',
-      redirect:'/community',
+      redirect:'/hello',
       component:Index,
       children:[
         {
@@ -61,6 +62,12 @@ export default new Router({
       path:'/login',
       name:'/login',
       component:Login,
+    },
+    {
+      path:'/post',
+      name:'/post',
+      component:post,
     }
+
   ]
 })

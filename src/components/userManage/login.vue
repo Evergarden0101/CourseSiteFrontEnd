@@ -59,6 +59,7 @@
     </el-container>
   </div>
 </template>
+
 <style>
   .el-mian{
     width: 90vw;
