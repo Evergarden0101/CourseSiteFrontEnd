@@ -132,7 +132,7 @@
                 <el-divider></el-divider>
             </div>
         </div>
-        <footerbar/> 
+<!--        <footerbar/> -->
     </div>
 </template>
 
