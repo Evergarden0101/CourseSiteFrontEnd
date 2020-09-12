@@ -72,6 +72,8 @@
       }
     },
     beforeMount(){
+      this.lecture.id = this.$route.params.courseid
+      alert(this.lecture.id)
       this.axios({
         method: 'post',
         url: '/getvideos',

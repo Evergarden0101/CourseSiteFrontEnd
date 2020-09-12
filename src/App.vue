@@ -23,7 +23,7 @@ export default {
     methods:{
     },
    created () {
-    this.$router.replace('/postpage')
+    // this.$router.replace('/postpage')
   }
 }
 
