@@ -1,5 +1,6 @@
 <template>
   <div class="community-container">
+    <navbar/>
     <el-container>
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
@@ -107,8 +108,12 @@
 </template>
 
 <script>
+import navbar from '../navbars/navbar'
     export default {
         name: "community",
+        components: {
+          navbar
+        },
         mounted(){
             this.axios({
               method:'post',
