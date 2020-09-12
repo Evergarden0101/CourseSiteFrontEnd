@@ -24,9 +24,12 @@
         <span style="font-size: 30px;font-weight: bolder;color: #00aeef">课程名</span>
         <span style="font-size: 30px;font-weight: bolder;color: #00aeef">&nbsp&nbsp&nbsp</span>
         <el-tooltip content="加入课程" placement="top" effect="dark">
-          <el-button size="medium" class="add" @click="addClass" round>加入</el-button>
+          <el-button size="medium" class="add" id="addbtn" @click="addClass" style="display:none" round>加入</el-button>
         </el-tooltip>
-        <el-button size="medium" class="quit" @click="quitClass" style="display:none" round>已加入</el-button>
+        <el-tooltip content="退出课程" placement="top" effect="dark">
+          <el-button size="medium" class="quit" id="quitbtn" @click="quitClass" style="display:none" round>退出
+          </el-button>
+        </el-tooltip>
       </el-col>
     </el-row>
     <el-row style="background-color: #00aeef;">
@@ -43,10 +46,14 @@
 
     <el-row style="margin-bottom: 20px;background-color: #00aeef;">
       <el-col span="24" style="height:20px;background-color: #ec008c;text-align: left">
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 5px">课程信息</span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px">讨论</span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px">录播</span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px">直播</span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 5px"><el-link :underline="false"
+                                                                                                   href="">课程信息</el-link></span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
+                                                                                                    href="">讨论</el-link></span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
+                                                                                                    href="">录播</el-link></span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
+                                                                                                    href="">直播</el-link></span>
       </el-col>
     </el-row>
 
@@ -103,7 +110,7 @@
                   <p>确认发布帖子？</p>
                   <div style="text-align: right; margin-top: 15px">
                     <el-button size="mini" type="text" @click="submitVisible = false">取消</el-button>
-                    <el-button class="newPost" type="primary" size="mini" @click="submitVisible = false">确定</el-button>
+                    <el-button class="newPost" type="primary" size="mini" @click="post">确定</el-button>
                   </div>
                   <el-button slot="reference" type="primary" round style="position: absolute;right: 30px;bottom: 8px">
                     提交
@@ -115,15 +122,15 @@
           </el-collapse>
         </div>
 
-        <div class="infinite-list-wrapper" style="overflow:auto;">
-          <ul class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-distance="30"
+        <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;background-color: #00aeef">
+          <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;">
-<!--                    v-for="i in count" class="list-item">-->
+            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;"
+                    v-for="item in count" class="list-item">
               <el-row>
                 <el-col span="21"
                         style="padding-left: 15px;height: 30px;text-align: left;font-size: 25px;font-weight: bolder;background-color: #21ef00;border-radius: 6px">
-                  <el-link href="">{{ i }}</el-link>
+                  <el-link href="">{{ item }}</el-link>
 
                 </el-col>
                 <el-col span="1">
@@ -146,7 +153,7 @@
               <el-row
                 style=" overflow: hidden;text-indent:2em;word-break: break-all;;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;background-color: #21ef00">
                 <el-link :underline="false" href="">
-                  neirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneir
+                  {{ item }}
                 </el-link>
               </el-row>
 
@@ -155,7 +162,6 @@
           <p v-if="loading">加载中...</p>
           <p v-if="noMore">没有更多了</p>
         </div>
-
       </el-col>
 
       <el-col span="6" offset="1"
@@ -173,19 +179,29 @@
 </template>
 
 <script>
+  // import infiniteScroll from 'vue-infinite-scroll'
+  // Vue.use(infiniteScroll)
   export default {
     data() {
       return {
-        count: 5,
-        loading: false,
-        classId: '',
-        stuId: '',
-        rules: '',
-        amount: 0,
+        //////自用
         newTitle: '',
         newContent: '',
         submitVisible: false,
         activeName: '',
+        count: 5,   //post第一次加载
+
+        /////请求
+        classId: '',
+        stuId: '',
+        rules: '',
+        userInfo: null,
+
+        //加载post
+        busy: false,
+        loading: false,
+        amount: 0,
+        posts: [],
 
       }
     },
@@ -198,31 +214,100 @@
       }
     },
     mounted() {
-
+      this.axios({
+        method: 'post',
+        url: 'getInCircle',
+        headers: {'token': this.$store.state.userInfo.token},
+        params: {}
+      }).then(res => {
+        if (res.code == 1001) {
+          this.alreadyJoinCommunity = res.data.alreadyJoinCommunity,
+            this.allCommunity = res.data.allCommunity,
+            this.applyingCommunity = res.data.applyingCommunity
+        } else {
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: "获取圈子内容失败"
+          })
+        }
+      })
+      this.userInfo = this.$store.state.userInfo
+      console.log(this.$store.state)
     },
     methods: {
+      post(){
+        this.axios({
+          url: '',
+          headers: {'token': this.$store.state.userInfo.token},
+          params: {
+            classId:this.classId,
+            newTitle:this.newTitle,
+            newContent:this.newContent
+          },
+
+        }).then(res=>{
+          if(res.data.code == 1001){
+            this.submitVisible = false,
+            this.$message({
+              showClose:true,
+              type:'success',
+              message:'发布成功'
+            })
+            // alert("111")
+            // console.log(res.data)
+            this.$store.commit('setUserInfo',res.data.data)
+            this.$router.push('/inCircle')
+            // console.log(this.$store.state)
+            // this.$router.push({path: '/'});
+          }
+          else{
+            this.$message({
+              showClose:true,
+              type:'error',
+              message:'发布失败'
+            })
+          }
+        })
+      },
       addClass() {
         this.axios({
-          method: 'post',
-          data: {
+          method: 'POST',
+          url: '',
+          headers: {'token': this.$store.state.userInfo.token},
+          params: {
             classId: this.classId,
             id: this.stuId,
             join: true
           },
-        }),
-          this.$message({
-            showClose: true,
-            message: '成功加入课程',
-            type: 'success'
-          }),
-          this.text("已加入")
+        }), then(res => {
+          if (res.data.code == 1001) {
+            this.$message({
+              showClose: true,
+              message: '成功加入课程',
+              type: 'success'
+            }),
+              document.getElementById("addbtn").setAttribute("style", "display:none")
+            document.getElementById("quitbtn").setAttribute("style", "display:block");
+          } else {
+            this.$message({
+              showClose: true,
+              message: '加入课程失败',
+              type: 'error'
+            })
+          }
+        })
       },
-      load() {
+      loadMore: function () {
+        this.busy = true
         this.loading = true
         setTimeout(() => {
           this.count += 2
           this.loading = false
+          this.busy = false
         }, 2000)
+
+
       }
     }
   }
