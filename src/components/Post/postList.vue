@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import '../../style/bootstrap.css'
+import '../../style/hux-blog.css'
 export default {
     name: 'postList',
     data() {
