@@ -1,284 +1,299 @@
-<template>
-    <div>
-        <!-- Post Header -->
-        <header class="intro-header">
-<!--            <navbar/>-->
-            <div class="header-mask"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                        <div class="post-heading">
-                            <h1>{{ page.title }}</h1>
-                            <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
-                            <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
-                        </div>
-                    </div>
-                </div>
+<div>
+  <div>
+  <div>
+    <!-- Post Header -->
+    <header class="intro-header">
+      <!--            <navbar/>-->
+      <div class="header-mask"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>{{ page.title }}</h1>
+              <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
+              <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
             </div>
-        </header>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
 
-        <!-- Post Content -->
-        <article>
-            <div class="container">
-                <div class="row">
-
-            <!-- Post Container -->
-                    <div class="
-                        col-lg-8 col-lg-offset-2
-                        col-md-10 col-md-offset-1
-                        post-container">
-
-                        {{ page.detail }}
-
-                        <hr style="visibility: hidden;">
-
-                        <!--
-                        <ul class="pager">
-                            {% if page.previous.url %}
-                            <li class="previous">
-                                <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
-                                Previous<br>
-                                <span>{{page.previous.title}}</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% if page.next.url %}
-                            <li class="next">
-                                <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
-                                Next<br>
-                                <span>{{page.next.title}}</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                        -->
-                    </div>
-
-            <!-- Side Catalog Container -->
-                    <div class="
-                        col-lg-2 col-lg-offset-0
-                        visible-lg-block
-                        sidebar-container
-                        catalog-container">
-                        <div class="side-catalog">
-                            <hr class="hidden-sm hidden-xs">
-                            <h5>
-                                <a class="catalog-toggle" href="#">目录</a>
-                            </h5>
-                            <ul class="catalog-body"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </article>
+        <!-- Post Container -->
         <div class="
                         col-lg-8 col-lg-offset-2
                         col-md-10 col-md-offset-1
                         post-container">
-            <el-divider>讨论区</el-divider>
-            <div>
-                <el-row>
-                    <el-col span = "3">
-                        <el-row>
-                            <el-avatar :size="50" :src="circleUrl"></el-avatar>
-                        </el-row>
-                        <el-row>
-                            username
-                        </el-row>
-                    </el-col>
-                    <el-col span = "18">
-                         <el-input
-                            type="textarea"
-                            rows="5"
-                            placeholder="请输入内容"
-                            v-model="comment">
-                        </el-input>
-                    </el-col>
-                    <el-col span = "3">
-                         <el-button type="primary" plain @click="publish()">提交</el-button>
-                    </el-col>
-                </el-row>
-            </div>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect(1,1)">
-                <el-menu-item index="1">按热度排序</el-menu-item>
-                <el-menu-item index="2">按时间排序</el-menu-item>
-            </el-menu>
-            <div v-for="(per,i) in commentList" :key="i">
-                <el-row style="height: 100px;">
-                    <el-col span = "3">
-                        <el-row>
-                            <el-avatar :size="50" :src="circleUrl"></el-avatar>
-                        </el-row>
-                        <el-row>
-                            {{per.username}}
-                        </el-row>
-                    </el-col>
-                    <el-col span = "18">
-                         <div class="text-wrapper">
-                             <el-card shadow="hover">
-                                 <span>{{ per.detail }}</span>
-                            </el-card>
-                        </div>
-                    </el-col>
-                    <el-col span="3">
-                        <div v-if="!per.isself">
-                             <el-button type="warning" icon="el-icon-star-off" circle @click="starComment"></el-button>
-                        </div>
-                        <div v-else>
-                            <el-button type="danger" icon="el-icon-delete" circle @click="deleteComment"></el-button>
-                        </div>
-                    </el-col>
-                </el-row>
-                <el-divider></el-divider>
-            </div>
+
+          {{ page.detail }}
+
+          <hr style="visibility: hidden;">
+
+          <hr style="visibility: hidden;">
+
+          <!--
+          <ul class="pager">
+              {% if page.previous.url %}
+              <li class="previous">
+                  <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
+                  Previous<br>
+                  <span>{{page.previous.title}}</span>
+                  </a>
+              </li>
+              {% endif %}
+              {% if page.next.url %}
+              <li class="next">
+                  <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
+                  Next<br>
+                  <span>{{page.next.title}}</span>
+                  </a>
+              </li>
+              {% endif %}
+          </ul>
+          -->
         </div>
-<!--        <footerbar/> -->
+
+        <!-- Side Catalog Container -->
+        <div class="
+                        col-lg-2 col-lg-offset-0
+                        visible-lg-block
+                        sidebar-container
+                        catalog-container">
+          <div class="side-catalog">
+            <hr class="hidden-sm hidden-xs">
+            <h5>
+              <a class="catalog-toggle" href="#">目录</a>
+            </h5>
+            <ul class="catalog-body"></ul>
+          </div>
+        </div>
+      </div>
     </div>
+  </article>
+  <div class="
+                        col-lg-8 col-lg-offset-2
+                        col-md-10 col-md-offset-1
+                        post-container">
+    <el-divider>讨论区</el-divider>
+    <div>
+      <el-row>
+        <el-col span="3">
+          <el-avatar :size="50" :src="circleUrl"></el-avatar>
+        </el-col>
+        <el-col span="18">
+          <el-input
+            type="textarea"
+            rows="5"
+            placeholder="请输入内容"
+            v-model="comment">
+          </el-input>
+        </el-col>
+        <el-col span="3">
+          <el-button type="primary" plain @click="publish()">提交</el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect(1,1)">
+      <el-menu-item index="1">按热度排序</el-menu-item>
+      <el-menu-item index="2">按时间排序</el-menu-item>
+    </el-menu>
+    <div v-for="(per,i) in commentList" :key="i">
+      <el-row style="height: 100px;">
+        <el-col span="3">
+          <el-avatar :size="50" :src="per.avatorSite"></el-avatar>
+        </el-col>
+        <el-col span="18">
+          <span>{{ per.detail }}</span>
+        </el-col>
+      </el-row>
+      <el-divider></el-divider>
+    </div>
+  </div>
+  <footerbar/>
+  </div>
+</div>
 </template>
 
-<script >
-// import navbar from '../navbars/navbar'
-// import footerbar from '../navbars/footerbar'
+<script>
+  // import navbar from '../navbars/navbar'
+  // import footerbar from '../navbars/footerbar'
 
-export default {
+  export default {
     name: 'postPage',
     components: {
-        // navbar,
-        // footerbar
+      // navbar,
+      // footerbar
     },
     data() {
-        return {
-            page: {},
-            comment: '',
-            commentList: [
-                {id: 1, username: 'abc', detail: '123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321', isself: true, time: '2020-1-10'},
-                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: true, time: '2020-8888'},
-                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: false, time: '2020-8888'}
-            ]
-        }
+      return {
+        page: {},
+        comment: '',
+        commentList: [
+          {
+            id: 1,
+            username: 'abc',
+            detail: '123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321',
+            isself: true,
+            time: '2020-1-10'
+          },
+          {id: 2, username: '667890--=', detail: '123445678900987654321', isself: true, time: '2020-8888'},
+          {id: 2, username: '667890--=', detail: '123445678900987654321', isself: false, time: '2020-8888'}
+        ]
+      }
     },
     mounted() {
-        this.getCommentList()
-        this.getPageInfo()
-    },
-    computed: {
-    },
-    methods: {
-        getPageInfo() {
-            this.axios({
-                method: 'post',
-                data: {
-                    id: this.$store.state.userInfo.id
-                },
-                url: 'findpostbyid'
-            }).then(res=>{
-                this.page = res.data.data
-            })
-        },
-        getCommentList() {
-            this.axios({
-                method: 'post',
-                data: {
-                    postid: this.$store.state.userInfo.id
-                },
-                url:'/getcomments'
-            }).then(res=>{
-                this.commentList = res.data.data
-            })
-        },
-        deleteComment() {
-            this.axios({
-                method: 'post',
-                data: {
-                    id: this.$store.state.userInfo.id
-                },
-                url: '/deletecomment'
-            }).then(res=>{
-                this.$message({
-                message: '删除成功！',
-                type: 'success'
-                });
-            })
-        },
-        starComment() {
-            this.axios({
+      this.pid = this.$route.params.id
+      this.getCommentList()
+      this.getPageInfo()
 
-            }).then(res=>{
-                console.log('star')
-                this.$message({
-                message: '点赞成功！',
-                type: 'success'
-                });
-            })
-        },
-        goback() {
+    },
+    computed: {},
+    methods: {
+      getPageInfo() {
+        this.axios({
+          method: 'post',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            id: this.pid
+          },
+          url: 'findpostbyid'
+        }).then(res => {
+          this.page = res.data.data
+        })
+      },
+      getCommentList() {
+        this.axios({
+          method: 'post',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            postid: this.pid
+          },
+          url: '/getcomments'
+        }).then(res => {
+          this.commentList = res.data.data
+        })
+      },
+      deleteComment() {
+        this.axios({
+          method: 'post',
+          data: {
+            id: this.$store.state.userInfo.id
+          },
+          url: '/deletecomment'
+        })
+      },
+      goback() {
         this.$router.push('/login')
-        },
-        publish() {
-            if(this.comment.length>=200) {
-            alert('长度超出限制')
-            return;
-            }
-            this.axios({
-            method:'post',
-            data:{
-                detail: this.comment
-            },
-            url:'/addcomment'
-            }).then(res=>{
-                    this.$store.commit('pulishcomment',res.data.data),
-                    this.getCommentList()
-                    this.$message({
-                    message: '评论成功！',
-                    type: 'success'
-                    });
-                }
-            )
-        },
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+      },
+      publish() {
+        if (this.comment.length >= 200) {
+          alert('长度超出限制')
+          return;
         }
+        this.axios({
+          method: 'post',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            detail: this.comment
+          },
+          url: '/addcomment'
+        }).then(res => {
+          if (res.data.code == 1001) {
+            this.$message({
+              showClose: true,
+              type: 'success',
+              message: '发布成功'
+            })
+            this.comment = ''
+            //this.$store.commit('pulishcomment', res.data.data),
+            this.getCommentList()
+          }
+        })
+      },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      }
     }
-}
+  }
 </script>
 
 <style type="scss" scoped>
   @import './bootstrap1.css';
   @import './hux-blog1.css';
-    header.intro-header{
-        position: relative;
-        background-image: url(homepage-bg.jpg)
-    }
-    .self-input{
-        width: 1000px;
-        margin: 0 auto;
-        margin-top:10px;
-        height: 80px;
 
+  header.intro-header {
+    position: relative;
+    background-image: url(homepage-bg.jpg)
+  }
+
+  .self-input {
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 10px;
+    height: 80px;
+  }
+
+  .self-input {
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 10px;
+    height: 80px;
+
+  }
+
+  .user-face {
+    width: 150px;
+    height: 150px;
+    float: left;
+  }
+
+  .input-container {
+    display: table-cell;
+    vertical-align: top;
+    /*即使宽度设为2000px，元素的内容还是可以正常显示*/
+    width: 2000px;
+    height: 600px;
+  }
+
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
     }
-    .user-face{
-        width: 150px;
-        height: 150px;
-        float: left;
+
+    .user-face {
+      width: 150px;
+      height: 150px;
+      float: left;
     }
-    .input-container{
-        display: table-cell;
-        vertical-align: top;
-        /*即使宽度设为2000px，元素的内容还是可以正常显示*/
-        width: 2000px;
-        height: 600px;
+
+    .input-container {
+      display: table-cell;
+      vertical-align: top;
+      /*即使宽度设为2000px，元素的内容还是可以正常显示*/
+      width: 2000px;
+      height: 600px;
     }
+
     /* place left on bigger screen */
     @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
+      .anchorjs-link {
+        position: absolute;
+        left: -0.75em;
+        font-size: 1.1em;
+        margin-top: -0.1em;
+      }
     }
-    .text-wrapper{
-        word-break: break-all;
-        word-wrap: break-word
+    .text-wrapper {
+      word-break: break-all;
+      word-wrap: break-word
     }
+  }
 </style>

@@ -17,12 +17,15 @@
         </div>
       </el-backtop>
     </template>
-    <el-row style="height: 70px"></el-row>
-    <el-row style="background-color: #00aeef;">
-      <el-col span="2" style="height:40px;background-color: black;text-align: left"></el-col>
-      <el-col span="22" style="height:40px;background-color: #ec008c;text-align: left">
-        <span style="font-size: 30px;font-weight: bolder;color: #00aeef">课程名</span>
-        <span style="font-size: 30px;font-weight: bolder;color: #00aeef">&nbsp&nbsp&nbsp</span>
+    <div style="background-color: #d9ecff;padding-left: 5%;padding-right: 5%">
+    <el-row style="height: 50px"></el-row>
+      <el-card class="box-card" shadow="always" style="margin-bottom: 10px;background-color: white">
+
+    <el-row style="">
+      <!--      <el-col span="2" style="height:40px;background-color: #ec008c;text-align: left"></el-col>-->
+      <el-col span="24" style=";padding-left:40px;height:40px;text-align: left">
+        <span style="font-size: 30px;font-weight: bolder;color:rgba(0,0,0,1)">{{circle.name}}</span>
+        <span style="font-size: 30px;font-weight: bolder;color: black">&nbsp&nbsp&nbsp</span>
         <el-tooltip content="加入课程" placement="top" effect="dark">
           <el-button size="medium" class="add" id="addbtn" @click="addClass" style="display:none" round>加入</el-button>
         </el-tooltip>
@@ -32,37 +35,38 @@
         </el-tooltip>
       </el-col>
     </el-row>
-    <el-row style="background-color: #00aeef;">
-      <el-col span="2" style="height:25px;background-color: black;"></el-col>
-      <el-col span="22" style="height:25px;background-color: #ec008c;text-align: left">
-        <span style="position:absolute;bottom:0;;font-size: 14px;font-weight: bold;color: #00aeef">&nbsp/教师</span>
+    <!--    <el-row style="background-color: #00aeef;">-->
+    <!--      <el-col span="2" style="height:25px;background-color: black;"></el-col>-->
+    <!--      <el-col span="22" style="height:25px;background-color: #ec008c;text-align: left">-->
+    <!--        <span style="position:absolute;bottom:0;;font-size: 14px;font-weight: bold;color: #00aeef">&nbsp/教师</span>-->
+    <!--      </el-col>-->
+    <!--    </el-row>-->
+
+    <el-row style="">
+      <el-col span="24" style="height:8px;">
       </el-col>
     </el-row>
 
-    <el-row style="background-color: #00aeef;">
-      <el-col span="24" style="height:8px;background-color: #ec008c;">
-      </el-col>
-    </el-row>
-
-    <el-row style="margin-bottom: 20px;background-color: #00aeef;">
-      <el-col span="24" style="height:25px;background-color: #ec008c;text-align: left">
+    <el-row style="margin-bottom: 10px">
+      <el-col span="24" style="height:25px;text-align: left">
         <span style="margin-left: 5px"><el-link :underline="false"
-                                                style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+                                                style="font-size: 16px;font-weight: bolder;color: rgba(0,0,0,0.7);"
         >课程信息</el-link></span>
         <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
         >讨论</el-link></span>
         <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                                                  @click.native=seevideo()
         >录播</el-link></span>
         <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
         >直播</el-link></span>
       </el-col>
     </el-row>
 
-    <el-row>
+      </el-card>
+        <el-row>
       <el-col span="17" style="min-height: 200px;border-radius: 6px;">
         <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
 ">
@@ -76,25 +80,25 @@
               <!--              新&nbsp帖&nbsp子-->
               <!--            </el-row>-->
               <el-row
-                style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;background-color: #4eff58;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;text-align: center;font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
                 <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
                   标题
                 </el-col>
-                <el-col span="18" offset="1" style="background-color: #4eff58;height: inherit">
+                <el-col span="18" offset="1" style=";height: inherit">
                   <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
                   </el-input>
                 </el-col>
               </el-row>
 
-              <el-row style="height: 10px;background-color: #4eff58;"></el-row>
+              <el-row style="height: 10px;"></el-row>
 
               <el-row
-                style="background-color: #4eff58;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                style="text-align: center;font-size: 20px;font-weight: bolder;color:rgba(0,0,0,0.7)">
                 <el-col span="3" offset="1"
                         style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
                   正文
                 </el-col>
-                <el-col span="18" offset="1" style="background-color: #4eff58;min-height: 120px;">
+                <el-col span="18" offset="1" style=";min-height: 120px;">
                   <el-input
                     type="textarea"
                     :rows="8"
@@ -106,7 +110,7 @@
                 </el-col>
               </el-row>
               <el-row
-                style="margin-bottom:0px;background-color: #4eff58;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
                 <el-popover
                   placement="top"
                   width="160"
@@ -131,55 +135,68 @@
         <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
           <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-row style="background-color: #4eff58;height:90px;margin-bottom: 15px;border-radius: 6px;"
-                    v-for="(item,index) in posts" key="index" class="list-item">
+            <el-card shadow="always" style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
+                    v-for="(item,index) in posts" key="index" class="list-item box-card">
               <el-row>
-                <el-col span="21" @click="seePost(item)"
+                <el-col span="20" @click="seePost(item)"
                         style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
                   <el-link @click.native=seePost(item)
-                           style="font-size: 20px;font-weight: bolder;color: #ff0098">
+                           style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
                     {{ item.title }}
                   </el-link>
 
                 </el-col>
-                <el-col span="1">
-                  <el-button @click="addStar(item)" id="star" style="margin-left: 6px;margin-top: 1px" type="primary"
-                             size="mini"><i
-                    id='starIcon' class="el-icon-star-off"></i></el-button>
-                </el-col>
-                <el-col span="2">
-                  <el-dropdown trigger="click" @command="handleCommand" id="moreList">
-                    <el-button type="primary" size="mini" style="margin-left: 20px;margin-top: 1px">
-                      <i class="el-icon-more-outline"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="delPost">删除</el-dropdown-item>
-                      <el-dropdown-item command="topPost">置顶</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </el-col>
+                  <!--                <el-col span="3" style="overflow: hidden">-->
+                  <!--                  <el-dropdown split-button type="primary">-->
+                  <!--                    <i id='starIcon' class="el-icon-star-off"></i>-->
+                  <!--                    <el-dropdown-menu slot="dropdown" trigger="click" @command="handleCommand($event, item)"-->
+                  <!--                                      id="moreList">-->
+                  <!--                      <el-dropdown-item command="delPost">删除</el-dropdown-item>-->
+                  <!--                      <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                  <!--                    </el-dropdown-menu>-->
+                  <!--                  </el-dropdown>-->
+                  <!--                </el-col>-->
+
+
+                  <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                    <el-button @click="addStar(item)" id="star" type="primary"
+                               size="small" style="right:5px;display: none" ><i
+                      id="'starIcon'+index" class="el-icon-star-off"></i></el-button>
+                  </el-col>
+                  <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                    <el-dropdown trigger="click" @command="handleCommand($event, item)" id="moreList" style="left: 1px">
+                      <el-button type="primary" size="small" style="">
+                        <i class="el-icon-more-outline"></i>
+                      </el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="delPost">删除</el-dropdown-item>
+<!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </el-col>
+
 
               </el-row>
               <el-row
-                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;">
-                <el-link :underline="false" href="" style="color: #ff0098;font-weight: normal"
+                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
+                <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
                          @click.native=seePost(item)>
                   {{ item.detail }}
                 </el-link>
               </el-row>
 
-            </el-row>
+            </el-card>
           </ul>
-          <p v-if="loading">加载中...</p>
+          <p v-if="loading"></p>
           <p v-if="noMore">没有更多了</p>
         </div>
       </el-col>
 
       <el-col span="6" offset="1">
-        <el-row
-          style="margin-bottom: 30px;background-color: #ec008c;min-height: 200px;text-align: center;border-radius: 6px;">
+        <el-card class="box-card" shadow="always"
+          style="background-color: white;margin-bottom: 30px;min-height: 200px;text-align: center;">
           <el-row
-            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
+            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 0px;color: rgba(0,0,0,0.7);">
             圈子规则
           </el-row>
           <el-row v-model="rules"
@@ -187,8 +204,8 @@
             {{circle.rule}}
           </el-row>
           <el-row id="ruleChange"
-                  style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
-            <el-button type="text" underline="true" style="font-weight: bold;color: #00aeef;font-size: 15px"
+                  style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
+            <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
                        @click="changeRuleVisible = true">修改规则
             </el-button>
             <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
@@ -205,19 +222,20 @@
               </div>
             </el-dialog>
           </el-row>
-        </el-row>
-        <el-row style="background-color: #ec008c;min-height: 160px;text-align: center;border-radius: 6px;">
+        </el-card>
+        <el-card class="box-card" shadow="always" style="background-color: white;min-height: 160px;text-align: center;">
           <el-row
-            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
+            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: rgba(0,0,0,0.7);">
             课程信息
           </el-row>
           <el-row v-model="classDetail"
                   style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
             {{circle.detail}}
           </el-row>
-        </el-row>
+        </el-card>
       </el-col>
     </el-row>
+    </div>
   </div>
 </template>
 
@@ -233,8 +251,8 @@
         newRule: '',
         submitVisible: false,
         changeRuleVisible: false,
-        activeName: '',
-        count: 5,   //post第一次加载
+        activeNames: '',
+        count: 3,   //post第一次加载
         busy: false,
         loading: false,
 
@@ -250,7 +268,7 @@
     },
     computed: {
       noMore() {
-        return this.count >= 20
+        return this.count >= this.amount
       },
       disabled() {
         return this.loading || this.noMore
@@ -295,7 +313,7 @@
     methods: {
       seePost(item) {
         this.$router.replace({
-          name: 'post',
+          name: 'postpage',
           params: {
             id: item.id
           }
@@ -307,7 +325,7 @@
         window.localStorage.setItem('coursedetail', this.circle.detail)
         window.localStorage.setItem('coursetime', this.circle.time)
         this.$router.push({
-          name: 'videolist2'
+          name: 'videolist2',
         })
       },
       addStar(item) {
@@ -326,11 +344,11 @@
               type: 'success',
               message: '设置为精华帖'
             })
-            this.posts = res.data.data
-            this.amount = this.posts.length
+            // this.posts = res.data.data
+            // this.amount = this.posts.length
             //this.$store.commit('setUserInfo', res.data.data)
             //this.$router.push('/inCircle')
-            this.posts = res.data.data
+            //this.posts = res.data.data
           } else {
             this.$message({
               showClose: true,
@@ -356,8 +374,8 @@
                 type: 'success',
                 message: '置顶成功'
               })
-              this.posts = res.data.data
-              this.amount = this.posts.length
+              //this.posts = res.data.data
+              //this.amount = this.posts.length
               // this.$router.push({
               //   name: '/inCircle',
               //   params: {
@@ -373,6 +391,7 @@
             }
           })
         } else if (command == "delPost") {
+          console.log(item.id)
           this.axios({
             method: 'post',
             url: '/deletepost',
@@ -405,7 +424,7 @@
           url: '/setrule',
           headers: {'token': this.$store.state.userInfo.token},
           data: {
-            courseid: this.classId,
+            cid: this.classId,
             rule: this.newRule,
           },
         }).then(res => {
@@ -416,7 +435,8 @@
                 type: 'success',
                 message: '修改成功'
               })
-            this.rules = res.data.rule
+            this.circle.rule = res.data.data
+            this.newRule = ''
             // alert("111")
             // console.log(res.data)
             // this.$router.push({
@@ -469,6 +489,7 @@
               })
             this.posts = res.data.data
             this.amount = this.posts.length
+            this.activeNames = ''
             // alert("111")
             // console.log(res.data)
             //this.$router.go(0)
@@ -560,8 +581,8 @@
     margin-left: 15px;
   }
 
-  .el-icon-more-outline, .el-icon-star-off {
-    font-size: 13px;
+  .el-icon-more-outline, .el-icon-star-off, .el-icon-star-on {
+    font-size: 15px;
   }
 
 
