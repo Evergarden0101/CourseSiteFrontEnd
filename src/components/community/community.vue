@@ -11,12 +11,6 @@
 <!--              <el-button type="info" plain style="margin-left: 10px;width: 30%">搜索圈子</el-button>-->
 <!--          </el-col>-->
 <!--        </el-row>-->
-        <el-row justify="end">
-          <el-col  span="8" style="float:right;margin-top: 30px;">
-            <el-button v-if="this.$store.state.userInfo.usertype=='student'" type="info" plain @click="identify" style="float: inherit;width: 40%;">教师认证</el-button>
-            <el-button type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
-          </el-col>
-        </el-row>
         <!--      圈子内容-->
         <el-row class="community-body">
           <el-tabs type="border-card">
@@ -65,6 +59,12 @@
               </el-row>
             </el-tab-pane>
           </el-tabs>
+        </el-row>
+        <el-row justify="end">
+          <el-col  span="8" style="float:right;margin-top: 30px;">
+            <el-button v-if="this.$store.state.userInfo.usertype=='student'" type="info" plain @click="identify" style="float: inherit;width: 40%;">教师认证</el-button>
+            <el-button type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
+          </el-col>
         </el-row>
       </el-main>
     </el-container>

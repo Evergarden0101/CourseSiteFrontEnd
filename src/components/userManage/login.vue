@@ -8,7 +8,7 @@
         <el-row>
 <!--          <el-col span="16">-->
 <!--          </el-col>-->
-          <el-col   span="8">
+          <el-col offset="8"   span="8">
             <el-tabs v-model="loginType" @tab-click="handleClick" class="el-tabs__item"  :header-cell-style="{background:'#eef1f6',color:'#606266'}">
               <el-tab-pane label="用户登录" name="first" style="color: azure">
                 <div class="input-item">
