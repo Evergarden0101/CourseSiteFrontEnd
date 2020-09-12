@@ -37,3 +37,7 @@ export default {
     }
 }
 </script>
+<style scoped>
+    @import '../post/bootstrap1.css';
+    @import '../post/hux-blog1.css';
+</style>

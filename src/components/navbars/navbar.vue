@@ -17,10 +17,13 @@
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a :href="site.baseurl">Home</a>
+                            <a href="/community" style="font-size: 15px; font-weight: 900">社区论坛</a>
                         </li>
                         <li>
-                            <a :href="site.baseurl">About</a>
+                            <a href="/hello" style="font-size: 15px; font-weight: 900">个人空间</a>
+                        </li>
+                        <li>
+                            <a href="/" style="font-size: 15px; font-weight: 900">退出登录</a>
                         </li>
                     </ul>
                 </div>
@@ -69,3 +72,7 @@ export default {
     }
 }
 </script>
+<style scoped>
+    @import '../post/bootstrap1.css';
+    @import '../post/hux-blog1.css';
+</style>

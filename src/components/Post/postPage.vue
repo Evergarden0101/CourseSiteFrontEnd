@@ -10,7 +10,7 @@
                         <div class="post-heading">
                             <h1>{{ page.title }}</h1>
                             <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
-                            <span class="meta">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
+                            <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,12 @@
             <div>
                 <el-row>
                     <el-col span = "3">
-                        <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                        <el-row>
+                            <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                        </el-row>
+                        <el-row>
+                            username
+                        </el-row>
                     </el-col>
                     <el-col span = "18">
                          <el-input
@@ -101,16 +106,33 @@
             <div v-for="(per,i) in commentList" :key="i">
                 <el-row style="height: 100px;">
                     <el-col span = "3">
-                        <el-avatar :size="50" :src="per.avatorSite"></el-avatar>
+                        <el-row>
+                            <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                        </el-row>
+                        <el-row>
+                            {{per.username}}
+                        </el-row>
                     </el-col>
                     <el-col span = "18">
-                        <span>{{ per.comment }}</span>
+                         <div class="text-wrapper">
+                             <el-card shadow="hover">
+                                 <span>{{ per.detail }}</span>
+                            </el-card>
+                        </div>
+                    </el-col>
+                    <el-col span="3">
+                        <div v-if="!per.isself">
+                             <el-button type="warning" icon="el-icon-star-off" circle @click="starComment"></el-button>
+                        </div>
+                        <div v-else>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="deleteComment"></el-button>
+                        </div>
                     </el-col>
                 </el-row>
                 <el-divider></el-divider>
             </div>
         </div>
-        <footerbar/>
+        <footerbar/> 
     </div>
 </template>
 
@@ -128,7 +150,11 @@ export default {
         return {
             page: {},
             comment: '',
-            commentList: []
+            commentList: [
+                {id: 1, username: 'abc', detail: '123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321', isself: true, time: '2020-1-10'},
+                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: true, time: '2020-8888'},
+                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: false, time: '2020-8888'}
+            ]
         }
     },
     mounted() {
@@ -167,6 +193,22 @@ export default {
                     id: this.$store.state.userInfo.id
                 },
                 url: '/deletecomment'
+            }).then(res=>{
+                this.$message({
+                message: '删除成功！',
+                type: 'success'
+                });
+            })
+        },
+        starComment() {
+            this.axios({
+
+            }).then(res=>{
+                console.log('star')
+                this.$message({
+                message: '点赞成功！',
+                type: 'success'
+                });
             })
         },
         goback() {
@@ -178,15 +220,19 @@ export default {
             return;
             }
             this.axios({
-            method:'publish',
+            method:'post',
             data:{
-                comment:this.comment
+                detail: this.comment
             },
             url:'/addcomment'
-            }).then(
-            alert('发布成功'),
-            this.$store.commit('pulishcomment',res.data.data),
-            this.getCommentList()
+            }).then(res=>{
+                    this.$store.commit('pulishcomment',res.data.data),
+                    this.getCommentList()
+                    this.$message({
+                    message: '评论成功！',
+                    type: 'success'
+                    });
+                }
             )
         },
         handleSelect(key, keyPath) {
@@ -230,5 +276,9 @@ export default {
             font-size: 1.1em;
             margin-top : -0.1em;
         }
+    }
+    .text-wrapper{
+        word-break: break-all;
+        word-wrap: break-word
     }
 </style>
