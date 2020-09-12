@@ -31,7 +31,7 @@
                         {{ page.detail }}
 
                         <hr style="visibility: hidden;">
-                        
+
                         <!--
                         <ul class="pager">
                             {% if page.previous.url %}
@@ -52,7 +52,7 @@
                             {% endif %}
                         </ul>
                         -->
-                    </div>  
+                    </div>
 
             <!-- Side Catalog Container -->
                     <div class="
@@ -114,11 +114,10 @@
     </div>
 </template>
 
-<script>
+<script >
 import navbar from '../navbars/navbar'
 import footerbar from '../navbars/footerbar'
-import '../../style/bootstrap.css'
-import '../../style/hux-blog.css'
+
 export default {
     name: 'postPage',
     components: {
@@ -197,7 +196,9 @@ export default {
 }
 </script>
 
-<style type="scss">
+<style type="scss" scoped>
+  @import './bootstrap1.css';
+  @import './hux-blog1.css';
     header.intro-header{
         position: relative;
         background-image: url(homepage-bg.jpg)

@@ -268,13 +268,13 @@ import navbar from '../navbars/navbar'
   margin-top: 10px;
   margin-bottom: 10px;
   /*background-color: red;*/
-  height: 70px;
+  height: 100px;
 }
 .community-content{
   /*background-color: aqua;*/
   border: 1px solid;
   padding-top: 10px;
-  height: 70px;
+  height: 95px;
   border-radius: 30px
 }
 
