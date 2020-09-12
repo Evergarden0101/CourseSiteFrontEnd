@@ -135,13 +135,13 @@
         <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
           <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-card shadow="always" style="background-color: white;height:130px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
+            <el-card shadow="always" style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
                     v-for="(item,index) in posts" key="index" class="list-item box-card">
               <el-row>
                 <el-col span="20" @click="seePost(item)"
                         style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
                   <el-link @click.native=seePost(item)
-                           style="font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
+                           style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
                     {{ item.title }}
                   </el-link>
 
@@ -178,7 +178,7 @@
 
               </el-row>
               <el-row
-                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;">
+                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
                 <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
                          @click.native=seePost(item)>
                   {{ item.detail }}
