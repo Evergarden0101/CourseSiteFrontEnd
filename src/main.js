@@ -9,6 +9,7 @@ import '../static/gloabl.css';
 import Video from 'video.js'
 import store from './store'
 import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
 Vue.use(VideoPlayer)
 require('../src/assets/scss/custom-theme.css')
 Vue.prototype.$video = Video

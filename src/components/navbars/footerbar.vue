@@ -33,7 +33,18 @@
 <!--    data() {-->
 <!--        return {-->
 
+<<<<<<< HEAD
 <!--        }-->
 <!--    }-->
 <!--}-->
 <!--</script>-->
+=======
+        }
+    }
+}
+</script>
+<style scoped>
+    @import '../post/bootstrap1.css';
+    @import '../post/hux-blog1.css';
+</style>
+>>>>>>> b57e1b12bfdad88dc3e1ad41a87025a9a44a0c66

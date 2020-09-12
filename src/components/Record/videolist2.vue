@@ -72,7 +72,7 @@
       }
     },
     beforeMount(){
-      this.lecture.id = this.$route.params.courseid
+      this.lecture.id = window.localStorage.getItem('courseid')
       this.axios({
         method: 'post',
         url: '/getvideos',
