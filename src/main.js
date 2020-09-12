@@ -8,6 +8,8 @@ import App from './App.vue';
 import '../static/gloabl.css';
 import store from './store'
 
+import './style/bootstrap.css'
+import './style/hux-blog.css'
 
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);

@@ -1,12 +1,10 @@
 <template>
   <div class="community-container">
+    <navbar/>
     <el-container>
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
         <el-row style="margin-top: 30px">
-          <el-col span="8" v-if="userInfo.usertype == 'teacher'">
-            <el-button type="info" >创建课程圈子</el-button>
-          </el-col>
           <el-col span="8" style="float: right">
               <el-input v-model="search_inf" style="width: 60%"></el-input>
               <el-button type="info" plain style="margin-left: 10px;width: 30%">搜索圈子</el-button>
@@ -50,8 +48,12 @@
 </template>
 
 <script>
+import navbar from '../navbars/navbar'
     export default {
         name: "community",
+        components: {
+          navbar
+        },
         mounted(){
             this.userInfo = this.$store.state.userInfo
             console.log(this.$store.state)
