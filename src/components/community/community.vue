@@ -172,12 +172,14 @@ import navbar from '../navbars/navbar'
                         type:'info',
                         message:'请输入课程名称'
                     })
+                    return
                 }
                 else if(this.curriculumForm.introduction == ''){
                     this.$message({
                         type:'info',
                         message:'请输入课程简介'
                     })
+                    return
                 }
                 this.axios({
                     method:'POST',
@@ -195,6 +197,7 @@ import navbar from '../navbars/navbar'
                             message:"创建课程成功"
                         })
                         this.alreadyJoinCommunity = res.data.data
+                        this.visibleCreateButton = false
                         console.log(this.alreadyJoinCommunity)
                     }
                     else{
@@ -235,6 +238,7 @@ import navbar from '../navbars/navbar'
                           type:'info',
                           message:'提交成功，等待审核'
                       })
+                        this.visibleConfirm = false
                     }
                     else{
                         this.$message({
@@ -252,10 +256,13 @@ import navbar from '../navbars/navbar'
 .community-container{
   padding-left: 10%;
   padding-right: 10%;
-  /*background-color: aqua;*/
+  background-color: #d9ecff;
+  min-width: 100px;
+  min-height: 563px;
 }
 .community-body{
   margin-top: 30px;
+
 }
 .el-tabs_item.is-active{
   background-color:#545c64;
