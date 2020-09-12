@@ -12,6 +12,8 @@ import VideoPlayer from 'vue-video-player'
 Vue.use(VideoPlayer)
 require('../src/assets/scss/custom-theme.css')
 Vue.prototype.$video = Video
+import './style/bootstrap.css'
+import './style/hux-blog.css'
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 axios.defaults.baseURL='/api'
