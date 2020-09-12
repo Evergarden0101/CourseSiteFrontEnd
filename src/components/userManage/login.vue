@@ -1,14 +1,16 @@
 <template>
-  <div>
     <el-container>
+      <div class="background">
+        <img src="../../assets/login1.jpg" width="100%" height="100%">
+      </div>
       <el-main>
+        <div class="loginBody" >
         <el-row>
-          <el-col span="16">
-            可放置背景图片
-          </el-col>
-          <el-col  span="8">
-            <el-tabs v-model="loginType" @tab-click="handleClick">
-              <el-tab-pane label="用户登录" name="first">
+<!--          <el-col span="16">-->
+<!--          </el-col>-->
+          <el-col   span="8">
+            <el-tabs v-model="loginType" @tab-click="handleClick" class="el-tabs__item"  :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+              <el-tab-pane label="用户登录" name="first" style="color: azure">
                 <div class="input-item">
                     用户名：
                     <el-input v-model="userName" placeholder="请输入用户名" class="input"></el-input>
@@ -18,11 +20,11 @@
                   <el-input v-model="passwd" placeholder="请输入密码" class="input" type="password"></el-input>
                 </div>
                 <div class="submit-btn">
-                  <el-button type="info" class="btn" @click="signin">登录
+                  <el-button class="btn" type="info" @click="signin" plain>登录
                   </el-button>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="用户注册" name="second">
+              <el-tab-pane label="用户注册" name="second" style="color: azure">
                 <div class="input-item">
                   用户名：
                   <el-input v-model="userName" placeholder="请输入用户名" class="input"></el-input>
@@ -48,25 +50,26 @@
                   <el-input v-model="conPasswd" placeholder="请输入重新输入密码" class="input" type="password"></el-input>
                 </div>
                 <div class="submit-btn">
-                  <el-button type="info" class="btn" @click="signup">注册用户
+                  <el-button type="info" class="btn" @click="signup" plain>注册用户
                   </el-button>
                 </div>
               </el-tab-pane>
             </el-tabs>
           </el-col>
         </el-row>
+        </div>
       </el-main>
     </el-container>
-  </div>
 </template>
 
 <style>
-  .el-mian{
+  .el-main{
     width: 90vw;
     min-width: 800px;
     /* border: solid; */
     margin-left: auto;
     margin-right: auto;
+
   }
   .input-item{
     display: flex;
@@ -87,6 +90,21 @@
   }
   .btn{
     width: 70%;
+  }
+  .background{
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+  }
+  .loginBody{
+    z-index: 1;
+    position: absolute;
+    width: 97%;
+  }
+  .el-tabs__item{
+    color:azure;
+    width: 100%;
   }
 </style>
 <script>
@@ -177,7 +195,12 @@
                         })
                     }
                 })
-            }
+            },
+            tableHeaderColor({ rowIndex}) {
+                if (rowIndex === 0) {
+                    return 'background-color: lightblue;color: #000000;font-weight: 500;'
+                }
+            },
         }
     };
 </script>
