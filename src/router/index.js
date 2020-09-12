@@ -11,7 +11,6 @@ import VideoList2 from '../components/Record/videolist2'
 
 import Index from '../components/Index'
 Vue.use(VueRouter)
-import postList from '../components/Post/postList'
 import postPage from '../components/Post/postPage'
 
 const originalPush = VueRouter.prototype.push
@@ -79,11 +78,6 @@ export default new VueRouter({
       path: '/upload',
       name: 'Upload',
       component: Upload
-    },
-    {
-      path: '/post',
-      name: 'postList',
-      component: postList
     },
     {
       path: '/postpage',

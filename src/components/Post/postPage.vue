@@ -10,7 +10,7 @@
                         <div class="post-heading">
                             <h1>{{ page.title }}</h1>
                             <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
-                            <span class="meta">Posted by {{ page.userid }} on {{ page.time }}</span>
+                            <span class="meta">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <div class="side-catalog">
                             <hr class="hidden-sm hidden-xs">
                             <h5>
-                                <a class="catalog-toggle" href="#">CATALOG</a>
+                                <a class="catalog-toggle" href="#">目录</a>
                             </h5>
                             <ul class="catalog-body"></ul>
                         </div>
@@ -77,13 +77,14 @@
                         post-container">
             <el-divider>讨论区</el-divider>
             <div>
-                <el-row style="height: 100px;">
+                <el-row>
                     <el-col span = "3">
                         <el-avatar :size="50" :src="circleUrl"></el-avatar>
                     </el-col>
                     <el-col span = "18">
                          <el-input
-                            type="text"
+                            type="textarea"
+                            rows="5"
                             placeholder="请输入内容"
                             v-model="comment">
                         </el-input>
@@ -97,7 +98,7 @@
                 <el-menu-item index="1">按热度排序</el-menu-item>
                 <el-menu-item index="2">按时间排序</el-menu-item>
             </el-menu>
-            <div v-for="(per,i) in persons" :key="i">
+            <div v-for="(per,i) in commentList" :key="i">
                 <el-row style="height: 100px;">
                     <el-col span = "3">
                         <el-avatar :size="50" :src="per.avatorSite"></el-avatar>
@@ -116,6 +117,8 @@
 <script>
 import navbar from '../navbars/navbar'
 import footerbar from '../navbars/footerbar'
+import '../../style/bootstrap.css'
+import '../../style/hux-blog.css'
 export default {
     name: 'postPage',
     components: {
@@ -144,7 +147,7 @@ export default {
                 },
                 url: 'findpostbyid'
             }).then(res=>{
-                this.page = res
+                this.page = res.data.data
             })
         },
         getCommentList() {
@@ -155,7 +158,7 @@ export default {
                 },
                 url:'/getcomments'
             }).then(res=>{
-                this.commentList = res
+                this.commentList = res.data.data
             })
         },
         deleteComment() {
