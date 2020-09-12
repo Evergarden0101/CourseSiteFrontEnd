@@ -1,6 +1,6 @@
 <template>
   <div class="community-container">
-    <navbar/>
+<!--    <navbar/>-->
     <el-container>
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
@@ -64,7 +64,7 @@
         <el-row justify="end">
           <el-col  span="8" style="float:right;margin-top: 30px;">
             <el-button v-if="this.$store.state.userInfo.usertype=='student'" type="info" plain @click="identify" style="float: inherit;width: 40%;">教师认证</el-button>
-            <el-button type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
+            <el-button v-if="this.$store.state.userInfo.usertype=='teacher'" type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
           </el-col>
         </el-row>
       </el-main>
@@ -75,8 +75,8 @@
         <el-form-item label="课程名称" >
           <el-input v-model="curriculumForm.name" placeholder="请输入课程名称"></el-input>
         </el-form-item>
-        <el-form-item label="课程规则" >
-          <el-input type="textarea" :rows="7" v-model="curriculumForm.detail" maxlength="300" show-word-limit placeholder="请输入课程名称">
+        <el-form-item label="课程简介" >
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.detail" maxlength="300" show-word-limit placeholder="请输入课程简介">
           </el-input>
         </el-form-item>
         <el-form-item label="社区规则">
