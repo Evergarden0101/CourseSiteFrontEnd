@@ -1,6 +1,22 @@
 <template>
-  <div style="padding-left: 10%;padding-right: 10%">
-    <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
+  <div style="padding-left: 10%;padding-right: 10%" class="wraper">
+    <template>
+      <el-backtop>
+        <div
+          style="{
+        height: 100%;
+        width: 100%;
+        background-color: #f2f5f6;
+        box-shadow: 0 0 6px rgba(0,0,0, .12);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      }"
+        >
+          UP
+        </div>
+      </el-backtop>
+    </template>
     <el-row style="height: 70px"></el-row>
     <el-row style="background-color: #00aeef;">
       <el-col span="2" style="height:40px;background-color: black;text-align: left"></el-col>
@@ -36,65 +52,109 @@
 
     <el-row>
       <el-col span="17" style="min-height: 200px;border-radius: 6px;">
-        <el-row
-          style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-          新&nbsp帖&nbsp子
-        </el-row>
-        <el-row
-          style="height: 45px;background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-          <el-col span="3" offset="1" style="background-color: #ec008c;height: inherit;padding-top: 5px">
-            标题
-          </el-col>
-          <el-col span="18" offset="1" style="background-color: #21ef00;height: inherit">
-            <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
-            </el-input>
-          </el-col>
-        </el-row>
+        <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
+">
+          <el-collapse v-model="activeNames" accordion
+                       style="text-align: center;">
 
-        <el-row style="height: 10px;background-color: #21ef00;"></el-row>
+            <el-collapse-item title="创建新帖子" name="1" title.style="align: center">
 
-        <el-row
-          style="background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-          <el-col span="3" offset="1" style="background-color: #ec008c;height: 45px;padding-top: 5px">
-            正文
-          </el-col>
-          <el-col span="18" offset="1" style="background-color: #21ef00;min-height: 120px;">
-            <el-input
-              type="textarea"
-              :rows="8"
-              placeholder="请输入内容"
-              v-model="newContent"
-              maxlength="500" show-word-limit
-              style="margin-bottom: 15px">
-            </el-input>
-          </el-col>
-        </el-row>
-        <el-row
-          style="margin-bottom:20px;background-color: #21ef00;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
-          <el-popover
-            placement="top"
-            width="160"
-            v-model="submitVisible"
-            style="text-align: center"
-          >
-            <p>确认发布帖子？</p>
-            <div style="text-align: right; margin-top: 15px">
-              <el-button size="mini" type="text" @click="submitVisible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="submitVisible = false">确定</el-button>
-            </div>
-            <el-button slot="reference" type="primary" round style="position: absolute;right: 30px;bottom: 8px">
-              提交
-            </el-button>
-          </el-popover>
-        </el-row>
+              <!--            <el-row-->
+              <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
+              <!--              新&nbsp帖&nbsp子-->
+              <!--            </el-row>-->
+              <el-row
+                style="padding-top:15px;height: 60px;background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                <el-col span="3" offset="1" style="background-color: #ec008c;height: inherit;padding-top: 5px">
+                  标题
+                </el-col>
+                <el-col span="18" offset="1" style="background-color: #21ef00;height: inherit">
+                  <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
+                  </el-input>
+                </el-col>
+              </el-row>
 
-        <el-row style="height: 50px;background-color: #21ef00;border-radius: 6px;margin-bottom: 20px">
+              <el-row style="height: 10px;background-color: #21ef00;"></el-row>
 
-        </el-row>
+              <el-row
+                style="background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                <el-col span="3" offset="1" style="background-color: #ec008c;height: 45px;padding-top: 5px">
+                  正文
+                </el-col>
+                <el-col span="18" offset="1" style="background-color: #21ef00;min-height: 120px;">
+                  <el-input
+                    type="textarea"
+                    :rows="8"
+                    placeholder="请输入内容"
+                    v-model="newContent"
+                    maxlength="500" show-word-limit
+                    style="margin-bottom: 15px">
+                  </el-input>
+                </el-col>
+              </el-row>
+              <el-row
+                style="margin-bottom:0px;background-color: #21ef00;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                <el-popover
+                  placement="top"
+                  width="160"
+                  v-model="submitVisible"
+                  style="text-align: center"
+                >
+                  <p>确认发布帖子？</p>
+                  <div style="text-align: right; margin-top: 15px">
+                    <el-button size="mini" type="text" @click="submitVisible = false">取消</el-button>
+                    <el-button class="newPost" type="primary" size="mini" @click="submitVisible = false">确定</el-button>
+                  </div>
+                  <el-button slot="reference" type="primary" round style="position: absolute;right: 30px;bottom: 8px">
+                    提交
+                  </el-button>
+                </el-popover>
+              </el-row>
 
-        <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-<!--          <el-row v-for="i in count" class="infinite-list-item">{{ i }}</el-row>-->
-        </ul>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+
+        <div class="infinite-list-wrapper" style="overflow:auto;">
+          <ul class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-distance="30"
+              style="border-radius: 6px;">
+            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;">
+<!--                    v-for="i in count" class="list-item">-->
+              <el-row>
+                <el-col span="21"
+                        style="padding-left: 15px;height: 30px;text-align: left;font-size: 25px;font-weight: bolder;background-color: #21ef00;border-radius: 6px">
+                  <el-link href="">{{ i }}</el-link>
+
+                </el-col>
+                <el-col span="1">
+                  <el-button style="margin-left: 6px;margin-top: 1px" type="primary" size="mini"><i
+                    class="el-icon-star-off"></i></el-button>
+                </el-col>
+                <el-col span="2">
+                  <el-dropdown>
+                    <el-button type="primary" size="mini" style="margin-left: 20px;margin-top: 1px">
+                      <i class="el-icon-more-outline"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>删除</el-dropdown-item>
+                      <el-dropdown-item>置顶</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+
+              </el-row>
+              <el-row
+                style=" overflow: hidden;text-indent:2em;word-break: break-all;;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;background-color: #21ef00">
+                <el-link :underline="false" href="">
+                  neirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneirneirongneir
+                </el-link>
+              </el-row>
+
+            </el-row>
+          </ul>
+          <p v-if="loading">加载中...</p>
+          <p v-if="noMore">没有更多了</p>
+        </div>
 
       </el-col>
 
@@ -116,7 +176,8 @@
   export default {
     data() {
       return {
-        count: 0,
+        count: 5,
+        loading: false,
         classId: '',
         stuId: '',
         rules: '',
@@ -124,11 +185,20 @@
         newTitle: '',
         newContent: '',
         submitVisible: false,
+        activeName: '',
 
       }
     },
+    computed: {
+      noMore() {
+        return this.count >= 20
+      },
+      disabled() {
+        return this.loading || this.noMore
+      }
+    },
     mounted() {
-
+        console.log(this.$route.params)
     },
     methods: {
       addClass() {
@@ -148,11 +218,11 @@
           this.text("已加入")
       },
       load() {
-        if (this.count + 4 <= this.amount) {
-          this.count += 4;
-        } else {
-          this.count = this.amount;
-        }
+        this.loading = true
+        setTimeout(() => {
+          this.count += 2
+          this.loading = false
+        }, 2000)
       }
     }
   }
@@ -172,5 +242,22 @@
   .add:hover, .quit:hover {
     background-color: #21ef00;
   }
+
+  .el-collapse-item__header {
+    font-size: 30px;
+  }
+
+  .el-dropdown {
+    vertical-align: top;
+  }
+
+  .el-dropdown + .el-dropdown {
+    margin-left: 15px;
+  }
+
+  .el-icon-more-outline, .el-icon-star-off {
+    font-size: 13px;
+  }
+
 
 </style>

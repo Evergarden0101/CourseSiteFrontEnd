@@ -7,33 +7,40 @@
       <br>
       <p style="font-size:15px">创建时间：{{lecture.date}}</p>
       <el-divider></el-divider>
-      <div class="videolist" v-for="item in videos">
+      <div class="videolist" v-for="(item,i) in videos">
 <!--        <div class="videoimage">-->
 <!--          <img src="../../assets/logo.png">-->
 <!--        </div>-->
         <div class="videoinfo">
           <h3>{{item.name}}</h3>
           <br>
-          <p>上传时间：{{item.date}}</p>
+          <p>上传时间：{{item.time}}</p>
           <br>
-          <p>视频时长：{{item.duration}}</p>
+          <p>视频简介：{{item.detail}}</p>
           <br>
         </div>
         <div class="button">
           <ul>
-            <li><i class="el-icon-video-play"  @click="play_the_video()"></i></li>
+            <li>
+              <i class="el-icon-video-play"  @click="play_the_video()"></i>
+              <i class="el-icon-delete" @click="delete_the_video(i)"></i>
+            </li>
           </ul>
         </div>
       </div>
       <div class="upload-container">
         <el-upload
           class="upload-demo"
+          action="https://localhost/8080/"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
+          accept=".mp4, .txt"
+          :auto-upload="true"
+          :before-upload="before_upload"
+          :http-request="upload"
+        >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
-          <h4>注意：只能上传mp4文件</h4>
+          <h5>注意：只能上传mp4文件</h5>
         </el-upload>
       </div>
     </div>
@@ -52,6 +59,7 @@
     data(){
       return{
         lecture:{
+          id: '111',
           name: '课程名称',
           creator: '李景熙',
           date: '2020.09.10',
@@ -60,23 +68,81 @@
           {notice: '公告1：该课程截止时间为2020.09.31，请同学尽快添加课程'},
           {notice: '公告2：作业2已发布，请同学尽快完成提交'}
         ],
-        videos:[
-          {
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
-          },
-          {
-            name: '视频名称',
-            date: '2020.09.10',
-            duration: '01:27:33',
-          },
-        ],
+        videos:[],
       }
     },
+    beforeMount(){
+      this.axios({
+        method: 'post',
+        url: '/getvideos',
+        data:{
+          courseid: '111',
+        },
+        headers:{
+          'token':this.$store.state.userInfo.token,
+        }
+      }).then(res =>{
+        if(res.data.code == 1001){
+          this.videos = res.data.data
+        }
+        else{
+        }
+      })
+    },
     methods: {
+      delete_the_video(i){
+        this.axios({
+          method: 'post',
+          url: '/deletevideo',
+          data:{
+            'id': this.videos[i].id,
+          },
+          headers:{
+            'token':this.$store.state.userInfo.token,
+          }
+        }).then(res =>{
+          if(res.data.code == 1001){
+            alert("删除成功")
+          }
+          else{
+            alert("删除失败")
+          }
+        })
+        setTimeout(()=>{
+          location.reload()
+        }, 1000)
+      },
       play_the_video(){
         alert("播放成功！！！！")
+      },
+      before_upload(file){
+        const isOverSize = file.size/1024/1024 < 100
+        if(isOverSize){
+        }
+        else{
+          alert("文件大小超过100Mb，不能上传.")
+        }
+      },
+      upload(File){
+        let formData = new FormData();
+        formData.append("video", File.file);
+        formData.append("courseid", this.lecture.id);
+        this.axios.post("/fileupload",formData,{
+          headers:{
+            "Content-type":"multipart/form-data",
+            "token":this.$store.state.userInfo.token,
+          }
+        }).then(res=>{
+          if(res.data.code == 1001){
+            alert("文件上传成功")
+          }
+          else{
+            alert("文件上传失败，请按照规定格式重新上传");
+          }
+        })
+        setTimeout(()=>{
+          location.reload()
+        }, 1000)
       }
     }
   }
@@ -101,7 +167,7 @@
         display: flex;
         border-bottom: 1px solid #DCDFE6;
         .videoinfo{
-          margin:20px;
+          margin:12px;
           width: 80%;
           text-align: left;
           font-size:15px;

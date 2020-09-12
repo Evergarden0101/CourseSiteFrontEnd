@@ -6,11 +6,14 @@ import router from './router'
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import '../static/gloabl.css';
+import Video from 'video.js'
 import store from './store'
-
+import VideoPlayer from 'vue-video-player'
+Vue.use(VideoPlayer)
+require('../src/assets/scss/custom-theme.css')
+Vue.prototype.$video = Video
 import './style/bootstrap.css'
 import './style/hux-blog.css'
-
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 axios.defaults.baseURL='/api'
