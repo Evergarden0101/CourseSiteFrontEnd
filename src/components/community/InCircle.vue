@@ -302,11 +302,9 @@
         })
       },
       seevideo() {
-        this.$router.replace({
-          name: 'videolist2',
-          params: {
-            courseid: this.classId
-          }
+        window.localStorage.setItem('courseid', this.classId)
+        this.$router.push({
+          name: 'videolist2'
         })
       },
       addStar(item) {
