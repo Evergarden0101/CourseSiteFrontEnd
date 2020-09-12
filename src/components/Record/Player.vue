@@ -44,6 +44,8 @@
     },
     methods: {
       submit (){
+        let id = this.$route.params.id
+        alert(id)
         this.axios({
           method: 'post',
           url: '/getvideostream',

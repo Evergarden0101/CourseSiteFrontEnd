@@ -22,7 +22,7 @@
         <div class="button">
           <ul>
             <li>
-              <i class="el-icon-video-play"  @click="play_the_video()"></i>
+              <i class="el-icon-video-play"  @click="play_the_video(i)"></i>
               <i class="el-icon-delete" @click="delete_the_video(i)"></i>
             </li>
           </ul>
@@ -112,8 +112,14 @@
           location.reload()
         }, 1000)
       },
-      play_the_video(){
-        alert("播放成功！！！！")
+      play_the_video(i){
+        alert(this.videos[i].id)
+        this.$router.replace({
+          name: 'player',
+          params:{
+            id: this.videos[i].id,
+          }
+        })
       },
       before_upload(file){
         const isOverSize = file.size/1024/1024 < 100
