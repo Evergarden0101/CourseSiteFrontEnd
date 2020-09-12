@@ -45,15 +45,20 @@
     </el-row>
 
     <el-row style="margin-bottom: 20px;background-color: #00aeef;">
-      <el-col span="24" style="height:20px;background-color: #ec008c;text-align: left">
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 5px"><el-link :underline="false"
-                                                                                                   >课程信息</el-link></span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
-                                                                                                    >讨论</el-link></span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false" @click.native=seevideo()
-                                                                                                    >录播</el-link></span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
-                                                                                                    >直播</el-link></span>
+      <el-col span="24" style="height:25px;background-color: #ec008c;text-align: left">
+        <span style="margin-left: 5px"><el-link :underline="false"
+                                                style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+        >课程信息</el-link></span>
+        <span style="margin-left: 15px"><el-link :underline="false"
+                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+        >讨论</el-link></span>
+        <span style="margin-left: 15px"><el-link :underline="false"
+                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+                                                 @click.native=seevideo()
+        >录播</el-link></span>
+        <span style="margin-left: 15px"><el-link :underline="false"
+                                                 style="font-size: 16px;font-weight: bolder;color: #00aeef;"
+        >直播</el-link></span>
       </el-col>
     </el-row>
 
@@ -62,7 +67,7 @@
         <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
 ">
           <el-collapse v-model="activeNames" accordion
-                       style="border: solid 5px ;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
+                       style="border: solid 5px ;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);border-color: #00aeef">
 
             <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
 
@@ -71,24 +76,25 @@
               <!--              新&nbsp帖&nbsp子-->
               <!--            </el-row>-->
               <el-row
-                style="border-radius: 6px;padding-top:15px;height: 60px;background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;background-color: #4eff58;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
                 <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
                   标题
                 </el-col>
-                <el-col span="18" offset="1" style="background-color: #21ef00;height: inherit">
+                <el-col span="18" offset="1" style="background-color: #4eff58;height: inherit">
                   <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
                   </el-input>
                 </el-col>
               </el-row>
 
-              <el-row style="height: 10px;background-color: #21ef00;"></el-row>
+              <el-row style="height: 10px;background-color: #4eff58;"></el-row>
 
               <el-row
-                style="background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-                <el-col span="3" offset="1" style="height: 45px;padding-top: 5px">
+                style="background-color: #4eff58;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                <el-col span="3" offset="1"
+                        style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
                   正文
                 </el-col>
-                <el-col span="18" offset="1" style="background-color: #21ef00;min-height: 120px;">
+                <el-col span="18" offset="1" style="background-color: #4eff58;min-height: 120px;">
                   <el-input
                     type="textarea"
                     :rows="8"
@@ -100,7 +106,7 @@
                 </el-col>
               </el-row>
               <el-row
-                style="margin-bottom:0px;background-color: #21ef00;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                style="margin-bottom:0px;background-color: #4eff58;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
                 <el-popover
                   placement="top"
                   width="160"
@@ -125,12 +131,13 @@
         <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
           <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-row style="background-color: rgba(0,0,0,1);height:90px;margin-bottom: 15px;border-radius: 6px;"
+            <el-row style="background-color: #4eff58;height:90px;margin-bottom: 15px;border-radius: 6px;"
                     v-for="(item,index) in posts" key="index" class="list-item">
               <el-row>
                 <el-col span="21" @click="seePost(item)"
                         style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
-                  <el-link @click.native=seePost(item) style="font-size: 20px;font-weight: bolder;color: rgba(236,0,140,0.67);">
+                  <el-link @click.native=seePost(item)
+                           style="font-size: 20px;font-weight: bolder;color: #ff0098">
                     {{ item.title }}
                   </el-link>
 
@@ -154,8 +161,9 @@
 
               </el-row>
               <el-row
-                      style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;">
-                <el-link :underline="false" href="" style="color: #ec008c;font-weight: normal"  @click.native=seePost(item)>
+                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;">
+                <el-link :underline="false" href="" style="color: #ff0098;font-weight: normal"
+                         @click.native=seePost(item)>
                   {{ item.detail }}
                 </el-link>
               </el-row>
@@ -180,11 +188,13 @@
           </el-row>
           <el-row id="ruleChange"
                   style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
-            <el-button type="text" underline="true" style="font-weight: bold;color: #00aeef;font-size: 15px" @click="changeRuleVisible = true">修改规则</el-button>
+            <el-button type="text" underline="true" style="font-weight: bold;color: #00aeef;font-size: 15px"
+                       @click="changeRuleVisible = true">修改规则
+            </el-button>
             <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
               <el-form :model="form">
                 <el-form-item label="输入新规则" :label-width="formLabelWidth">
-                  <el-input v-model="newRule" :rows="5"
+                  <el-input type="textarea" :rows="5" v-model="newRule"
                             placeholder="请输入新规则"
                             maxlength="300" show-word-limit autocomplete="off"></el-input>
                 </el-form-item>
@@ -251,8 +261,8 @@
       this.classId = this.$route.params.course.id
       this.rules = this.$route.params.course.rule
       this.circle = this.$route.params.course
-      if(this.rules==""){
-        this.rules="暂无规则"
+      if (this.rules == "") {
+        this.rules = "暂无规则"
       }
       this.axios({
         method: 'post',
@@ -270,7 +280,7 @@
             document.getElementById("moreList").setAttribute("style", "display:none")
           }
           this.posts = res.data.data
-          this.amount=this.posts.length
+          this.amount = this.posts.length
         } else {
           this.$message({
             showClose: true,
@@ -295,7 +305,7 @@
         this.$router.replace({
           name: 'videolist2',
           params: {
-            courseid:this.classId
+            courseid: this.classId
           }
         })
       },
@@ -315,11 +325,11 @@
               type: 'success',
               message: '设置为精华帖'
             })
-            this.posts=res.data.data
-            this.amount=this.posts.length
+            this.posts = res.data.data
+            this.amount = this.posts.length
             //this.$store.commit('setUserInfo', res.data.data)
             //this.$router.push('/inCircle')
-            this.posts=res.data.data
+            this.posts = res.data.data
           } else {
             this.$message({
               showClose: true,
@@ -345,8 +355,8 @@
                 type: 'success',
                 message: '置顶成功'
               })
-              this.posts=res.data.data
-              this.amount=this.posts.length
+              this.posts = res.data.data
+              this.amount = this.posts.length
               // this.$router.push({
               //   name: '/inCircle',
               //   params: {
@@ -376,8 +386,8 @@
                 type: 'success',
                 message: '已删除'
               })
-              this.posts=res.data.data
-              this.amount=this.posts.length
+              this.posts = res.data.data
+              this.amount = this.posts.length
             } else {
               this.$message({
                 showClose: true,
@@ -405,7 +415,7 @@
                 type: 'success',
                 message: '修改成功'
               })
-            this.rules=res.data.rule
+            this.rules = res.data.rule
             // alert("111")
             // console.log(res.data)
             // this.$router.push({
@@ -456,8 +466,8 @@
                 type: 'success',
                 message: '发布成功'
               })
-            this.posts=res.data.data
-            this.amount=this.posts.length
+            this.posts = res.data.data
+            this.amount = this.posts.length
             // alert("111")
             // console.log(res.data)
             //this.$router.go(0)
