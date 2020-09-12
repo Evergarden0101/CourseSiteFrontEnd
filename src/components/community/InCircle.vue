@@ -50,8 +50,8 @@
                                                                                                    href="">课程信息</el-link></span>
         <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
                                                                                                     href="">讨论</el-link></span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
-                                                                                                    href="">录播</el-link></span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false" @click="seeVideo"
+                                                                                                    >录播</el-link></span>
         <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
                                                                                                     href="">直播</el-link></span>
       </el-col>
@@ -166,14 +166,15 @@
       </el-col>
 
       <el-col span="6" offset="1">
-        <el-row style="background-color: #ec008c;min-height: 160px;text-align: center;border-radius: 6px;">
+        <el-row
+          style="margin-bottom: 30px;background-color: #ec008c;min-height: 190px;text-align: center;border-radius: 6px;">
           <el-row
             style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
             圈子规则
           </el-row>
           <el-row v-model="rules"
                   style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-            具体规则
+            {{circle.rule}}
           </el-row>
           <el-row id="ruleChange"
                   style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:5px;color: #00aeef;">
@@ -200,7 +201,7 @@
           </el-row>
           <el-row v-model="classDetail"
                   style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-            {{class.detail}}
+            {{circle.detail}}
           </el-row>
         </el-row>
       </el-col>
@@ -226,9 +227,9 @@
         loading: false,
 
         /////请求
-        class: {},
+        circle: {},
         classId: '',
-        rules: '',
+        rules: "",
         userInfo: null,
         amount: 0,
         posts: [],
@@ -244,25 +245,30 @@
       }
     },
     mounted() {
-      this.classId = this.$router.params.item.id
-      this.rules = this.$router.params.item.rule
-      this.class = this.$router.params.item
+      console.log(this.$route.params.course.id)
+      this.classId = this.$route.params.course.id
+      this.rules = this.$route.params.course.rule
+      this.circle = this.$route.params.course
+      if(this.rules==""){
+        this.rules="暂无规则"
+      }
       this.axios({
         method: 'post',
-        url: 'getInCircle',
+        url: '/findpostbycourse',
         headers: {'token': this.$store.state.userInfo.token},
-        params: {
-          classId: this.classId,
+        data: {
+          id: this.classId,
         }
       }).then(res => {
+        // console.log(res)
         if (res.data.code == 1001) {
-          if (this.$store.state.userInfo.type == 'student') {
+          if (this.$store.state.userInfo.usertype == 'student') {
             document.getElementById("ruleChange").setAttribute("style", "display:none")
             document.getElementById("star").setAttribute("style", "display:none")
             document.getElementById("moreList").setAttribute("style", "display:none")
           }
-          this.amount = res.data.postAmount,
-            this.posts = res.data.posts
+          this.amount = res.data
+          this.posts = res.data
         } else {
           this.$message({
             showClose: true,
@@ -272,24 +278,32 @@
         }
       })
       this.userInfo = this.$store.state.userInfo
-      console.log(this.$store.state)
+      // console.log(this.$store.state)
     },
     methods: {
       seePost(item) {
         this.$router.push({
           name: 'post',
           params: {
-            post: item
+            id: item.id
+          }
+        })
+      },
+      seevideo() {
+        this.$router.push({
+          name: 'videolist2',
+          params: {
+            courseid:this.classId
           }
         })
       },
       addStar(item) {
         this.axios({
-          url: '/addStar',
+          method: 'post',
+          url: '/changepostiselite',
           headers: {'token': this.$store.state.userInfo.token},
-          params: {
-            classId: this.classId,
-            post: item,
+          data: {
+            id: item.id,
           },
         }).then(res => {
           if (res.data.code == 1001) {
@@ -313,11 +327,11 @@
       handleCommand(command, item) {
         if (command == "topPost") {
           this.axios({
-            url: '/topPost',
+            method: 'post',
+            url: '/changepostistop',
             headers: {'token': this.$store.state.userInfo.token},
-            params: {
-              classId: this.classId,
-              post: item,
+            data: {
+              id: item.id,
             },
           }).then(res => {
             if (res.data.code == 1001) {
@@ -343,11 +357,11 @@
           })
         } else if (command == "delPost") {
           this.axios({
-            url: '/delPost',
+            method: 'post',
+            url: '/deletepost',
             headers: {'token': this.$store.state.userInfo.token},
-            params: {
-              classId: this.classId,
-              post: item,
+            data: {
+              id: item.id,
             },
           }).then(res => {
             if (res.data.code == 1001) {
@@ -370,10 +384,11 @@
       },
       changeRule() {
         this.axios({
-          url: '',
+          method: 'post',
+          url: '/setrule',
           headers: {'token': this.$store.state.userInfo.token},
-          params: {
-            classId: this.classId,
+          data: {
+            courseid: this.classId,
             rule: this.newRule,
           },
         }).then(res => {
@@ -405,29 +420,28 @@
         })
       },
       post() {
-        if(this.newTitle == ''){
+        if (this.newTitle == '') {
           this.$message({
-            type:'warning',
-            message:'请输入帖子标题'
+            type: 'warning',
+            message: '请输入帖子标题'
           })
           return;
-        }
-        else if(this.newContent == ''){
+        } else if (this.newContent == '') {
           this.$message({
-            type:'warning',
-            message:'请输入帖子内容'
+            type: 'warning',
+            message: '请输入帖子内容'
           })
           return;
         }
         this.axios({
-          url: '/addPost',
+          method: 'post',
+          url: '/createpost',
           headers: {'token': this.$store.state.userInfo.token},
-          params: {
-            classId: this.classId,
-            newTitle: this.newTitle,
-            newContent: this.newContent
+          data: {
+            courseid: this.classId,
+            title: this.newTitle,
+            detail: this.newContent
           },
-
         }).then(res => {
           if (res.data.code == 1001) {
             this.submitVisible = false,
