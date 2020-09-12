@@ -47,13 +47,13 @@
     <el-row style="margin-bottom: 20px;background-color: #00aeef;">
       <el-col span="24" style="height:20px;background-color: #ec008c;text-align: left">
         <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 5px"><el-link :underline="false"
-                                                                                                   href="">课程信息</el-link></span>
+                                                                                                   >课程信息</el-link></span>
         <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
-                                                                                                    href="">讨论</el-link></span>
-        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false" @click="seeVideo"
+                                                                                                    >讨论</el-link></span>
+        <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false" @click.native=seevideo()
                                                                                                     >录播</el-link></span>
         <span style="font-size: 14px;font-weight: bolder;color: #00aeef;margin-left: 15px"><el-link :underline="false"
-                                                                                                    href="">直播</el-link></span>
+                                                                                                    >直播</el-link></span>
       </el-col>
     </el-row>
 
@@ -62,17 +62,17 @@
         <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
 ">
           <el-collapse v-model="activeNames" accordion
-                       style="text-align: center;">
+                       style="border: solid 5px ;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
 
-            <el-collapse-item title="创建新帖子" name="1" title.style="align: center">
+            <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
 
               <!--            <el-row-->
               <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
               <!--              新&nbsp帖&nbsp子-->
               <!--            </el-row>-->
               <el-row
-                style="padding-top:15px;height: 60px;background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-                <el-col span="3" offset="1" style="background-color: #ec008c;height: inherit;padding-top: 5px">
+                style="border-radius: 6px;padding-top:15px;height: 60px;background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
+                <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
                   标题
                 </el-col>
                 <el-col span="18" offset="1" style="background-color: #21ef00;height: inherit">
@@ -85,7 +85,7 @@
 
               <el-row
                 style="background-color: #21ef00;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">
-                <el-col span="3" offset="1" style="background-color: #ec008c;height: 45px;padding-top: 5px">
+                <el-col span="3" offset="1" style="height: 45px;padding-top: 5px">
                   正文
                 </el-col>
                 <el-col span="18" offset="1" style="background-color: #21ef00;min-height: 120px;">
@@ -122,15 +122,17 @@
           </el-collapse>
         </div>
 
-        <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;background-color: #00aeef">
+        <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
           <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
-            <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;"
+            <el-row style="background-color: rgba(0,0,0,1);height:90px;margin-bottom: 15px;border-radius: 6px;"
                     v-for="(item,index) in posts" key="index" class="list-item">
               <el-row>
                 <el-col span="21" @click="seePost(item)"
-                        style="padding-left: 15px;height: 30px;text-align: left;font-size: 25px;font-weight: bolder;background-color: #21ef00;border-radius: 6px">
-                  {{ item.title }}
+                        style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
+                  <el-link @click.native=seePost(item) style="font-size: 20px;font-weight: bolder;color: rgba(236,0,140,0.67);">
+                    {{ item.title }}
+                  </el-link>
 
                 </el-col>
                 <el-col span="1">
@@ -151,10 +153,10 @@
                 </el-col>
 
               </el-row>
-              <el-row @click="seePost(item)"
-                      style=" overflow: hidden;text-indent:2em;word-break: break-all;;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;background-color: #21ef00">
-                <el-link :underline="false" href="">
-                  {{ item.content }}
+              <el-row
+                      style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;">
+                <el-link :underline="false" href="" style="color: #ec008c;font-weight: normal"  @click.native=seePost(item)>
+                  {{ item.detail }}
                 </el-link>
               </el-row>
 
@@ -167,7 +169,7 @@
 
       <el-col span="6" offset="1">
         <el-row
-          style="margin-bottom: 30px;background-color: #ec008c;min-height: 190px;text-align: center;border-radius: 6px;">
+          style="margin-bottom: 30px;background-color: #ec008c;min-height: 200px;text-align: center;border-radius: 6px;">
           <el-row
             style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
             圈子规则
@@ -177,8 +179,8 @@
             {{circle.rule}}
           </el-row>
           <el-row id="ruleChange"
-                  style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:5px;color: #00aeef;">
-            <el-button type="text" @click="changeRuleVisible = true">修改规则</el-button>
+                  style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
+            <el-button type="text" underline="true" style="font-weight: bold;color: #00aeef;font-size: 15px" @click="changeRuleVisible = true">修改规则</el-button>
             <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
               <el-form :model="form">
                 <el-form-item label="输入新规则" :label-width="formLabelWidth">
@@ -267,8 +269,8 @@
             document.getElementById("star").setAttribute("style", "display:none")
             document.getElementById("moreList").setAttribute("style", "display:none")
           }
-          this.amount = res.data
-          this.posts = res.data
+          this.posts = res.data.data
+          this.amount=this.posts.length
         } else {
           this.$message({
             showClose: true,
@@ -282,7 +284,7 @@
     },
     methods: {
       seePost(item) {
-        this.$router.push({
+        this.$router.replace({
           name: 'post',
           params: {
             id: item.id
@@ -290,7 +292,7 @@
         })
       },
       seevideo() {
-        this.$router.push({
+        this.$router.replace({
           name: 'videolist2',
           params: {
             courseid:this.classId
@@ -307,14 +309,17 @@
           },
         }).then(res => {
           if (res.data.code == 1001) {
-            document.getElementById("starIcon").setAttribute("class", "el-icon-star-on")
+            document.getElementById("starIcon").setAttribute("class", "el-icon-star-on")//undone v-if
             this.$message({
               showClose: true,
               type: 'success',
               message: '设置为精华帖'
             })
+            this.posts=res.data.data
+            this.amount=this.posts.length
             //this.$store.commit('setUserInfo', res.data.data)
             //this.$router.push('/inCircle')
+            this.posts=res.data.data
           } else {
             this.$message({
               showClose: true,
@@ -340,13 +345,14 @@
                 type: 'success',
                 message: '置顶成功'
               })
-              this.$store.commit('setUserInfo', res.data.data)
-              this.$router.push({
-                name: '/inCircle',
-                params: {
-                  course: this.classId
-                }
-              })
+              this.posts=res.data.data
+              this.amount=this.posts.length
+              // this.$router.push({
+              //   name: '/inCircle',
+              //   params: {
+              //     course: this.circle
+              //   }
+              // })
             } else {
               this.$message({
                 showClose: true,
@@ -370,8 +376,8 @@
                 type: 'success',
                 message: '已删除'
               })
-              //this.$store.commit('setUserInfo', res.data.data)
-              //this.$router.push('/inCircle')
+              this.posts=res.data.data
+              this.amount=this.posts.length
             } else {
               this.$message({
                 showClose: true,
@@ -399,15 +405,15 @@
                 type: 'success',
                 message: '修改成功'
               })
+            this.rules=res.data.rule
             // alert("111")
             // console.log(res.data)
-            this.$store.commit('setUserInfo', res.data.data)
-            this.$router.push({
-              name: '/inCircle',
-              params: {
-                course: this.classId
-              }
-            })
+            // this.$router.push({
+            //   name: '/inCircle',
+            //   params: {
+            //     course: this.classId
+            //   }
+            // })
             // console.log(this.$store.state)
             // this.$router.push({path: '/'});
           } else {
@@ -450,15 +456,17 @@
                 type: 'success',
                 message: '发布成功'
               })
+            this.posts=res.data.data
+            this.amount=this.posts.length
             // alert("111")
             // console.log(res.data)
-            this.$store.commit('setUserInfo', res.data.data)
-            this.$router.push({
-              name: '/inCircle',
-              params: {
-                course: this.classId
-              }
-            })
+            //this.$router.go(0)
+            // this.$router.push({
+            //   name: '/inCircle',
+            //   params: {
+            //     course: this.circle
+            //   }
+            // })
             // console.log(this.$store.state)
             // this.$router.push({path: '/'});
           } else {
@@ -515,6 +523,7 @@
 
 
 <style scoped>
+
   .add, .quit {
     background-color: #00aeef;
     position: absolute;
