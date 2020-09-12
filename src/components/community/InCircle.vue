@@ -303,6 +303,9 @@
       },
       seevideo() {
         window.localStorage.setItem('courseid', this.classId)
+        window.localStorage.setItem('coursename', this.circle.name)
+        window.localStorage.setItem('coursedetail', this.circle.detail)
+        window.localStorage.setItem('coursetime', this.circle.time)
         this.$router.push({
           name: 'videolist2'
         })
