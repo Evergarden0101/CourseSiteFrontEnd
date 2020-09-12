@@ -16,7 +16,7 @@ import navHeader from '@/components/NavHeader'
 export default {
   name: 'App',
    components:{
-       navHeader
+       // navHeader
    },
     mounted(){
     },

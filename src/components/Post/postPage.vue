@@ -2,7 +2,7 @@
     <div>
         <!-- Post Header -->
         <header class="intro-header">
-            <navbar/>
+<!--            <navbar/>-->
             <div class="header-mask"></div>
             <div class="container">
                 <div class="row">
@@ -132,19 +132,19 @@
                 <el-divider></el-divider>
             </div>
         </div>
-        <footerbar/> 
+<!--        <footerbar/> -->
     </div>
 </template>
 
 <script >
-import navbar from '../navbars/navbar'
-import footerbar from '../navbars/footerbar'
+// import navbar from '../navbars/navbar'
+// import footerbar from '../navbars/footerbar'
 
 export default {
     name: 'postPage',
     components: {
-        navbar,
-        footerbar
+        // navbar,
+        // footerbar
     },
     data() {
         return {
