@@ -17,7 +17,7 @@ const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
    return originalPush.call(this, location).catch(err => err)
 }
-  
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -61,7 +61,17 @@ export default new VueRouter({
           path:'/community',
           name: 'community',
           component: Community
-        }
+        },
+        {
+          path: '/postpage',
+          name: 'postpage',
+          component: postPage
+        },
+        {
+          path: '/upload',
+          name: 'Upload',
+          component: Upload
+        },
       ]
     },
     {
@@ -74,15 +84,5 @@ export default new VueRouter({
       name:'/login',
       component:Login,
     },
-    {
-      path: '/upload',
-      name: 'Upload',
-      component: Upload
-    },
-    {
-      path: '/postpage',
-      name: 'postpage',
-      component: postPage
-    }
   ]
 })

@@ -1,16 +1,19 @@
 <template>
-  <div>
-    <!-- Post Header -->
-    <header class="intro-header">
-      <navbar/>
-      <div class="header-mask"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-heading">
-              <h1>{{ page.title }}</h1>
-              <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
-              <span class="meta">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
+    <div>
+        <!-- Post Header -->
+        <header class="intro-header">
+<!--            <navbar/>-->
+            <div class="header-mask"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="post-heading">
+                            <h1>{{ page.title }}</h1>
+                            <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
+                            <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
@@ -32,27 +35,29 @@
 
             <hr style="visibility: hidden;">
 
-            <!--
-            <ul class="pager">
-                {% if page.previous.url %}
-                <li class="previous">
-                    <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
-                    Previous<br>
-                    <span>{{page.previous.title}}</span>
-                    </a>
-                </li>
-                {% endif %}
-                {% if page.next.url %}
-                <li class="next">
-                    <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
-                    Next<br>
-                    <span>{{page.next.title}}</span>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-            -->
-          </div>
+                        <hr style="visibility: hidden;">
+
+                        <!--
+                        <ul class="pager">
+                            {% if page.previous.url %}
+                            <li class="previous">
+                                <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
+                                Previous<br>
+                                <span>{{page.previous.title}}</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if page.next.url %}
+                            <li class="next">
+                                <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
+                                Next<br>
+                                <span>{{page.next.title}}</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        -->
+                    </div>
 
           <!-- Side Catalog Container -->
           <div class="
@@ -114,25 +119,26 @@
   </div>
 </template>
 
-<script>
-  import navbar from '../navbars/navbar'
-  import footerbar from '../navbars/footerbar'
-  import '../../style/bootstrap.css'
-  import '../../style/hux-blog.css'
+<script >
+// import navbar from '../navbars/navbar'
+// import footerbar from '../navbars/footerbar'
 
-  export default {
+export default {
     name: 'postPage',
     components: {
-      navbar,
-      footerbar
+        // navbar,
+        // footerbar
     },
     data() {
-      return {
-        page: {},
-        comment: '',
-        commentList: [],
-        pid: '',
-      }
+        return {
+            page: {},
+            comment: '',
+            commentList: [
+                {id: 1, username: 'abc', detail: '123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321', isself: true, time: '2020-1-10'},
+                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: true, time: '2020-8888'},
+                {id: 2, username: '667890--=', detail: '123445678900987654321', isself: false, time: '2020-8888'}
+            ]
+        }
     },
     mounted() {
       this.pid = this.$route.params.id
@@ -210,11 +216,18 @@
   }
 </script>
 
-<style type="scss">
-  header.intro-header {
-    position: relative;
-    background-image: url(homepage-bg.jpg)
-  }
+<style type="scss" scoped>
+  @import './bootstrap1.css';
+  @import './hux-blog1.css';
+    header.intro-header{
+        position: relative;
+        background-image: url(homepage-bg.jpg)
+    }
+    .self-input{
+        width: 1000px;
+        margin: 0 auto;
+        margin-top:10px;
+        height: 80px;
 
   .self-input {
     width: 1000px;
@@ -246,5 +259,29 @@
       font-size: 1.1em;
       margin-top: -0.1em;
     }
-  }
+    .user-face{
+        width: 150px;
+        height: 150px;
+        float: left;
+    }
+    .input-container{
+        display: table-cell;
+        vertical-align: top;
+        /*即使宽度设为2000px，元素的内容还是可以正常显示*/
+        width: 2000px;
+        height: 600px;
+    }
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+    .text-wrapper{
+        word-break: break-all;
+        word-wrap: break-word
+    }
 </style>

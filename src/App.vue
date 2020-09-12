@@ -16,7 +16,7 @@ import navHeader from '@/components/NavHeader'
 export default {
   name: 'App',
    components:{
-       navHeader
+       // navHeader
    },
     mounted(){
     },
@@ -35,5 +35,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+
 }
 </style>

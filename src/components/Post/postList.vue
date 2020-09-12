@@ -60,12 +60,11 @@
                     </div>
             </div>
         </div>
-    </div>            
+    </div>
 </template>
 
 <script>
-import '../../style/bootstrap.css'
-import '../../style/hux-blog.css'
+
 export default {
     name: 'postList',
     data() {
@@ -81,4 +80,6 @@ export default {
 
 <style scoped>
 @import '../../style/hux-blog';
+@import './bootstrap1.css';
+@import './hux-blog1.css';
 </style>

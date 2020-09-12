@@ -72,13 +72,12 @@
       }
     },
     beforeMount(){
-      this.lecture.id = this.$route.params.courseid
-      alert(this.lecture.id)
+      this.lecture.id = window.localStorage.getItem('courseid')
       this.axios({
         method: 'post',
         url: '/getvideos',
         data:{
-          courseid: '111',
+          courseid: this.lecture.id,
         },
         headers:{
           'token':this.$store.state.userInfo.token,
@@ -115,7 +114,6 @@
         }, 1000)
       },
       play_the_video(i){
-        alert(this.videos[i].id)
         this.$router.replace({
           name: 'player',
           params:{
