@@ -196,7 +196,7 @@ import navbar from '../navbars/navbar'
                             type:"info",
                             message:"创建课程成功"
                         })
-                        this.alreadyJoinCommunity = res.data.data
+                        this.alreadyJoinCommunity = res.data.data.allList
                         this.visibleCreateButton = false
                         console.log(this.alreadyJoinCommunity)
                     }
