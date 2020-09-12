@@ -196,7 +196,6 @@ import navbar from '../navbars/navbar'
                         })
                         this.alreadyJoinCommunity = res.data.data
                         console.log(this.alreadyJoinCommunity)
-                        this.visibleCreateButton = false
                     }
                     else{
                         this.$message({
@@ -236,7 +235,6 @@ import navbar from '../navbars/navbar'
                           type:'info',
                           message:'提交成功，等待审核'
                       })
-                        this.visibleConfirm = false
                     }
                     else{
                         this.$message({
