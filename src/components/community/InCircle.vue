@@ -126,34 +126,35 @@
           <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
               style="border-radius: 6px;">
             <el-row style="background-color: #ec008c;height:90px;margin-bottom: 20px;border-radius: 6px;"
-                    v-for="item in count" class="list-item">
+                    v-for="(item,index) in posts" key="index" class="list-item">
               <el-row>
-                <el-col span="21"
+                <el-col span="21" @click="seePost(item)"
                         style="padding-left: 15px;height: 30px;text-align: left;font-size: 25px;font-weight: bolder;background-color: #21ef00;border-radius: 6px">
-                  <el-link href="">{{ item }}</el-link>
+                  {{ item.title }}
 
                 </el-col>
                 <el-col span="1">
-                  <el-button style="margin-left: 6px;margin-top: 1px" type="primary" size="mini"><i
-                    class="el-icon-star-off"></i></el-button>
+                  <el-button @click="addStar(item)" id="star" style="margin-left: 6px;margin-top: 1px" type="primary"
+                             size="mini"><i
+                    id='starIcon' class="el-icon-star-off"></i></el-button>
                 </el-col>
                 <el-col span="2">
-                  <el-dropdown>
+                  <el-dropdown trigger="click" @command="handleCommand" id="moreList">
                     <el-button type="primary" size="mini" style="margin-left: 20px;margin-top: 1px">
                       <i class="el-icon-more-outline"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>删除</el-dropdown-item>
-                      <el-dropdown-item>置顶</el-dropdown-item>
+                      <el-dropdown-item command="delPost">删除</el-dropdown-item>
+                      <el-dropdown-item command="topPost">置顶</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-col>
 
               </el-row>
-              <el-row
-                style=" overflow: hidden;text-indent:2em;word-break: break-all;;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;background-color: #21ef00">
+              <el-row @click="seePost(item)"
+                      style=" overflow: hidden;text-indent:2em;word-break: break-all;;margin-top: 5px;padding-left:15px;padding-right:15px;height: 50px;text-align:left;font-size: 15px;font-weight: bold;background-color: #21ef00">
                 <el-link :underline="false" href="">
-                  {{ item }}
+                  {{ item.content }}
                 </el-link>
               </el-row>
 
@@ -164,14 +165,43 @@
         </div>
       </el-col>
 
-      <el-col span="6" offset="1"
-              style="background-color: #ec008c;height: 160px;text-align: center;border-radius: 6px;">
-        <el-row
-          style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
-          圈子规则
+      <el-col span="6" offset="1">
+        <el-row style="background-color: #ec008c;min-height: 160px;text-align: center;border-radius: 6px;">
+          <el-row
+            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
+            圈子规则
+          </el-row>
+          <el-row v-model="rules"
+                  style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+            具体规则
+          </el-row>
+          <el-row id="ruleChange"
+                  style="height: 15px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:5px;color: #00aeef;">
+            <el-button type="text" @click="changeRuleVisible = true">修改规则</el-button>
+            <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
+              <el-form :model="form">
+                <el-form-item label="输入新规则" :label-width="formLabelWidth">
+                  <el-input v-model="newRule" :rows="5"
+                            placeholder="请输入新规则"
+                            maxlength="300" show-word-limit autocomplete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="changeRuleVisible = false">取 消</el-button>
+                <el-button type="primary" @click="changeRule">确 定</el-button>
+              </div>
+            </el-dialog>
+          </el-row>
         </el-row>
-        <el-row v-model="rules" style="height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-          具体规则
+        <el-row style="background-color: #ec008c;min-height: 160px;text-align: center;border-radius: 6px;">
+          <el-row
+            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: #21ef00;">
+            课程信息
+          </el-row>
+          <el-row v-model="classDetail"
+                  style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+            {{class.detail}}
+          </el-row>
         </el-row>
       </el-col>
     </el-row>
@@ -187,19 +217,19 @@
         //////自用
         newTitle: '',
         newContent: '',
+        newRule: '',
         submitVisible: false,
+        changeRuleVisible: false,
         activeName: '',
         count: 5,   //post第一次加载
-
-        /////请求
-        classId: '',
-        stuId: '',
-        rules: '',
-        userInfo: null,
-
-        //加载post
         busy: false,
         loading: false,
+
+        /////请求
+        class: {},
+        classId: '',
+        rules: '',
+        userInfo: null,
         amount: 0,
         posts: [],
 
@@ -214,16 +244,25 @@
       }
     },
     mounted() {
+      this.classId = this.$router.params.item.id
+      this.rules = this.$router.params.item.rule
+      this.class = this.$router.params.item
       this.axios({
         method: 'post',
         url: 'getInCircle',
         headers: {'token': this.$store.state.userInfo.token},
-        params: {}
+        params: {
+          classId: this.classId,
+        }
       }).then(res => {
-        if (res.code == 1001) {
-          this.alreadyJoinCommunity = res.data.alreadyJoinCommunity,
-            this.allCommunity = res.data.allCommunity,
-            this.applyingCommunity = res.data.applyingCommunity
+        if (res.data.code == 1001) {
+          if (this.$store.state.userInfo.type == 'student') {
+            document.getElementById("ruleChange").setAttribute("style", "display:none")
+            document.getElementById("star").setAttribute("style", "display:none")
+            document.getElementById("moreList").setAttribute("style", "display:none")
+          }
+          this.amount = res.data.postAmount,
+            this.posts = res.data.posts
         } else {
           this.$message({
             showClose: true,
@@ -236,40 +275,188 @@
       console.log(this.$store.state)
     },
     methods: {
-      post(){
+      seePost(item) {
+        this.$router.push({
+          name: 'post',
+          params: {
+            post: item
+          }
+        })
+      },
+      addStar(item) {
         this.axios({
-          url: '',
+          url: '/addStar',
           headers: {'token': this.$store.state.userInfo.token},
           params: {
-            classId:this.classId,
-            newTitle:this.newTitle,
-            newContent:this.newContent
+            classId: this.classId,
+            post: item,
           },
-
-        }).then(res=>{
-          if(res.data.code == 1001){
-            this.submitVisible = false,
+        }).then(res => {
+          if (res.data.code == 1001) {
+            document.getElementById("starIcon").setAttribute("class", "el-icon-star-on")
             this.$message({
-              showClose:true,
-              type:'success',
-              message:'发布成功'
+              showClose: true,
+              type: 'success',
+              message: '设置为精华帖'
             })
-            // alert("111")
-            // console.log(res.data)
-            this.$store.commit('setUserInfo',res.data.data)
-            this.$router.push('/inCircle')
-            // console.log(this.$store.state)
-            // this.$router.push({path: '/'});
-          }
-          else{
+            //this.$store.commit('setUserInfo', res.data.data)
+            //this.$router.push('/inCircle')
+          } else {
             this.$message({
-              showClose:true,
-              type:'error',
-              message:'发布失败'
+              showClose: true,
+              type: 'error',
+              message: '设置失败'
             })
           }
         })
       },
+      handleCommand(command, item) {
+        if (command == "topPost") {
+          this.axios({
+            url: '/topPost',
+            headers: {'token': this.$store.state.userInfo.token},
+            params: {
+              classId: this.classId,
+              post: item,
+            },
+          }).then(res => {
+            if (res.data.code == 1001) {
+              this.$message({
+                showClose: true,
+                type: 'success',
+                message: '置顶成功'
+              })
+              this.$store.commit('setUserInfo', res.data.data)
+              this.$router.push({
+                name: '/inCircle',
+                params: {
+                  course: this.classId
+                }
+              })
+            } else {
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: '设置失败'
+              })
+            }
+          })
+        } else if (command == "delPost") {
+          this.axios({
+            url: '/delPost',
+            headers: {'token': this.$store.state.userInfo.token},
+            params: {
+              classId: this.classId,
+              post: item,
+            },
+          }).then(res => {
+            if (res.data.code == 1001) {
+              this.$message({
+                showClose: true,
+                type: 'success',
+                message: '已删除'
+              })
+              //this.$store.commit('setUserInfo', res.data.data)
+              //this.$router.push('/inCircle')
+            } else {
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: '删除失败'
+              })
+            }
+          })
+        }
+      },
+      changeRule() {
+        this.axios({
+          url: '',
+          headers: {'token': this.$store.state.userInfo.token},
+          params: {
+            classId: this.classId,
+            rule: this.newRule,
+          },
+        }).then(res => {
+          if (res.data.code == 1001) {
+            this.changeRuleVisible = false,
+              this.$message({
+                showClose: true,
+                type: 'success',
+                message: '修改成功'
+              })
+            // alert("111")
+            // console.log(res.data)
+            this.$store.commit('setUserInfo', res.data.data)
+            this.$router.push({
+              name: '/inCircle',
+              params: {
+                course: this.classId
+              }
+            })
+            // console.log(this.$store.state)
+            // this.$router.push({path: '/'});
+          } else {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: '修改失败'
+            })
+          }
+        })
+      },
+      post() {
+        if(this.newTitle == ''){
+          this.$message({
+            type:'warning',
+            message:'请输入帖子标题'
+          })
+          return;
+        }
+        else if(this.newContent == ''){
+          this.$message({
+            type:'warning',
+            message:'请输入帖子内容'
+          })
+          return;
+        }
+        this.axios({
+          url: '/addPost',
+          headers: {'token': this.$store.state.userInfo.token},
+          params: {
+            classId: this.classId,
+            newTitle: this.newTitle,
+            newContent: this.newContent
+          },
+
+        }).then(res => {
+          if (res.data.code == 1001) {
+            this.submitVisible = false,
+              this.$message({
+                showClose: true,
+                type: 'success',
+                message: '发布成功'
+              })
+            // alert("111")
+            // console.log(res.data)
+            this.$store.commit('setUserInfo', res.data.data)
+            this.$router.push({
+              name: '/inCircle',
+              params: {
+                course: this.classId
+              }
+            })
+            // console.log(this.$store.state)
+            // this.$router.push({path: '/'});
+          } else {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: '发布失败'
+            })
+          }
+        })
+      },
+      /*
       addClass() {
         this.axios({
           method: 'POST',
@@ -297,7 +484,7 @@
             })
           }
         })
-      },
+      },*/
       loadMore: function () {
         this.busy = true
         this.loading = true
@@ -306,7 +493,6 @@
           this.loading = false
           this.busy = false
         }, 2000)
-
 
       }
     }
