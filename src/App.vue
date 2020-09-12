@@ -21,7 +21,10 @@ export default {
     mounted(){
     },
     methods:{
-    }
+    },
+   created () {
+    this.$router.replace('/postpage')
+  }
 }
 
 </script>

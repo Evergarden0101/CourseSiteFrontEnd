@@ -22,7 +22,7 @@
         <div class="button">
           <ul>
             <li>
-              <i class="el-icon-video-play"  @click="play_the_video()"></i>
+              <i class="el-icon-video-play"  @click="play_the_video(i)"></i>
               <i class="el-icon-delete" @click="delete_the_video(i)"></i>
             </li>
           </ul>
@@ -108,15 +108,22 @@
             alert("删除失败")
           }
         })
-        location.reload()
+        setTimeout(()=>{
+          location.reload()
+        }, 1000)
       },
-      play_the_video(){
-        alert("播放成功！！！！")
+      play_the_video(i){
+        alert(this.videos[i].id)
+        this.$router.replace({
+          name: 'player',
+          params:{
+            id: this.videos[i].id,
+          }
+        })
       },
       before_upload(file){
         const isOverSize = file.size/1024/1024 < 100
         if(isOverSize){
-          alert("文件大小符合规定，允许上传")
         }
         else{
           alert("文件大小超过100Mb，不能上传.")
@@ -132,13 +139,16 @@
             "token":this.$store.state.userInfo.token,
           }
         }).then(res=>{
-          if(res.data.code == 1001)
-            alert("文件上传成功");
+          if(res.data.code == 1001){
+            alert("文件上传成功")
+          }
           else{
             alert("文件上传失败，请按照规定格式重新上传");
           }
         })
-        location.reload()
+        setTimeout(()=>{
+          location.reload()
+        }, 1000)
       }
     }
   }

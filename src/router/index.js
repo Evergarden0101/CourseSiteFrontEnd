@@ -1,20 +1,27 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
 import Upload from '../components/Record/Upload'
 import Login from '../components/userManage/login'
 import InCircle from '../components/community/InCircle'
-import Nav from '../components/NavHeader'
 import VideoList from '../components/Record/video_list'
-import post from '../components/post'
 import Community from '../components/community/community'
 import Player from '../components/Record/Player'
 import VideoList2 from '../components/Record/videolist2'
 
 import Index from '../components/Index'
-Vue.use(Router)
+Vue.use(VueRouter)
+import postList from '../components/Post/postList'
+import postPage from '../components/Post/postPage'
 
-export default new Router({
+const originalPush = VueRouter.prototype.push
+   VueRouter.prototype.push = function push(location) {
+   return originalPush.call(this, location).catch(err => err)
+}
+  
+Vue.use(VueRouter)
+
+export default new VueRouter({
   routes: [
     {
       path:'/Index',
@@ -67,6 +74,21 @@ export default new Router({
       path:'/login',
       name:'/login',
       component:Login,
+    },
+    {
+      path: '/upload',
+      name: 'Upload',
+      component: Upload
+    },
+    {
+      path: '/post',
+      name: 'postList',
+      component: postList
+    },
+    {
+      path: '/postpage',
+      name: 'postpage',
+      component: postPage
     }
   ]
 })
