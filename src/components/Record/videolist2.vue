@@ -114,7 +114,6 @@
         }, 1000)
       },
       play_the_video(i){
-        alert(this.videos[i].id)
         this.$router.replace({
           name: 'player',
           params:{

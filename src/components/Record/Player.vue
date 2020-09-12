@@ -1,7 +1,7 @@
 <template>
   <div>
     <div >
-      <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsline="false" :options="playerOptions"></video-player>
+     <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsline="false" :options="playerOptions"></video-player>
     </div>
   </div>
 </template>
@@ -10,7 +10,6 @@
   export default {
     name: 'Player',
     data () {
-      video:''
       return {
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
@@ -25,9 +24,9 @@
             type: 'video/mp4', // 这里的种类支持很多种：基本视频格式、直播、流媒体等，具体可以参看git网址项目
             type: "video/ogg",
             type:"video/webm",
-            src: '../../../static/oceans.mp4' // url地址
+            src: '' // url地址
           }],
-          poster: 'http://39.106.117.192:8080/static/indexImg.png', // 你的封面地址
+          //poster: 'http://39.106.117.192:8080/static/indexImg.png', // 你的封面地址
           width: document.documentElement.clientWidth, // 播放器宽度
           notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
@@ -45,18 +44,18 @@
     methods: {
       submit (){
         let id = this.$route.params.id
-        alert(id)
-        this.axios({
+        this.playerOptions.sources[0].src='http://49.234.83.79:8080/api/getvideostream?id='+id
+       /* this.axios({
           method: 'post',
           url: '/getvideostream',
           data:{
-            'id': '24',
+            'id':'71'
           },
           headers:{
             'token':this.$store.state.userInfo.token,
           }
         }).then(res =>{
-          if(res.data.code == 1001){
+          /*if(res.data.code == 1001){
             video=res.data.videostream
             var fileReader = new FileReader()
             fileReader .readAsDataURL(video)
@@ -68,7 +67,7 @@
           else{
             alert("删除失败")
           }
-        })
+        })*/
       /*  var fileReader = new FileReader()
         fileReader.readAsDataURL(csv)
         var that = this
@@ -121,8 +120,9 @@
     height: 80%;
     display: block;
   }
-  /* .video-player {
-    width: 50%;
-  } */
+  .video-player {
+    width: 100%;
+    height: 80%;
+  }
 </style>
 
