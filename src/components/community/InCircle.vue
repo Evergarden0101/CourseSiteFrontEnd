@@ -179,10 +179,11 @@
               </el-row>
               <el-row
                 style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
-                <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
-                         @click.native=seePost(item)>
+<!--                <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"-->
+<!--                         >-->
+<!--                  @click.native=seePost(item)-->
                   {{ item.detail }}
-                </el-link>
+<!--                </el-link>-->
               </el-row>
 
             </el-card>
@@ -312,15 +313,18 @@
     },
     methods: {
       seePost(item) {
-        this.$router.replace({
-          name: 'postpage',
-          params: {
-            id: item.id
-          }
-        })
+        // this.$router.replace({
+        //   name: 'postpage',
+        //   params: {
+        //     id: item.id
+        //   }
+        // })
       },
       seevideo() {
-        window.localStorage.setItem('course',this.circle)
+        window.localStorage.setItem('courseid', this.classId)
+        window.localStorage.setItem('coursename', this.circle.name)
+        window.localStorage.setItem('coursedetail', this.circle.detail)
+        window.localStorage.setItem('coursetime', this.circle.time)
         this.$router.push({
           name: 'videolist2',
         })

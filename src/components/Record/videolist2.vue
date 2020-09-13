@@ -3,7 +3,7 @@
     <div class="white-board">
       <h2 style="font-size:20px">{{lecture.name}}</h2>
       <br>
-      <p style="font-size:15px">课程创建者：{{lecture.creator}}</p>
+      <p style="font-size:15px">课程简介：{{lecture.detail}}</p>
       <br>
       <p style="font-size:15px">创建时间：{{lecture.date}}</p>
       <el-divider></el-divider>
@@ -59,10 +59,10 @@
     data(){
       return{
         lecture:{
-          id: '111',
-          name: '课程名称',
-          creator: '李景熙',
-          date: '2020.09.10',
+          id:'',
+          name:'',
+          detail:'',
+          date:'',
         },
         notices:[
           {notice: '公告1：该课程截止时间为2020.09.31，请同学尽快添加课程'},
@@ -73,6 +73,9 @@
     },
     beforeMount(){
       this.lecture.id = window.localStorage.getItem('courseid')
+      this.lecture.date = window.localStorage.getItem('coursetime')
+      this.lecture.detail = window.localStorage.getItem('coursedetail')
+      this.lecture.name = window.localStorage.getItem('coursename')
       this.axios({
         method: 'post',
         url: '/getvideos',
