@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%">
-    <nav-header></nav-header>
+    <NavHeader/>
     <router-view></router-view>
   </div>
 </template>

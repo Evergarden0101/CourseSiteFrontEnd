@@ -1,5 +1,6 @@
 <template>
   <div class="community-container">
+<!--    <navbar/>-->
     <el-container>
       <el-main>
         <!--      搜索栏，创建圈子按钮-->
@@ -63,7 +64,7 @@
         <el-row justify="end">
           <el-col  span="8" style="float:right;margin-top: 30px;">
             <el-button v-if="this.$store.state.userInfo.usertype=='student'" type="info" plain @click="identify" style="float: inherit;width: 40%;">教师认证</el-button>
-            <el-button type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
+            <el-button v-if="this.$store.state.userInfo.usertype=='teacher'" type="info" plain @click="create" style="float: right;width: 40%;" >创建课程圈子</el-button>
           </el-col>
         </el-row>
       </el-main>
@@ -74,8 +75,8 @@
         <el-form-item label="课程名称" >
           <el-input v-model="curriculumForm.name" placeholder="请输入课程名称"></el-input>
         </el-form-item>
-        <el-form-item label="课程规则" >
-          <el-input type="textarea" :rows="7" v-model="curriculumForm.detail" maxlength="300" show-word-limit placeholder="请输入课程名称">
+        <el-form-item label="课程简介" >
+          <el-input type="textarea" :rows="7" v-model="curriculumForm.detail" maxlength="300" show-word-limit placeholder="请输入课程简介">
           </el-input>
         </el-form-item>
         <el-form-item label="社区规则">
@@ -89,7 +90,7 @@
       </el-form>
     </el-dialog>
     <!--  教师提交认证入口-->
-    <el-dialog title="创建课程圈子" :visible.sync="visibleConfirm">
+    <el-dialog title="教师认证窗口" :visible.sync="visibleConfirm">
       <el-form ref="curriculumForm" v-model="curriculumForm" label-width="80px" inline="true">
         <el-form-item label="教师名称" >
           <el-input v-model="teacher.name" placeholder="请输入教师名称" ></el-input>
@@ -107,8 +108,12 @@
 </template>
 
 <script>
+import navbar from '../navbars/navbar'
     export default {
         name: "community",
+        components: {
+          navbar
+        },
         mounted(){
             this.axios({
               method:'post',
@@ -167,12 +172,14 @@
                         type:'info',
                         message:'请输入课程名称'
                     })
+                    return
                 }
                 else if(this.curriculumForm.introduction == ''){
                     this.$message({
                         type:'info',
                         message:'请输入课程简介'
                     })
+                    return
                 }
                 this.axios({
                     method:'POST',
@@ -189,7 +196,8 @@
                             type:"info",
                             message:"创建课程成功"
                         })
-                        this.alreadyJoinCommunity = res.data.data
+                        this.alreadyJoinCommunity = res.data.data.allList
+                        this.visibleCreateButton = false
                         console.log(this.alreadyJoinCommunity)
                     }
                     else{
@@ -230,6 +238,7 @@
                           type:'info',
                           message:'提交成功，等待审核'
                       })
+                        this.visibleConfirm = false
                     }
                     else{
                         this.$message({
@@ -247,10 +256,13 @@
 .community-container{
   padding-left: 10%;
   padding-right: 10%;
-  /*background-color: aqua;*/
+  background-color: #d9ecff;
+  min-width: 100px;
+  min-height: 563px;
 }
 .community-body{
   margin-top: 30px;
+
 }
 .el-tabs_item.is-active{
   background-color:#545c64;
@@ -263,13 +275,13 @@
   margin-top: 10px;
   margin-bottom: 10px;
   /*background-color: red;*/
-  height: 70px;
+  height: 100px;
 }
 .community-content{
   /*background-color: aqua;*/
   border: 1px solid;
   padding-top: 10px;
-  height: 70px;
+  height: 95px;
   border-radius: 30px
 }
 
