@@ -90,7 +90,7 @@
       </el-form>
     </el-dialog>
     <!--  教师提交认证入口-->
-    <el-dialog title="创建课程圈子" :visible.sync="visibleConfirm">
+    <el-dialog title="教师认证窗口" :visible.sync="visibleConfirm">
       <el-form ref="curriculumForm" v-model="curriculumForm" label-width="80px" inline="true">
         <el-form-item label="教师名称" >
           <el-input v-model="teacher.name" placeholder="请输入教师名称" ></el-input>
