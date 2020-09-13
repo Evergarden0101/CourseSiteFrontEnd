@@ -212,7 +212,7 @@ import navbar from '../navbars/navbar'
             seeCommunity(item){
                 this.$router.push({
                     name:'inCircle',
-                    params:{
+                    query:{
                         course:item
                     }
                 })
@@ -258,7 +258,7 @@ import navbar from '../navbars/navbar'
   padding-right: 10%;
   background-color: #d9ecff;
   min-width: 100px;
-  min-height: 563px;
+  min-height: 100%;
 }
 .community-body{
   margin-top: 30px;
