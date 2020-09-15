@@ -1,7 +1,23 @@
 <template>
-  <div>
+  <div class="container">
     <div >
-     <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsline="false" :options="playerOptions"></video-player>
+      <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsline="false" :options="playerOptions"></video-player>
+    </div>
+    <div class="white-board">
+      <div class="header">
+        <h2>视频列表:</h2>
+        <br>
+      </div>
+      <div class="videolist" v-for="(item,i) in videos">
+          <!--        <div class="videoimage">-->
+          <!--          <img src="../../assets/logo.png">-->
+          <!--        </div>-->
+
+        <p :class="{container1: !isShow[i],container2: isShow[i]}" >
+          <el-button type="text"@click="play_the_video(i)"><h3>{{item.name}}</h3></el-button>
+          <br>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -11,6 +27,14 @@
     name: 'Player',
     data () {
       return {
+        isShow:[],
+        lecture:{
+          id:'',
+          name:'',
+          detail:'',
+          date:'',
+        },
+        videos:[],
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
           autoplay: false, // 如果true,浏览器准备好时开始回放。
@@ -38,12 +62,47 @@
         }
       }
     },
+    beforeMount(){
+      this.lecture.id = window.localStorage.getItem('courseid')
+      this.lecture.date = window.localStorage.getItem('coursetime')
+      this.lecture.detail = window.localStorage.getItem('coursedetail')
+      this.lecture.name = window.localStorage.getItem('coursename')
+      this.axios({
+        method: 'post',
+        url: '/getvideos',
+        data:{
+          courseid: this.lecture.id,
+        },
+        headers:{
+          'token':this.$store.state.userInfo.token,
+        }
+      }).then(res =>{
+        if(res.data.code == 1001){
+          this.videos = res.data.data
+
+          for(var i=0;i<this.videos.length;i++){
+            if(this.videos[i].id==window.localStorage.getItem('id')){
+              this.isShow[i]=true
+            }
+            else{
+              this.isShow[i]=false
+            }
+          }
+        }
+        else{
+        }
+      })
+    },
     mounted(){
       this.submit()
     },
     methods: {
+      play_the_video(i){
+        window.localStorage.setItem('id', this.videos[i].id)
+        location.reload();
+      },
       submit (){
-        let id = this.$route.params.id
+        let id = window.localStorage.getItem('id')
         this.playerOptions.sources[0].src='http://49.234.83.79:8080/api/getvideostream?id='+id
        /* this.axios({
           method: 'post',
@@ -114,15 +173,57 @@
   }
 </script>
 
-<style scoped >
-  .video-js .vjs-icon-placeholder {
-    width: 80%;
-    height: 80%;
-    display: block;
+<style lang="scss"scoped>
+  .el-button{
+    color: black;
   }
-  .video-player {
-    width: 100%;
-    height: 80%;
+  .container{
+    padding: 100px 5% 10px 5%;
+    min-width: 100px;
+    min-height: 600px;
+    overflow:auto;//内容的显示模式（如果超出框，则显示滚轮）
+    background-color: #d9ecff;
+    .video-js .vjs-icon-placeholder {
+      width: 80%;
+      height: 80%;
+      display: block;
+    }
+    .video-player {
+      width: 70%;
+      height: 80%;
+      float:left;
+    }
+    .white-board{
+      overflow:auto;//内容的显示模式（如果超出框，则显示滚轮）
+      width: 25%;
+      max-height: 480px;
+      float:right;
+      min-width: 100px;
+      background-color: white;
+      box-shadow: 10px 10px 12px 0 rgba(0, 0, 0, 0.1);//阴影
+      text-align: left;
+      padding: 30px 20px 30px 20px;
+      border-radius: 20px;
+      .header{
+        border-bottom: 1px solid #DCDFE6;
+      }
+      .videolist {
+        border-bottom: 1px solid #DCDFE6;
+        .container1{
+          width: 100%;
+          text-align: left;
+          font-size: 15px;
+          background-color: white;
+        }
+        .container2{
+          width: 100%;
+          text-align: left;
+          font-size: 15px;
+          background-color: whitesmoke;
+        }
+      }
+    }
   }
 </style>
+
 
