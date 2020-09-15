@@ -18,134 +18,137 @@
       </el-backtop>
     </template>
     <div style="background-color: #d9ecff;padding-left: 5%;padding-right: 5%">
-    <el-row style="height: 50px"></el-row>
+      <el-row style="height: 50px"></el-row>
       <el-card class="box-card" shadow="always" style="margin-bottom: 10px;background-color: white">
 
-    <el-row style="">
-      <!--      <el-col span="2" style="height:40px;background-color: #ec008c;text-align: left"></el-col>-->
-      <el-col span="24" style=";padding-left:40px;height:40px;text-align: left">
-        <span style="font-size: 30px;font-weight: bolder;color:rgba(0,0,0,1)">{{circle.name}}</span>
-        <span style="font-size: 30px;font-weight: bolder;color: black">&nbsp&nbsp&nbsp</span>
-        <el-tooltip content="加入课程" placement="top" effect="dark">
-          <el-button size="medium" class="add" id="addbtn" @click="addClass" style="display:none" round>加入</el-button>
-        </el-tooltip>
-        <el-tooltip content="退出课程" placement="top" effect="dark">
-          <el-button size="medium" class="quit" id="quitbtn" @click="quitClass" style="display:none" round>退出
-          </el-button>
-        </el-tooltip>
-      </el-col>
-    </el-row>
-    <!--    <el-row style="background-color: #00aeef;">-->
-    <!--      <el-col span="2" style="height:25px;background-color: black;"></el-col>-->
-    <!--      <el-col span="22" style="height:25px;background-color: #ec008c;text-align: left">-->
-    <!--        <span style="position:absolute;bottom:0;;font-size: 14px;font-weight: bold;color: #00aeef">&nbsp/教师</span>-->
-    <!--      </el-col>-->
-    <!--    </el-row>-->
+        <el-row style="">
+          <!--      <el-col span="2" style="height:40px;background-color: #ec008c;text-align: left"></el-col>-->
+          <el-col span="24" style=";padding-left:40px;height:40px;text-align: left">
+            <span style="font-size: 30px;font-weight: bolder;color:rgba(0,0,0,1)">{{circle.name}}</span>
+            <span style="font-size: 30px;font-weight: bolder;color: black">&nbsp&nbsp&nbsp</span>
+            <el-tooltip v-if="userType == 'student' && addOrNot == 'false'" content="加入课程"
+                        placement="top" effect="dark">
+              <el-button size="medium" class="add" id="addbtn" @click="addClass" style="display:none" round>加入
+              </el-button>
+            </el-tooltip>
+            <el-tooltip  v-if="this.$store.state.userInfo.usertype == 'student' && this.addOrNot=='true'" content="退出课程" placement="top" effect="dark">
+              <el-button size="medium" class="quit" id="quitbtn" @click="quitClass" style="display:none" round>退出
+              </el-button>
+            </el-tooltip>
+          </el-col>
+        </el-row>
+        <!--    <el-row style="background-color: #00aeef;">-->
+        <!--      <el-col span="2" style="height:25px;background-color: black;"></el-col>-->
+        <!--      <el-col span="22" style="height:25px;background-color: #ec008c;text-align: left">-->
+        <!--        <span style="position:absolute;bottom:0;;font-size: 14px;font-weight: bold;color: #00aeef">&nbsp/教师</span>-->
+        <!--      </el-col>-->
+        <!--    </el-row>-->
 
-    <el-row style="">
-      <el-col span="24" style="height:8px;">
-      </el-col>
-    </el-row>
+        <el-row style="">
+          <el-col span="24" style="height:8px;">
+          </el-col>
+        </el-row>
 
-    <el-row style="margin-bottom: 10px">
-      <el-col span="24" style="height:25px;text-align: left">
+        <el-row style="margin-bottom: 10px">
+          <el-col span="24" style="height:25px;text-align: left">
         <span style="margin-left: 5px"><el-link :underline="false"
                                                 style="font-size: 16px;font-weight: bolder;color: rgba(0,0,0,0.7);"
         >课程信息</el-link></span>
-        <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-        >讨论</el-link></span>
-        <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-                                                 @click.native=seevideo()
-        >录播</el-link></span>
-        <span style="margin-left: 15px"><el-link :underline="false"
-                                                 style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-        >直播</el-link></span>
-      </el-col>
-    </el-row>
+            <span style="margin-left: 15px"><el-link :underline="false"
+                                                     style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
+            >讨论</el-link></span>
+            <span style="margin-left: 15px"><el-link :underline="false"
+                                                     style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
+                                                     @click.native=seevideo()
+            >录播</el-link></span>
+            <span style="margin-left: 15px"><el-link :underline="false"
+                                                     style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
+            >直播</el-link></span>
+          </el-col>
+        </el-row>
 
       </el-card>
-        <el-row>
-      <el-col span="17" style="min-height: 200px;border-radius: 6px;">
-        <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
+      <el-row>
+        <el-col span="17" style="min-height: 200px;border-radius: 6px;">
+          <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
 ">
-          <el-collapse v-model="activeNames" accordion
-                       style="border: solid 5px ;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);border-color: #00aeef">
+            <el-collapse v-model="activeNames" accordion
+                         style="border: solid 5px ;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);border-color: #00aeef">
 
-            <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
+              <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
 
-              <!--            <el-row-->
-              <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
-              <!--              新&nbsp帖&nbsp子-->
-              <!--            </el-row>-->
-              <el-row
-                style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;text-align: center;font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
-                <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
-                  标题
-                </el-col>
-                <el-col span="18" offset="1" style=";height: inherit">
-                  <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
-                  </el-input>
-                </el-col>
-              </el-row>
+                <!--            <el-row-->
+                <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
+                <!--              新&nbsp帖&nbsp子-->
+                <!--            </el-row>-->
+                <el-row
+                  style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;text-align: center;font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
+                  <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
+                    标题
+                  </el-col>
+                  <el-col span="18" offset="1" style=";height: inherit">
+                    <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
+                    </el-input>
+                  </el-col>
+                </el-row>
 
-              <el-row style="height: 10px;"></el-row>
+                <el-row style="height: 10px;"></el-row>
 
-              <el-row
-                style="text-align: center;font-size: 20px;font-weight: bolder;color:rgba(0,0,0,0.7)">
-                <el-col span="3" offset="1"
-                        style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
-                  正文
-                </el-col>
-                <el-col span="18" offset="1" style=";min-height: 120px;">
-                  <el-input
-                    type="textarea"
-                    :rows="8"
-                    placeholder="请输入内容"
-                    v-model="newContent"
-                    maxlength="500" show-word-limit
-                    style="margin-bottom: 15px">
-                  </el-input>
-                </el-col>
-              </el-row>
-              <el-row
-                style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
-                <el-popover
-                  placement="top"
-                  width="160"
-                  v-model="submitVisible"
-                  style="text-align: center"
-                >
-                  <p>确认发布帖子？</p>
-                  <div style="text-align: right; margin-top: 15px">
-                    <el-button size="mini" type="text" @click="submitVisible = false">取消</el-button>
-                    <el-button class="newPost" type="primary" size="mini" @click="post">确定</el-button>
-                  </div>
-                  <el-button slot="reference" type="primary" round style="position: absolute;right: 30px;bottom: 8px">
-                    提交
-                  </el-button>
-                </el-popover>
-              </el-row>
+                <el-row
+                  style="text-align: center;font-size: 20px;font-weight: bolder;color:rgba(0,0,0,0.7)">
+                  <el-col span="3" offset="1"
+                          style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
+                    正文
+                  </el-col>
+                  <el-col span="18" offset="1" style=";min-height: 120px;">
+                    <el-input
+                      type="textarea"
+                      :rows="8"
+                      placeholder="请输入内容"
+                      v-model="newContent"
+                      maxlength="500" show-word-limit
+                      style="margin-bottom: 15px">
+                    </el-input>
+                  </el-col>
+                </el-row>
+                <el-row
+                  style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                  <el-popover
+                    placement="top"
+                    width="160"
+                    v-model="submitVisible"
+                    style="text-align: center"
+                  >
+                    <p>确认发布帖子？</p>
+                    <div style="text-align: right; margin-top: 15px">
+                      <el-button size="mini" type="text" @click="submitVisible = false">取消</el-button>
+                      <el-button class="newPost" type="primary" size="mini" @click="post">确定</el-button>
+                    </div>
+                    <el-button slot="reference" type="primary" round style="position: absolute;right: 30px;bottom: 8px">
+                      提交
+                    </el-button>
+                  </el-popover>
+                </el-row>
 
-            </el-collapse-item>
-          </el-collapse>
-        </div>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
 
-        <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
-          <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
-              style="border-radius: 6px;">
-            <el-card shadow="always" style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
-                    v-for="(item,index) in posts" key="index" class="list-item box-card">
-              <el-row>
-                <el-col span="20" @click="seePost(item)"
-                        style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
-                  <el-link @click.native=seePost(item)
-                           style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
-                    {{ item.title }}
-                  </el-link>
+          <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
+            <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30"
+                style="border-radius: 6px;">
+              <el-card shadow="always"
+                       style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
+                       v-for="(item,index) in posts" key="index" class="list-item box-card">
+                <el-row>
+                  <el-col span="20" @click="seePost(item)"
+                          style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
+                    <el-link @click.native=seePost(item)
+                             style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
+                      {{ item.title }}
+                    </el-link>
 
-                </el-col>
+                  </el-col>
                   <!--                <el-col span="3" style="overflow: hidden">-->
                   <!--                  <el-dropdown split-button type="primary">-->
                   <!--                    <i id='starIcon' class="el-icon-star-off"></i>-->
@@ -160,7 +163,7 @@
 
                   <el-col span="2" style="padding-top: 1px;overflow: hidden">
                     <el-button @click="addStar(item)" id="star" type="primary"
-                               size="small" style="right:5px;display: none" ><i
+                               size="small" style="right:5px;display: none"><i
                       id="'starIcon'+index" class="el-icon-star-off"></i></el-button>
                   </el-col>
                   <el-col span="2" style="padding-top: 1px;overflow: hidden">
@@ -170,71 +173,72 @@
                       </el-button>
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="delPost">删除</el-dropdown-item>
-<!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                        <!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-col>
 
 
-              </el-row>
-              <el-row
-                style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
-                <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
-                         @click.native=seePost(item)>
-                  {{ item.detail }}
-                </el-link>
-              </el-row>
+                </el-row>
+                <el-row
+                  style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
+                  <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
+                           @click.native=seePost(item)>
+                    {{ item.detail }}
+                  </el-link>
+                </el-row>
 
-            </el-card>
-          </ul>
-          <p v-if="loading"></p>
-          <p v-if="noMore">没有更多了</p>
-        </div>
-      </el-col>
+              </el-card>
+            </ul>
+            <p v-if="loading"></p>
+            <p v-if="noMore">没有更多了</p>
+          </div>
+        </el-col>
 
-      <el-col span="6" offset="1">
-        <el-card class="box-card" shadow="always"
-          style="background-color: white;margin-bottom: 30px;min-height: 200px;text-align: center;">
-          <el-row
-            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 0px;color: rgba(0,0,0,0.7);">
-            圈子规则
-          </el-row>
-          <el-row v-model="rules"
-                  style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-            {{circle.rule}}
-          </el-row>
-          <el-row id="ruleChange"
-                  style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
-            <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
-                       @click="changeRuleVisible = true">修改规则
-            </el-button>
-            <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
-              <el-form :model="form">
-                <el-form-item label="输入新规则" :label-width="formLabelWidth">
-                  <el-input type="textarea" :rows="5" v-model="newRule"
-                            placeholder="请输入新规则"
-                            maxlength="300" show-word-limit autocomplete="off"></el-input>
-                </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="changeRuleVisible = false">取 消</el-button>
-                <el-button type="primary" @click="changeRule">确 定</el-button>
-              </div>
-            </el-dialog>
-          </el-row>
-        </el-card>
-        <el-card class="box-card" shadow="always" style="background-color: white;min-height: 160px;text-align: center;">
-          <el-row
-            style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: rgba(0,0,0,0.7);">
-            课程信息
-          </el-row>
-          <el-row v-model="classDetail"
-                  style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-            {{circle.detail}}
-          </el-row>
-        </el-card>
-      </el-col>
-    </el-row>
+        <el-col span="6" offset="1">
+          <el-card class="box-card" shadow="always"
+                   style="background-color: white;margin-bottom: 30px;min-height: 200px;text-align: center;">
+            <el-row
+              style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 0px;color: rgba(0,0,0,0.7);">
+              圈子规则
+            </el-row>
+            <el-row v-model="rules"
+                    style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+              {{circle.rule}}
+            </el-row>
+            <el-row id="ruleChange"
+                    style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
+              <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
+                         @click="changeRuleVisible = true">修改规则
+              </el-button>
+              <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
+                <el-form :model="form">
+                  <el-form-item label="输入新规则" :label-width="formLabelWidth">
+                    <el-input type="textarea" :rows="5" v-model="newRule"
+                              placeholder="请输入新规则"
+                              maxlength="300" show-word-limit autocomplete="off"></el-input>
+                  </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                  <el-button @click="changeRuleVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="changeRule">确 定</el-button>
+                </div>
+              </el-dialog>
+            </el-row>
+          </el-card>
+          <el-card class="box-card" shadow="always"
+                   style="background-color: white;min-height: 160px;text-align: center;">
+            <el-row
+              style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: rgba(0,0,0,0.7);">
+              课程信息
+            </el-row>
+            <el-row v-model="classDetail"
+                    style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+              {{circle.detail}}
+            </el-row>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -259,10 +263,12 @@
         /////请求
         circle: {},
         classId: '',
-        rules: "",
+        rules: '',
         userInfo: null,
         amount: 0,
         posts: [],
+        addOrNot: false,
+        userType:'student',
 
       }
     },
@@ -275,11 +281,13 @@
       }
     },
     mounted() {
-      console.log(this.$route.params.course.id)
-      this.classId = this.$route.params.course.id
-      this.rules = this.$route.params.course.rule
-      this.circle = this.$route.params.course
-      if (this.rules == "") {
+      console.log(this.$route.query.course.id)
+      this.classId = this.$route.query.course.id
+      this.rules = this.$route.query.course.rule
+      this.circle = this.$route.query.course
+      this.userType=this.$store.state.userInfo.usertype
+      //this.addOrNot=   //undone
+      if (this.rules == '') {
         this.rules = "暂无规则"
       }
       this.axios({
@@ -292,6 +300,7 @@
       }).then(res => {
         // console.log(res)
         if (res.data.code == 1001) {
+          concole.log(this.$store.state.userInfo)
           if (this.$store.state.userInfo.usertype == 'student') {
             document.getElementById("ruleChange").setAttribute("style", "display:none")
             document.getElementById("star").setAttribute("style", "display:none")
@@ -320,7 +329,7 @@
         })
       },
       seevideo() {
-        window.localStorage.setItem('course',this.circle)
+        window.localStorage.setItem('course', this.circle)
         this.$router.push({
           name: 'videolist2',
         })
