@@ -212,7 +212,7 @@ import navbar from '../navbars/navbar'
             seeCommunity(item){
                 this.$router.push({
                     name:'inCircle',
-                    params:{
+                    query:{
                         course:item
                     }
                 })
