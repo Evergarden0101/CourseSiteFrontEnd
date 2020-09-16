@@ -237,12 +237,14 @@
       </el-col>
     </el-row>
     </div>
+    <manage-stu/>
   </div>
 </template>
 
 <script>
   // import infiniteScroll from 'vue-infinite-scroll'
   // Vue.use(infiniteScroll)
+  import manageStu from  '../userManage/manageStudents'
   export default {
     data() {
       return {
@@ -267,6 +269,9 @@
 
       }
     },
+    components:{
+        manageStu
+    } ,
     computed: {
       noMore() {
         return this.count >= this.amount
