@@ -32,18 +32,26 @@
               <span style="font-size: 30px;font-weight: bolder;color: black">&nbsp&nbsp&nbsp</span>
               <el-tooltip content="加入课程"
                           placement="top" effect="dark">
-                <el-button v-if=" this.userType === 'student' && this.addOrNot === false" size="medium" class="add"
+                <el-button size="medium" class="add"
                            id="addbtn"
                            @click="addClass" round
-                           style="position: relative;font-weight: bolder;color: black;border: 3px solid;border-color: #00e6ff;top: -5px">
+                           >
                   加入
+                </el-button>
+              </el-tooltip>
+              <el-tooltip content="已申请课程"
+                          placement="top" effect="dark">
+                <el-button size="medium" class="applied"
+                           id="appliedbtn" disabled round
+                           >
+                  已申请
                 </el-button>
               </el-tooltip>
               <el-tooltip content="已加入课程"
                           placement="top" effect="dark">
                 <el-button v-if=" this.userType === 'student' && this.addOrNot === true" size="medium" class="added"
                            id="addedbtn" disabled round
-                           style="position: relative;font-weight: bolder;color: black;border: 3px solid;border-color: #00e6ff;top: -5px">
+                           >
                   已加入
                 </el-button>
               </el-tooltip>
@@ -66,11 +74,11 @@
                 <span style="margin-left: 15px"><el-link :underline="false" @click.native=seeposts()
                                                          style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                 >讨论</el-link></span>
-              <span style="margin-left: 15px"><el-link :underline="false"
+              <span v-if="this.userType != 'student'" style="margin-left: 15px"><el-link :underline="false"
                                                        style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                                                        @click.native=seestatic()
               >学习统计</el-link></span>
-              <span style="margin-left: 15px"><el-link :underline="false" @click.native=seemanage()
+              <span v-if="this.userType != 'student'" style="margin-left: 15px"><el-link :underline="false" @click.native=seemanage()
                                                        style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
               >成员管理</el-link></span>
             </el-col>
@@ -134,13 +142,17 @@
                 </el-collapse>
               </div>
               <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)"
-                  >
+              >
                 <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
                     infinite-scroll-distance="30"
                     style="border-radius: 6px;">
                   <el-card shadow="always"
                            style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
                            v-for="(item,index) in posts" key="index" class="list-item box-card">
+                    <el-row style="height:20px;">
+
+                    </el-row>
+
                     <el-row>
                       <el-col span="20" @click="seePost(item)"
                               style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
@@ -214,7 +226,7 @@
                       style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
                 {{this.rules}}
               </el-row>
-              <el-row id="ruleChange"
+              <el-row v-if="this.userType != 'student'" id="ruleChange"
                       style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
                 <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
                            @click="changeRuleVisible = true">修改规则
@@ -305,6 +317,7 @@
         } else {
           this.rules = this.$route.query.course.rule
         }
+        console.log(this.$route.query.course)
         window.localStorage.setItem('courserule', this.rules)
         window.localStorage.setItem('coursename', this.circle.name)
         window.localStorage.setItem('coursedetail', this.circle.detail)
@@ -319,13 +332,14 @@
         this.isIn()
         console.log(this.classId)
       }
+      console.log(this.classId)
       this.userType = this.$store.state.userInfo.usertype
       //console.log(this.rules== '')
       this.userInfo = this.$store.state.userInfo
       // console.log(this.$store.state)
     },
     methods: {
-      getposts(){
+      getposts() {
         this.axios({
           method: 'post',
           url: '/findpostbycourse',
@@ -354,18 +368,34 @@
           }
         })
       },
-      isIn(){
+      isIn() {
+        console.log(this.classId)
         this.axios({
-          method:'post',
+          method: 'post',
           url: '/isInCourse',
           headers: {'token': this.$store.state.userInfo.token},
           data: {
             courseid: this.classId,
           }
-        }).then(res=>{
-          if(res.data.code==1001){
-            this.addOrNot=res.data.data   //undone
-          }else {
+        }).then(res => {
+          if (res.data.code == 1001) {
+            this.addOrNot = res.data.data   //undone
+            if (this.userType != 'student'){
+              document.getElementById("addbtn").setAttribute("style","display:none")
+              document.getElementById("appliedbtn").setAttribute("style","display:none")
+              document.getElementById("addedbtn").setAttribute("style","display:none")
+            }else {
+              if(this.addOrNot==true){
+                document.getElementById("addbtn").setAttribute("style","display:none")
+                document.getElementById("appliedbtn").removeAttribute("style")
+                document.getElementById("addedbtn").removeAttribute("style")
+              }else if(this.addOrNot==false){
+                document.getElementById("addbtn").removeAttribute("style")
+                document.getElementById("appliedbtn").setAttribute("style","display:none")
+                document.getElementById("addedbtn").setAttribute("style","display:none")
+              }
+            }
+          } else {
             this.$message({
               showClose: true,
               type: 'error',
@@ -376,7 +406,7 @@
       },
       seeposts() {
         document.getElementById("postlist").removeAttribute("style")
-        document.getElementById("managepage").setAttribute("style","display:none")
+        document.getElementById("managepage").setAttribute("style", "display:none")
       },
       seestatic() {
         this.tabName = 'second'
@@ -384,7 +414,7 @@
       },
       seemanage() {
         document.getElementById("managepage").removeAttribute("style")
-        document.getElementById("postlist").setAttribute("style","display:none")
+        document.getElementById("postlist").setAttribute("style", "display:none")
       },
       handleClick(tab) {
         if (tab.name === 'first') {
@@ -598,21 +628,19 @@
       addClass() {
         this.axios({
           method: 'post',
-          url: '',
+          url: '/applyCourse',
           headers: {'token': this.$store.state.userInfo.token},
-          params: {
-            classId: this.classId,
+          data: {
+            courseid: this.classId,
           },
         }), then(res => {
           if (res.data.code == 1001) {
             this.$message({
               showClose: true,
-              message: '成功加入课程',
+              message: '成功申请课程',
               type: 'success'
             }),
-              //   document.getElementById('addBtn').setAttribute("disabled", true)
-              // document.getElementById('addBtn').textContent("已加入")
-              this.addOrNot = true
+              this.isIn()
           } else {
             this.$message({
               showClose: true,
@@ -673,8 +701,26 @@
   }
 
 
-  .add:hover, .quit:hover {
+  .add:hover {
     background-color: #73ff85;
+  }
+
+  .add {
+    position: relative;
+    font-weight: bolder;
+    color: black;
+    border: 3px solid;
+    border-color: #00e6ff;
+    top: -5px
+  }
+
+  .applied, .added{
+    position: relative;
+    font-weight: bolder;
+    color: black;
+    border: 3px solid;
+    border-color:grey;
+    top: -5px
   }
 
 
