@@ -31,16 +31,9 @@
                 <el-button type="info" plain>拒绝申请</el-button>
               </el-col>
             </el-row>
-            <el-row style="text-align: center;font-size: 30px">
+            <el-row v-else style="text-align: center;font-size: 30px">
               目前没有教师申请认证
             </el-row>
-          </el-tab-pane>
-          <el-tab-pane label="学生管理">
-            <!--              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
-            <!--              <div style="margin: 15px 0;"></div>-->
-            <!--              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-            <!--                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>-->
-            <!--              </el-checkbox-group>-->
           </el-tab-pane>
         </el-tabs>
       </el-row>
@@ -55,19 +48,6 @@
         data(){
             return{
                 tabPosition:"left",
-                stuForm:[
-                    {
-                        name:'李小明',
-                        id:'123123'
-                    },
-                    {
-                        name:'张小华',
-                        id:'124124'
-                    },
-                    {
-                        name:'王小花',
-                        id:'125125'
-                    }],
                 applicationList:[
                     {
                         name:'李小明',
@@ -81,7 +61,6 @@
                         name:'王小花',
                         id:'125125'
                     }],
-                fileList:[]
             }
         },
         methods:{
