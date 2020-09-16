@@ -63,14 +63,14 @@
 
           <el-row style="">
             <el-col span="24" style="height:25px;text-align: left">
-                <span style="margin-left: 15px"><el-link :underline="false"
+                <span style="margin-left: 15px"><el-link :underline="false" @click.native=seeposts()
                                                          style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                 >讨论</el-link></span>
               <span style="margin-left: 15px"><el-link :underline="false"
                                                        style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-                                                       @click.native=seevideo()
+                                                       @click.native=seestatic()
               >学习统计</el-link></span>
-              <span style="margin-left: 15px"><el-link :underline="false"
+              <span style="margin-left: 15px"><el-link :underline="false" @click.native=seemanage()
                                                        style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
               >成员管理</el-link></span>
             </el-col>
@@ -81,118 +81,124 @@
         <el-row>
 
           <el-col span="17" style="min-height: 200px;border-radius: 6px;">
-            <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
-">
-              <el-collapse v-model="activeNames" accordion>
+            <div id="postlist">
+              <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
+            ">
+                <el-collapse v-model="activeNames" accordion>
 
-                <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
+                  <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
 
-                  <!--            <el-row-->
-                  <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
-                  <!--              新&nbsp帖&nbsp子-->
-                  <!--            </el-row>-->
-                  <el-row
-                    style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;text-align: center;font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
-                    <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
-                      标题
-                    </el-col>
-                    <el-col span="18" offset="1" style=";height: inherit">
-                      <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
-                      </el-input>
-                    </el-col>
-                  </el-row>
+                    <!--            <el-row-->
+                    <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
+                    <!--              新&nbsp帖&nbsp子-->
+                    <!--            </el-row>-->
+                    <el-row
+                      style="border-top-left-radius: 6px;border-top-right-radius: 6px;padding-top:15px;height: 60px;text-align: center;font-size: 20px;font-weight: bolder;color: rgba(0,0,0,0.7)">
+                      <el-col span="3" offset="1" style="height: inherit;padding-top: 5px">
+                        标题
+                      </el-col>
+                      <el-col span="18" offset="1" style=";height: inherit">
+                        <el-input type="text" placeholder="请输入标题" v-model="newTitle" maxlength="30" show-word-limit>
+                        </el-input>
+                      </el-col>
+                    </el-row>
 
-                  <el-row style="height: 10px;"></el-row>
+                    <el-row style="height: 10px;"></el-row>
 
-                  <el-row
-                    style="text-align: center;font-size: 20px;font-weight: bolder;color:rgba(0,0,0,0.7)">
-                    <el-col span="3" offset="1"
-                            style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
-                      正文
-                    </el-col>
-                    <el-col span="18" offset="1" style=";min-height: 120px;">
-                      <el-input
-                        type="textarea"
-                        :rows="8"
-                        placeholder="请输入内容"
-                        v-model="newContent"
-                        maxlength="500" show-word-limit
-                        style="margin-bottom: 15px">
-                      </el-input>
-                    </el-col>
-                  </el-row>
-                  <el-row
-                    style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
-                    <el-button type="primary" round class="newPost"
-                               style="position: absolute;right: 30px;bottom: 8px" @click="post">
-                      提交
-                    </el-button>
-                  </el-row>
+                    <el-row
+                      style="text-align: center;font-size: 20px;font-weight: bolder;color:rgba(0,0,0,0.7)">
+                      <el-col span="3" offset="1"
+                              style="height: 45px;padding-top: 5px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
+                        正文
+                      </el-col>
+                      <el-col span="18" offset="1" style=";min-height: 120px;">
+                        <el-input
+                          type="textarea"
+                          :rows="8"
+                          placeholder="请输入内容"
+                          v-model="newContent"
+                          maxlength="500" show-word-limit
+                          style="margin-bottom: 15px">
+                        </el-input>
+                      </el-col>
+                    </el-row>
+                    <el-row
+                      style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                      <el-button type="primary" round class="newPost"
+                                 style="position: absolute;right: 30px;bottom: 8px" @click="post">
+                        提交
+                      </el-button>
+                    </el-row>
 
-                </el-collapse-item>
-              </el-collapse>
+                  </el-collapse-item>
+                </el-collapse>
+              </div>
+              <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)"
+                  >
+                <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
+                    infinite-scroll-distance="30"
+                    style="border-radius: 6px;">
+                  <el-card shadow="always"
+                           style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
+                           v-for="(item,index) in posts" key="index" class="list-item box-card">
+                    <el-row>
+                      <el-col span="20" @click="seePost(item)"
+                              style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
+                        <el-link @click.native=seePost(item)
+                                 style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
+                          {{ item.title }}
+                        </el-link>
+
+                      </el-col>
+                      <!--                <el-col span="3" style="overflow: hidden">-->
+                      <!--                  <el-dropdown split-button type="primary">-->
+                      <!--                    <i id='starIcon' class="el-icon-star-off"></i>-->
+                      <!--                    <el-dropdown-menu slot="dropdown" trigger="click" @command="handleCommand($event, item)"-->
+                      <!--                                      id="moreList">-->
+                      <!--                      <el-dropdown-item command="delPost">删除</el-dropdown-item>-->
+                      <!--                      <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                      <!--                    </el-dropdown-menu>-->
+                      <!--                  </el-dropdown>-->
+                      <!--                </el-col>-->
+
+
+                      <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                        <el-button @click="addStar(item)" id="star" type="primary"
+                                   size="small" style="right:5px;display: none"><i
+                          id="'starIcon'+index" class="el-icon-star-off"></i></el-button>
+                      </el-col>
+                      <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                        <el-dropdown trigger="click" @command="handleCommand($event, item)" id="moreList"
+                                     style="left: 1px">
+                          <el-button type="primary" size="small" style="">
+                            <i class="el-icon-more-outline"></i>
+                          </el-button>
+                          <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="delPost">删除</el-dropdown-item>
+                            <!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                          </el-dropdown-menu>
+                        </el-dropdown>
+                      </el-col>
+
+
+                    </el-row>
+                    <el-row
+                      style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
+                      <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
+                               @click.native=seePost(item)>
+                        {{ item.detail }}
+                      </el-link>
+                    </el-row>
+
+                  </el-card>
+                </ul>
+                <p v-if="loading"></p>
+                <p v-if="noMore">没有更多了</p>
+              </div>
             </div>
 
-            <div class="infinite-list-wrapper" style="overflow:auto;min-height: 400px;rgba(0,0,0,0.58)">
-              <ul class="list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
-                  infinite-scroll-distance="30"
-                  style="border-radius: 6px;">
-                <el-card shadow="always"
-                         style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
-                         v-for="(item,index) in posts" key="index" class="list-item box-card">
-                  <el-row>
-                    <el-col span="20" @click="seePost(item)"
-                            style="padding-left: 15px;height: 30px;text-align: left;border-radius: 6px">
-                      <el-link @click.native=seePost(item)
-                               style="font-size: 18px;font-weight: bolder;color: rgba(0,0,0,0.7)">
-                        {{ item.title }}
-                      </el-link>
-
-                    </el-col>
-                    <!--                <el-col span="3" style="overflow: hidden">-->
-                    <!--                  <el-dropdown split-button type="primary">-->
-                    <!--                    <i id='starIcon' class="el-icon-star-off"></i>-->
-                    <!--                    <el-dropdown-menu slot="dropdown" trigger="click" @command="handleCommand($event, item)"-->
-                    <!--                                      id="moreList">-->
-                    <!--                      <el-dropdown-item command="delPost">删除</el-dropdown-item>-->
-                    <!--                      <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
-                    <!--                    </el-dropdown-menu>-->
-                    <!--                  </el-dropdown>-->
-                    <!--                </el-col>-->
-
-
-                    <el-col span="2" style="padding-top: 1px;overflow: hidden">
-                      <el-button @click="addStar(item)" id="star" type="primary"
-                                 size="small" style="right:5px;display: none"><i
-                        id="'starIcon'+index" class="el-icon-star-off"></i></el-button>
-                    </el-col>
-                    <el-col span="2" style="padding-top: 1px;overflow: hidden">
-                      <el-dropdown trigger="click" @command="handleCommand($event, item)" id="moreList"
-                                   style="left: 1px">
-                        <el-button type="primary" size="small" style="">
-                          <i class="el-icon-more-outline"></i>
-                        </el-button>
-                        <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item command="delPost">删除</el-dropdown-item>
-                          <!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
-                        </el-dropdown-menu>
-                      </el-dropdown>
-                    </el-col>
-
-
-                  </el-row>
-                  <el-row
-                    style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
-                    <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
-                             @click.native=seePost(item)>
-                      {{ item.detail }}
-                    </el-link>
-                  </el-row>
-
-                </el-card>
-              </ul>
-              <p v-if="loading"></p>
-              <p v-if="noMore">没有更多了</p>
+            <div id="managepage" style="display: none">
+              <manageStu/>
             </div>
 
           </el-col>
@@ -241,7 +247,6 @@
             </el-card>
           </el-col>
         </el-row>
-
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -250,7 +255,8 @@
 <script>
   // import infiniteScroll from 'vue-infinite-scroll'
   // Vue.use(infiniteScroll)
-  import manageStu from  '../userManage/manageStudents'
+  import manageStu from '../userManage/manageStudents'
+
   export default {
     data() {
       return {
@@ -279,9 +285,9 @@
 
       }
     },
-    components:{
-        manageStu
-    } ,
+    components: {
+      manageStu
+    },
     computed: {
       noMore() {
         return this.count >= this.amount
@@ -291,7 +297,7 @@
       }
     },
     mounted() {
-      if (this.$route.query.course.id!=null){
+      if (this.$route.query.course.id != null) {
         this.classId = this.$route.query.course.id
         this.circle = this.$route.query.course
         if (this.$route.query.course.rule == '') {
@@ -299,57 +305,94 @@
         } else {
           this.rules = this.$route.query.course.rule
         }
-        window.localStorage.setItem('courserule',this.rules)
-        window.localStorage.setItem('coursename',this.circle.name)
-        window.localStorage.setItem('coursedetail',this.circle.detail)
-        window.localStorage.setItem('courseid',this.classId)
-      }else {
-        this.classId=window.localStorage.getItem('courseid')
-        this.circle.name =window.localStorage.getItem('coursename')
-        this.circle.detail =window.localStorage.getItem('coursedetail')
-        this.rules=window.localStorage.getItem('courserule')
-        this.tabName=window.localStorage.getItem('coursecircle')
+        window.localStorage.setItem('courserule', this.rules)
+        window.localStorage.setItem('coursename', this.circle.name)
+        window.localStorage.setItem('coursedetail', this.circle.detail)
+        window.localStorage.setItem('courseid', this.classId)
+      } else {
+        this.classId = window.localStorage.getItem('courseid')
+        this.circle.name = window.localStorage.getItem('coursename')
+        this.circle.detail = window.localStorage.getItem('coursedetail')
+        this.rules = window.localStorage.getItem('courserule')
+        this.tabName = window.localStorage.getItem('coursecircle')
+        this.getposts()
+        this.isIn()
         console.log(this.classId)
       }
       this.userType = this.$store.state.userInfo.usertype
       //console.log(this.rules== '')
-      //this.addOrNot=   //undone
       this.userInfo = this.$store.state.userInfo
       // console.log(this.$store.state)
     },
     methods: {
+      getposts(){
+        this.axios({
+          method: 'post',
+          url: '/findpostbycourse',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            id: this.classId,
+          }
+        }).then(res => {
+          // console.log(res)
+          if (res.data.code == 1001) {
+            //concole.log(this.$store.state.userInfo)
+            // if (this.$store.state.userInfo.usertype == 'student') {
+            //   document.getElementById("ruleChange").setAttribute("style", "display:none")
+            //   document.getElementById("star").setAttribute("style", "display:none")
+            //   document.getElementById("moreList").setAttribute("style", "display:none")
+            // }
+            this.posts = res.data.data
+            this.amount = this.posts.length
+            console.log(this.posts)
+          } else {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: "获取圈子内容失败"
+            })
+          }
+        })
+      },
+      isIn(){
+        this.axios({
+          method:'post',
+          url: '/isInCourse',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            courseid: this.classId,
+          }
+        }).then(res=>{
+          if(res.data.code==1001){
+            this.addOrNot=res.data.data   //undone
+          }else {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: "获取学生与课程关系失败"
+            })
+          }
+        })
+      },
+      seeposts() {
+        document.getElementById("postlist").removeAttribute("style")
+        document.getElementById("managepage").setAttribute("style","display:none")
+      },
+      seestatic() {
+        this.tabName = 'second'
+        console.log(this.tabName === 'second')
+      },
+      seemanage() {
+        document.getElementById("managepage").removeAttribute("style")
+        document.getElementById("postlist").setAttribute("style","display:none")
+      },
       handleClick(tab) {
         if (tab.name === 'first') {
           this.tabName = 'first'
         } else if (tab.name === 'second') {
           this.tabName = 'second'
-          this.axios({
-            method: 'post',
-            url: '/findpostbycourse',
-            headers: {'token': this.$store.state.userInfo.token},
-            data: {
-              id: this.classId,
-            }
-          }).then(res => {
-            // console.log(res)
-            if (res.data.code == 1001) {
-              //concole.log(this.$store.state.userInfo)
-              // if (this.$store.state.userInfo.usertype == 'student') {
-              //   document.getElementById("ruleChange").setAttribute("style", "display:none")
-              //   document.getElementById("star").setAttribute("style", "display:none")
-              //   document.getElementById("moreList").setAttribute("style", "display:none")
-              // }
-              this.posts = res.data.data
-              this.amount = this.posts.length
-              //console.log(this.posts)
-            } else {
-              this.$message({
-                showClose: true,
-                type: 'error',
-                message: "获取圈子内容失败"
-              })
-            }
-          })
+          this.getposts()
+          this.isIn()
         }
       },
       seePost(item) {
@@ -361,7 +404,7 @@
         })
       },
       seevideo() {
-        window.localStorage.setItem('coursecircle',this.tabName)
+        window.localStorage.setItem('coursecircle', this.tabName)
         window.localStorage.setItem('course', this.circle)
         this.$router.push({
           name: 'videolist2',
@@ -567,9 +610,9 @@
               message: '成功加入课程',
               type: 'success'
             }),
-            //   document.getElementById('addBtn').setAttribute("disabled", true)
-            // document.getElementById('addBtn').textContent("已加入")
-            this.addOrNot=true
+              //   document.getElementById('addBtn').setAttribute("disabled", true)
+              // document.getElementById('addBtn').textContent("已加入")
+              this.addOrNot = true
           } else {
             this.$message({
               showClose: true,
