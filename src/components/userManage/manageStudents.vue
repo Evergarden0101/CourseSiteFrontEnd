@@ -4,7 +4,7 @@
 <!--        管理学生界面-->
 <!--        提供课程信息-->
         <el-row></el-row>
-        <el-row style="width:100%;margin-top: 50px;background-color: white;height: 400px">
+        <el-card class="box-card" shadow="always" style="width:100%;margin-top: 20px;background-color: white;height: 400px">
 <!--          导航栏，审核申请-->
           <el-tabs :tab-position="tabPosition" style="padding-top: 20px">
             <el-tab-pane label="导入学生">
@@ -94,7 +94,7 @@
               </el-row>
             </el-tab-pane>
           </el-tabs>
-        </el-row>
+        </el-card>
       </el-container>
 
     </div>
@@ -313,8 +313,6 @@
 
 <style scoped>
 .manage-container{
-  padding-left: 10%;
-  padding-right: 10%;
   background-color: #d9ecff;
   min-width: 100px;
   min-height: 600px;
