@@ -52,10 +52,35 @@
                   学生学号
                 </el-col>
                 <el-col span="8">
-                    操作选项（同意/拒绝）
+                    <div style="float: right">操作选项（同意/拒绝）</div>
                 </el-col>
               </el-row>
-              <el-row v-for="item in applicationList" key="index.id" class="apply-container">
+              <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 50px">
+                <el-col span="8" style="text-align: center;margin-top: 10px">
+                  {{item.name}}
+                </el-col>
+                <el-col span="8" style="text-align: center;margin-top: 10px">
+                  {{item.id}}
+                </el-col>
+                <el-col span="8" style="text-align: center;margin-top: 10px">
+                  <div  @click="refuseApply(item.id)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">拒绝申请</div>
+                  <div  @click="confirmApply(item.id)" style="float: right;cursor:pointer">申请通过</div>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="学生管理">
+              <el-row  class="apply-head" justify="left">
+                <el-col span="8">
+                  学生姓名
+                </el-col>
+                <el-col span="8">
+                  学生学号
+                </el-col>
+                <el-col span="8">
+                  操作选项
+                </el-col>
+              </el-row>
+              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 50px">
                 <el-col span="8" style="text-align: center;margin-top: 10px">
                   {{item.name}}
                 </el-col>
@@ -63,13 +88,10 @@
                   {{item.id}}
                 </el-col>
                 <el-col span="8">
-                  <el-button type="primary" @click="confirmApply(item.id)" plain>申请通过</el-button>
-                  <el-button type="info" @click="refuseApply(item.id)" plain>拒绝申请</el-button>
+                  <div  @click="setAssist(item.id)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">设为助教</div>
+                  <div @click="delStu(item.id)" style="float: right;cursor:pointer">踢出课程</div>
                 </el-col>
               </el-row>
-            </el-tab-pane>
-            <el-tab-pane label="学生管理">
-
             </el-tab-pane>
           </el-tabs>
         </el-row>
@@ -110,8 +132,24 @@
                     name:'王小花',
                     id:'125125'
                 }],
-                fileList:[]
+                alreadyInClass:[{
+                    name:'张小华',
+                    id:'124124'
+                },
+                    {
+                        name:'王小花',
+                        id:'125125'
+                    }],
+                fileList:[],
+                courseId:''
             }
+        },
+        mounted(){
+          courseId = window.localStorage.getItem("courseid")
+           this.axios({
+               method:'post',
+
+           })
         },
         methods:{
           submitForm(fileObj){
@@ -121,7 +159,10 @@
               var file = formData.getAll("image");
               console.log(formData)
               alert("inin")
-              this.axios.post("/imageupload",formData,{
+              this.axios.post("/imageupload",{
+                  formData,
+                  courseId: this.courseId
+              },{
                   // method:'post',
                   // url:'/imageupload',
                   headers:{
@@ -140,6 +181,7 @@
                           message:'上传成功'
                       })
                       this.stuForm = res.data.stuForm
+                      this.alreadyInClass = res.data.alreadyInClass
                   }
                   else{
                       this.$message({
@@ -151,12 +193,13 @@
               alert("inin222")
           },
            confirmApply(id){
-
+              alert(1112)
               this.axios({
                   method:'post',
                   url:'/addApply',
                   data:{
-                      id:id
+                      id:id,
+                      courseId:this.courseId
                   }
               }).then(res=>{
                   if(res.code == 1001){
@@ -170,6 +213,7 @@
                           i++
                       }
                       this.applicationList.splice(i,1)
+                      this.alreadyInClass = res.data.alreadyInClass
                   }
                   else{
                       this.$notify({
@@ -179,7 +223,90 @@
                       })
                   }
               })
-           }
+           },
+            refuseApply(id){
+              this.axios({
+                  method:'/post',
+                  url:'/refuseAapply',
+                  data:{
+                      id:id,
+                      courseId:this.courseId
+                  }
+              }).then(res=>{
+                  if(res.data.code == 1001){
+                      this.$notify({
+                          type:'info',
+                          message:'申请已拒绝',
+                          duration:4500
+                      })
+                      var i = 0;
+                      for(;this.applicationList[i].id != id && i < this.applicationList.length; ){
+                          i++
+                      }
+                      this.applicationList.splice(i,1)
+                  }
+                  else{
+                      this.$notify({
+                          type:'info',
+                          message:'申请拒绝失败',
+                          duration:4500
+                      })
+                  }
+              })
+            },
+            //添加助教
+            setAssist(id){
+              this.axios({
+                  method:'post',
+                  url:'/setAssist',
+                  data:{
+                      id:id,
+                      courseId:this.courseId
+                  }
+              }).then(res=>{
+                  if(res.data.code == 1001){
+                      this.$notify({
+                          type:'info',
+                          message:'助教设置成功',
+                          duration:4500
+                      })
+                  }
+                  else{
+                      this.$notify({
+                          type:'info',
+                          message:'助教设置失败',
+                          duration:4500
+                      })
+                  }
+              })
+            },
+        //    将学生踢出课程
+            delStu(id){
+              this.axios({
+                  method:'post',
+                  url:'/delStu',
+                  data:{
+                      id:id,
+                      courseId:this.courseId
+                  }
+              }).then(res=>{
+                  if(res.data.code == 1001){
+                      this.$notify({
+                          type:'info',
+                          message:'学生已从课程中移除',
+                          duration:4500
+                      })
+                      this.alreadyInClass = res.data.alreadyInClass
+                  }
+                  else{
+                      this.$notify({
+                          type:'info',
+                          message:'学生移除失败',
+                          duration:4500
+                      })
+                  }
+              })
+            }
         }
     }
 </script>
