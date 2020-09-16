@@ -7,11 +7,11 @@
              active-text-color="#ffd04b"
              router
     >
-      <el-menu-item index="/community" style="font-size: 25px"  >社区论坛</el-menu-item>
+      <el-menu-item index="/community" style="font-size: 23px">社区论坛</el-menu-item>
 <!--      <el-menu-item index="/hello" style="font-size: 1.2em">处理中心</el-menu-item>-->
 <!--      <el-menu-item index="/inCircle" style="font-size: 1.7em">处理中心</el-menu-item>-->
-<!--      <el-menu-item index="/hello" style="font-size: 25px" >个人空间</el-menu-item>-->
-      <el-menu-item class="logout-btn" index="/" style="font-size: 25px">退出登录</el-menu-item>
+      <el-menu-item index="/userHome" style="font-size: 23px" v-if="this.$store.state.userInfo.usertype == 'student'">审核教师申请</el-menu-item>
+      <el-menu-item class="logout-btn" index="/" style="font-size: 23px">退出登录</el-menu-item>
 <!--      别删嗷，删了我生气了>_<by 江一帆-->
       <el-menu-item class="logout-btn">
         <el-input v-model="search_inf" style="width: 80%;" placeholder="搜索圈子" ></el-input>
