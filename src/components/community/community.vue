@@ -248,7 +248,7 @@ import navbar from '../navbars/navbar'
                 this.axios({
                     method:'post',
                     headers:{'token':this.$store.state.userInfo.token},
-                    url:'/addApply',
+                    url:'/applyTeacher',
                     data:{
                         imageid:this.teacher.imageid
                     }
@@ -282,6 +282,7 @@ import navbar from '../navbars/navbar'
                     if(res.data.code == 1001){
                         this.teacher.url = res.data.data.url
                         this.teacher.imageid = res.data.data.id
+                        console.log(this.teacher.url)
                     }
                     else{
                         this.$message({

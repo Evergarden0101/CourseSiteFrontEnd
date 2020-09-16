@@ -4,27 +4,31 @@
       <!--        管理学生界面-->
       <!--        提供课程信息-->
       <el-row></el-row>
-      <el-row style="width:100%;margin-top: 50px;background-color: white;height: 400px">
+      <el-row style="width:100%;margin-top: 50px;background-color: white;min-height: 400px">
         <!--          导航栏，审核申请-->
         <el-tabs :tab-position="tabPosition" style="padding-top: 20px">
           <el-tab-pane label="审核教师申请">
             <el-row  class="apply-head" justify="left">
               <el-col span="8">
-                学生姓名
+                教师姓名/工号
               </el-col>
               <el-col span="8">
-                学生学号
+                有效证件照
               </el-col>
               <el-col span="8">
                 操作选项（同意/拒绝）
               </el-col>
             </el-row>
-            <el-row v-if="applicationList.length!=0" v-for="(item,index) in applicationList" key="index" class="apply-container">
+            <el-row v-if="applicationList.length!=0" v-for="(item,index) in applicationList" key="index" class="apply-container" style="width:100%;height: 150px">
               <el-col span="8">
-                {{item.name}}
+                {{item.username}} / {{item.userid}}
               </el-col>
-              <el-col span="8">
-                {{item.id}}
+              <el-col span="6" >
+                  <el-image
+                    style="width: 120px; height: 120px"
+                    :src="item.imageurl[0]"
+                    :preview-src-list="item.imageurl">
+                  </el-image>
               </el-col>
               <el-col span="8">
                 <el-button type="primary" plain>申请通过</el-button>
@@ -45,8 +49,24 @@
 <script>
     export default {
         name: "manageStudents",
+        mounted(){
+          this.axios({
+              method:'post',
+              url:'/getTeacherApply',
+              headers:{'token':this.$store.state.userInfo.token}
+          }).then(res=>{
+              console.log(res)
+              if(res.data.code == 1001){
+                  this.applicationList = res.data.data
+              }
+              else{
+
+              }
+          })
+        },
         data(){
             return{
+                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
                 tabPosition:"left",
                 applicationList:[
                     {
@@ -61,6 +81,9 @@
                         name:'王小花',
                         id:'125125'
                     }],
+                srcList: [
+                    'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                ]
             }
         },
         methods:{
