@@ -69,11 +69,7 @@
               </el-row>
             </el-tab-pane>
             <el-tab-pane label="学生管理">
-<!--              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
-<!--              <div style="margin: 15px 0;"></div>-->
-<!--              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-<!--                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>-->
-<!--              </el-checkbox-group>-->
+
             </el-tab-pane>
           </el-tabs>
         </el-row>
