@@ -330,7 +330,7 @@
         this.tabName = window.localStorage.getItem('coursecircle')
         this.getposts()
         this.isIn()
-        console.log(this.classId)
+        // console.log(this.classId)
       }
       console.log(this.classId)
       this.userType = this.$store.state.userInfo.usertype

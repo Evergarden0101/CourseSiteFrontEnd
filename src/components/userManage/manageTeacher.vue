@@ -31,8 +31,8 @@
                   </el-image>
               </el-col>
               <el-col span="8">
-                <el-button type="primary" plain>申请通过</el-button>
-                <el-button type="info" plain>拒绝申请</el-button>
+                <el-button type="primary" @click="agreeApply(item.userid)" plain>申请通过</el-button>
+                <el-button type="info" @click="refuseApply(item.userid)" plain>拒绝申请</el-button>
               </el-col>
             </el-row>
             <el-row v-else style="text-align: center;font-size: 30px">
@@ -87,42 +87,68 @@
             }
         },
         methods:{
-            submitForm(fileObj){
-                console.log(fileObj)
-                let formData = new FormData();
-                formData.set("image",fileObj.file);
-                var file = formData.getAll("image");
-                console.log(formData)
-                alert("inin")
-                this.axios.post("/imageupload",formData,{
-                    // method:'post',
-                    // url:'/imageupload',
-                    headers:{
-                        'token':this.$store.state.userInfo.token,
-                        "Content-type":"multipart/form-data"
-                    },
-                    // data:{
-                    //     image:formData
-                    // }
-                }).then(res=>{
-                    alert("inin222")
-                    console.log(res)
-                    if(res.data.code == 1001){
-                        this.$message({
-                            type:'info',
-                            message:'上传成功'
-                        })
-                        this.stuForm = res.data.stuForm
-                    }
-                    else{
-                        this.$message({
-                            type:'info',
-                            message:"上传失败，只允许上次.xlxs文件"
-                        })
-                    }
-                })
-                alert("inin222")
-            }
+           agreeApply(id){
+               this.axios({
+                   method: 'post',
+                   url: 'dealApply',
+                   headers:{'token':this.$store.state.userInfo.token},
+                   data:{
+                       applyid:id,
+                       result: 1
+                   }
+               }).then(res=>{
+                   if(res.data.code == 1001){
+                       this.$notify({
+                           type:'info',
+                           message:'申请已通过',
+                           duration:4500
+                       })
+                       var i = 0;
+                       for(;this.applicationList[i].id != id && i < this.applicationList.length; ){
+                           i++
+                       }
+                       this.applicationList.splice(i,1)
+                   }
+                   else{
+                       this.$notify({
+                           type:'info',
+                           message:'申请通过失败',
+                           duration:4500
+                       })
+                   }
+               })
+           },
+           refuseApply(){
+               this.axios({
+                   method:'post',
+                   url:'/dealApply',
+                   headers:{'token':this.$store.state.userInfo.token},
+                   data:{
+                       applyid:id,
+                       result:0
+                   }
+               }).then(res=>{
+                   if(res.data.code == 1001){
+                       this.$notify({
+                           type:'info',
+                           message:'申请已拒绝',
+                           duration:4500
+                       })
+                       var i = 0;
+                       for(;this.applicationList[i].id != id && i < this.applicationList.length; ){
+                           i++
+                       }
+                       this.applicationList.splice(i,1)
+                   }
+                   else{
+                       this.$notify({
+                           type:'info',
+                           message:'申请拒绝失败',
+                           duration:4500
+                       })
+                   }
+               })
+           }
         }
     }
 </script>
