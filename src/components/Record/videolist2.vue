@@ -31,18 +31,21 @@
       <div class="upload-container">
         <el-upload
           class="upload-demo"
-          action="https://localhost/8080/"
+          ref="upload"
+          :limit="20"
+          :action="action"
           drag
-          accept=".mp4, .txt"
-          :auto-upload="true"
+          :accept="'.mp4, .txt'"
           :before-upload="before_upload"
           :http-request="upload"
+          :auto-upload="true"
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
-          <h5>注意：只能上传mp4文件</h5>
+          <h5>注意：只能上传mp4文件且文件最大500Mb</h5>
         </el-upload>
       </div>
+      <el-progress :stroke-width="10" :percentage="progressPercent" v-if="progressFlag==true"></el-progress>
     </div>
     <div class="notice">
       <div class="notice-title">公告栏</div>
@@ -54,24 +57,26 @@
 </template>
 
 <script>
-  export default{
+  export default {
     name: 'videolist2',
-    data(){
-      return{
-        lecture:{
-          id:'',
-          name:'',
-          detail:'',
-          date:'',
+    data() {
+      return {
+        progressFlag: false,
+        progressPercent: 0,
+        lecture: {
+          id: '',
+          name: '',
+          detail: '',
+          date: '',
         },
-        notices:[
+        notices: [
           {notice: '公告1：该课程截止时间为2020.09.31，请同学尽快添加课程'},
           {notice: '公告2：作业2已发布，请同学尽快完成提交'}
         ],
-        videos:[],
+        videos: [],
       }
     },
-    beforeMount(){
+    beforeMount() {
       this.lecture.id = window.localStorage.getItem('courseid')
       this.lecture.date = window.localStorage.getItem('coursetime')
       this.lecture.detail = window.localStorage.getItem('coursedetail')
@@ -79,79 +84,97 @@
       this.axios({
         method: 'post',
         url: '/getvideos',
-        data:{
+        data: {
           courseid: this.lecture.id,
         },
-        headers:{
-          'token':this.$store.state.userInfo.token,
+        headers: {
+          'token': this.$store.state.userInfo.token,
         }
-      }).then(res =>{
-        if(res.data.code == 1001){
+      }).then(res => {
+        if (res.data.code == 1001) {
           this.videos = res.data.data
-        }
-        else{
+        } else {
         }
       })
     },
     methods: {
-      delete_the_video(i){
+      delete_the_video(i) {
         this.axios({
           method: 'post',
           url: '/deletevideo',
-          data:{
+          data: {
             'id': this.videos[i].id,
           },
-          headers:{
-            'token':this.$store.state.userInfo.token,
+          headers: {
+            'token': this.$store.state.userInfo.token,
           }
-        }).then(res =>{
-          if(res.data.code == 1001){
+        }).then(res => {
+          if (res.data.code == 1001) {
             alert("删除成功")
-          }
-          else{
+          } else {
             alert("删除失败")
           }
         })
-        setTimeout(()=>{
+        setTimeout(() => {
           location.reload()
         }, 1000)
       },
-      play_the_video(i){
-        this.$router.replace({
+      play_the_video(i) {
+        window.localStorage.setItem('videoid', this.videos[i].id)
+        this.$router.push({
           name: 'player',
-          params:{
-            id: this.videos[i].id,
-          }
         })
       },
-      before_upload(file){
-        const isOverSize = file.size/1024/1024 < 100
-        if(isOverSize){
+      before_upload(file) {
+        const isOverSize = file.size / 1024 / 1024 < 500;
+        if (!isOverSize) {
+          alert("文件大小超过500Mb.拒绝上传")
         }
-        else{
-          alert("文件大小超过100Mb，不能上传.")
+        const fileend = file.name.substring(file.name.lastIndexOf("."));
+        alert(fileend)
+        if(fileend != "mp4"){
+          alert("文件类型不符合规定，请重新选择文件")
         }
       },
       upload(File){
+        this.progressFlag=true;
+        this.progressPercent = 0;
         let formData = new FormData();
         formData.append("video", File.file);
         formData.append("courseid", this.lecture.id);
-        this.axios.post("/fileupload",formData,{
-          headers:{
-            "Content-type":"multipart/form-data",
-            "token":this.$store.state.userInfo.token,
-          }
-        }).then(res=>{
-          if(res.data.code == 1001){
+        this.uploadcallback(formData, (res)=>{
+          let loaded = res.loaded,
+            total = res.total;
+          this.$nextTick(()=>{
+            this.progressPercent = (loaded/total)*100
+          })
+        }, (res)=>{
+          if(res.code == 1001){
             alert("文件上传成功")
-          }
-          else{
-            alert("文件上传失败，请按照规定格式重新上传");
+            this.progressFlag=false;
+            location.reload()
           }
         })
-        setTimeout(()=>{
-          location.reload()
-        }, 1000)
+      },
+      uploadcallback(file, callback1, callback2){
+        this.axios({
+          url:"/fileupload",
+          data: file,
+          method: 'post',
+          headers: {
+            "token": this.$store.state.userInfo.token,
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress: function (e){
+            if(e.lengthComputable){
+              callback1(e)
+            }
+          }
+        }).then(res =>{
+          callback2(res.data);
+        }).then(error =>{
+          console.log(error)
+        })
       }
     }
   }
