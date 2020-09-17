@@ -11,6 +11,7 @@ import VideoList2 from '../components/Record/videolist2'
 import Index from '../components/Index'
 import ManageStu from '../components/userManage/manageStudents'
 import ManageTea from '../components/userManage/manageTeacher'
+import Information from  '../components/community/information'
 
 Vue.use(VueRouter)
 import postPage from '../components/Post/postPage'
@@ -83,6 +84,11 @@ export default new VueRouter({
           path:'/manageTea',
           name:'ManageTea',
           component:ManageTea
+        },
+        {
+          path:'/information',
+          name:'Information',
+          component:Information
         }
       ]
     },
