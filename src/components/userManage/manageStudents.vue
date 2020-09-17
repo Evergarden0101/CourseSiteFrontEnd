@@ -84,17 +84,22 @@
                   操作选项
                 </el-col>
               </el-row>
-              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 50px">
-                <el-col span="8" style="text-align: center;margin-top: 10px">
+              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 70px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
                   {{item.studentname}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
                   {{item.studentid}}
                 </el-col>
-                <el-col span="8">
-                  <div v-if="item.type==1" @click="setAssist(item.studentid)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">设为助教</div>
-                  <div v-if="item.type==2" @click="delAssist(item.studentid)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">取消助教</div>
-                  <div @click="delStu(item.studentid)" style="float: right;cursor:pointer">踢出课程</div>
+                <el-col span="8" style="text-align: center;">
+                  <el-row style="height: 20px;margin-top: 3px">
+                    <div v-if="item.type==1" @click="setAssist(item.studentid)" style="cursor:pointer">设为助教</div>
+                    <div v-if="item.type==2" @click="delAssist(item.studentid)" style="cursor:pointer">取消助教</div>
+                  </el-row>
+                  <el-row style="height: 20px;margin-top: 10px">
+                    <div v-if="item.type==1" @click="delStu(item.studentid)" style="cursor:pointer">踢出课程</div>
+                    <div v-if="item.type==2"  style="cursor:pointer;color: #C0C4CC">踢出课程</div>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>

@@ -13,7 +13,7 @@
       <el-menu-item index="/manageTea" style="font-size: 23px" v-if="this.$store.state.userInfo.usertype == 'admin'">审核教师申请</el-menu-item>
       <el-menu-item class="logout-btn" index="/" style="font-size: 23px">退出登录</el-menu-item>
         <el-menu-item  index="/information">
-            <i class="el-icon-message" ><el-badge v-if="this.infNum!=0" :value=infNum class="item" ></el-badge></i>
+            <i class="el-icon-message" ><el-badge v-if="infNum != 0" :value=infNum class="item" ></el-badge></i>
         </el-menu-item>
     </el-menu>
   </div>
@@ -32,7 +32,7 @@ const index = new Set(['/community'])
         mounted(){
           this.axios({
               method: 'post',
-              url:'/getMessageNum',
+              url:'/getmessagenum',
               headers:{'token':this.$store.state.userInfo.token},
           }).then(res=>{
                 if(res.data.code == 1001){
