@@ -42,7 +42,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
-          <h5>注意：只能上传mp4文件</h5>
+          <h5>注意：只能上传mp4文件且文件最大500Mb</h5>
         </el-upload>
       </div>
       <el-progress :stroke-width="10" :percentage="progressPercent" v-if="progressFlag==true"></el-progress>
@@ -126,11 +126,15 @@
         })
       },
       before_upload(file) {
-        const isOverSize = file.size / 1024 / 1024 < 100
+        const isOverSize = file.size / 1024 / 1024 < 500;
         if (!isOverSize) {
-          alert("文件大小超过100Mb，不能上传.")
+          alert("文件大小超过500Mb.拒绝上传")
         }
-
+        const fileend = file.name.substring(file.name.lastIndexOf("."));
+        alert(fileend)
+        if(fileend != "mp4"){
+          alert("文件类型不符合规定，请重新选择文件")
+        }
       },
       upload(File){
         this.progressFlag=true;
