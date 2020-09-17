@@ -31,8 +31,8 @@
                   </el-image>
               </el-col>
               <el-col span="8">
-                <el-button type="primary" @click="agreeApply(item.userid)" plain>申请通过</el-button>
-                <el-button type="info" @click="refuseApply(item.userid)" plain>拒绝申请</el-button>
+                <el-button type="primary" @click="agreeApply(item.id)" plain>申请通过</el-button>
+                <el-button type="info" @click="refuseApply(item.id)" plain>拒绝申请</el-button>
               </el-col>
             </el-row>
             <el-row v-else style="text-align: center;font-size: 30px">
@@ -90,7 +90,7 @@
            agreeApply(id){
                this.axios({
                    method: 'post',
-                   url: 'dealApply',
+                   url: '/dealApply',
                    headers:{'token':this.$store.state.userInfo.token},
                    data:{
                        applyid:id,
