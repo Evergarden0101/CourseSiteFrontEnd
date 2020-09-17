@@ -55,16 +55,20 @@
                     <div style="float: right">操作选项（同意/拒绝）</div>
                 </el-col>
               </el-row>
-              <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 50px">
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.name}}
+              <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 70px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentname}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.id}}
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentid}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  <div  @click="refuseApply(item.id)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">拒绝申请</div>
-                  <div  @click="confirmApply(item.id)" style="float: right;cursor:pointer">申请通过</div>
+                <el-col span="8" style="text-align: center;">
+                  <el-row style="height: 20px;margin-top: 3px">
+                    <div  @click="refuseApply(item.id)" style="cursor:pointer">拒绝申请</div>
+                  </el-row>
+                  <el-row style="height: 20px;margin-top: 10px">
+                    <div  @click="confirmApply(item.id)" style="cursor:pointer">申请通过</div>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
@@ -80,17 +84,22 @@
                   操作选项
                 </el-col>
               </el-row>
-              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 50px">
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.name}}
+              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 70px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentname}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
                   {{item.studentid}}
                 </el-col>
-                <el-col span="8">
-                  <div v-if="item.type==1" @click="setAssist(item.studentid)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">设为助教</div>
-                  <div v-if="item.type==2" @click="delAssist(item.studentid)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">取消助教</div>
-                  <div @click="delStu(item.studentid)" style="float: right;cursor:pointer">踢出课程</div>
+                <el-col span="8" style="text-align: center;">
+                  <el-row style="height: 20px;margin-top: 3px">
+                    <div v-if="item.type==1" @click="setAssist(item.studentid)" style="cursor:pointer">设为助教</div>
+                    <div v-if="item.type==2" @click="delAssist(item.studentid)" style="cursor:pointer">取消助教</div>
+                  </el-row>
+                  <el-row style="height: 20px;margin-top: 10px">
+                    <div v-if="item.type==1" @click="delStu(item.studentid)" style="cursor:pointer">踢出课程</div>
+                    <div v-if="item.type==2"  style="cursor:pointer;color: #C0C4CC">踢出课程</div>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
@@ -149,7 +158,7 @@
             this.courseId = window.localStorage.courseid
             // console.log(1111)
             // console.log(window.localStorage.courseid)
-            console.log(this.courseId)
+           console.log(this.courseId)
            this.axios({
                method:'post',
                url:'getAllRelations',
@@ -163,6 +172,19 @@
                    console.log(this.alreadyInClass)
                }
            })
+            this.axios({
+                method:'post',
+                url:'/getCourseApply',
+                headers:{'token':this.$store.state.userInfo.token},
+                data:{
+                    courseid:this.courseId
+                }
+            }).then(res => {
+                if(res.data.code == 1001){
+                    this.applicationList = res.data.data
+                    console.log(this.alreadyInClass)
+                }
+            })
         },
         methods:{
           submitForm(fileObj){
@@ -204,14 +226,15 @@
               // alert("inin222")
           },
            confirmApply(id){
-              alert(1112)
+              // alert(1112)
               this.axios({
                   method:'post',
-                  url:'/addApply',
+                  url:'/dealApply',
                   data:{
-                      id:id,
-                      courseId:this.courseId
-                  }
+                      applyid:id,
+                      result:1
+                  },
+                  headers:{'token':this.$store.state.userInfo.token}
               }).then(res=>{
                   if(res.code == 1001){
                       this.$notify({
@@ -238,11 +261,12 @@
             refuseApply(id){
               this.axios({
                   method:'/post',
-                  url:'/refuseAapply',
+                  url:'/dealAapply',
                   data:{
-                      id:id,
-                      courseId:this.courseId
-                  }
+                      result:0,
+                      applyid:id
+                  },
+                  headers:{'token':this.$store.state.userInfo.token}
               }).then(res=>{
                   if(res.data.code == 1001){
                       this.$notify({
