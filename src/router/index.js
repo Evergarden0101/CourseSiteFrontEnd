@@ -8,8 +8,10 @@ import VideoList from '../components/Record/video_list'
 import Community from '../components/community/community'
 import Player from '../components/Record/Player'
 import VideoList2 from '../components/Record/videolist2'
-
 import Index from '../components/Index'
+import ManageStu from '../components/userManage/manageStudents'
+import ManageTea from '../components/userManage/manageTeacher'
+
 Vue.use(VueRouter)
 import postPage from '../components/Post/postPage'
 
@@ -72,6 +74,16 @@ export default new VueRouter({
           name: 'Upload',
           component: Upload
         },
+        {
+          path:'/manageStu',
+          name:'ManageStu',
+          component:ManageStu
+        },
+        {
+          path:'/manageTea',
+          name:'ManageTea',
+          component:ManageTea
+        }
       ]
     },
     {
