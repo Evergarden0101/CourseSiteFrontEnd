@@ -19,7 +19,9 @@
     </template>
     <el-tabs :tab-position="tabPosition" @tab-click="handleClick" v-model="tabName" style="min-height: 680px;"
              class="el-tabs">
-      <el-tab-pane label="课程" name="first"></el-tab-pane>
+      <el-tab-pane label="课程" name="first">
+        <videoList/>
+      </el-tab-pane>
       <el-tab-pane label="圈子" name="second" lazy="true" style="height: auto">
 
         <el-row style="height: 50px"></el-row>
@@ -33,25 +35,25 @@
               <el-tooltip content="加入课程"
                           placement="top" effect="dark">
                 <el-button size="medium" class="add"
-                           id="addbtn"
+                           id="addbtn" style="display: none"
                            @click="addClass" round
-                           >
+                >
                   加入
                 </el-button>
               </el-tooltip>
               <el-tooltip content="已申请课程"
                           placement="top" effect="dark">
                 <el-button size="medium" class="applied"
-                           id="appliedbtn" disabled round
-                           >
+                           id="appliedbtn" disabled round style="display: none"
+                >
                   已申请
                 </el-button>
               </el-tooltip>
               <el-tooltip content="已加入课程"
                           placement="top" effect="dark">
-                <el-button v-if=" this.userType === 'student' && this.addOrNot === true" size="medium" class="added"
-                           id="addedbtn" disabled round
-                           >
+                <el-button size="medium" class="added"
+                           id="addedbtn" disabled round style="display: none"
+                >
                   已加入
                 </el-button>
               </el-tooltip>
@@ -74,12 +76,13 @@
                 <span style="margin-left: 15px"><el-link :underline="false" @click.native=seeposts()
                                                          style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                 >讨论</el-link></span>
-              <span v-if="this.userType != 'student'" style="margin-left: 15px"><el-link :underline="false"
-                                                       style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-                                                       @click.native=seestatic()
+              <span v-if="this.addOrNot === 3" style="margin-left: 15px"><el-link :underline="false"
+                                                                                         style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
+                                                                                         @click.native=seestatistics()
               >学习统计</el-link></span>
-              <span v-if="this.userType != 'student'" style="margin-left: 15px"><el-link :underline="false" @click.native=seemanage()
-                                                       style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
+              <span v-if="this.addOrNot === 3" style="margin-left: 15px"><el-link :underline="false"
+                                                                                         @click.native=seemanage()
+                                                                                         style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
               >成员管理</el-link></span>
             </el-col>
           </el-row>
@@ -147,9 +150,21 @@
                     infinite-scroll-distance="30"
                     style="border-radius: 6px;">
                   <el-card shadow="always"
-                           style="background-color: white;height:160px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
+                           style="background-color: white;height:180px;margin-bottom: 15px;border-radius: 6px;padding-top: 5px;"
                            v-for="(item,index) in posts" key="index" class="list-item box-card">
-                    <el-row style="height:20px;">
+                    <el-row style="height:25px;margin-bottom: 10px;margin-top: -17px">
+                      <el-col v-if="item.istop === true" class="outside" span="2"
+                              style="color: #ffbb00;font-weight: bolder;font-size: 13px;overflow: hidden">
+                        <el-col class="intext" span="18" offset="3"
+                                style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;">TOP
+                        </el-col>
+                      </el-col>
+                      <el-col v-if="item.iselite === true" class="outside" span="2"
+                              style="color: #ffbb00;font-weight: bolder;font-size: 13px;overflow: hidden">
+                        <el-col class="intext" span="18" offset="3"
+                                style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;"><i
+                          class="el-icon-star-on"></i></el-col>
+                      </el-col>
 
                     </el-row>
 
@@ -173,29 +188,27 @@
                       <!--                  </el-dropdown>-->
                       <!--                </el-col>-->
 
-
-                      <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                      <el-col span="2" style="padding-top: 1px;overflow: hidden;">
                         <el-button @click="addStar(item)" id="star" type="primary"
-                                   size="small" style="right:5px;display: none"><i
+                                   size="small" style="right:2px;float: top;margin-top: 10px"><i
                           id="'starIcon'+index" class="el-icon-star-off"></i></el-button>
                       </el-col>
-                      <el-col span="2" style="padding-top: 1px;overflow: hidden">
+                      <el-col span="2" style="padding-top: 1px;overflow: hidden;">
                         <el-dropdown trigger="click" @command="handleCommand($event, item)" id="moreList"
-                                     style="left: 1px">
-                          <el-button type="primary" size="small" style="">
+                                     style="">
+                          <el-button type="primary" size="small" style="left: 1px;float: top;margin-top: 10px">
                             <i class="el-icon-more-outline"></i>
                           </el-button>
                           <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="delPost">删除</el-dropdown-item>
-                            <!--                        <el-dropdown-item command="topPost">置顶</el-dropdown-item>-->
+                            <el-dropdown-item command="topPost">置顶</el-dropdown-item>
                           </el-dropdown-menu>
                         </el-dropdown>
                       </el-col>
 
-
                     </el-row>
                     <el-row
-                      style=" overflow: hidden;text-indent:2em;word-break: break-all;margin-top: 15px;padding-left:15px;padding-right:15px;height: 60px;text-align:left;font-size: 15px;font-weight: bold;">
+                      style=" overflow: hidden;text-indent:2em;word-break: break-all;margin: 15px 0;padding-left:15px;padding-right:15px;height: 100px;text-align:left;font-size: 15px;font-weight: bold;">
                       <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
                                @click.native=seePost(item)>
                         {{ item.detail }}
@@ -207,6 +220,27 @@
                 <p v-if="loading"></p>
                 <p v-if="noMore">没有更多了</p>
               </div>
+            </div>
+
+            <div id="statistics" style="display: none">
+              <el-card class="box-card" shadow="always" style="height: 200px">
+                <el-row style="height: 50px;font-weight: bolder;font-size: 20px">
+                  学习次数
+                </el-row>
+
+                <el-pagination
+                  style="padding: 0 15px"
+                  background
+                  :pager-count="4"
+                  :hide-on-single-page=true
+                  :page-size="4"
+                  layout="prev, pager, next, jumper"
+                  :total="stunum">
+                </el-pagination>
+                <!--                  @size-change="handleSizeChange"-->
+                <!--                  @current-change="handleCurrentChange"-->
+<!--                :current-page.sync="currentPage"-->
+              </el-card>
             </div>
 
             <div id="managepage" style="display: none">
@@ -226,7 +260,7 @@
                       style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
                 {{this.rules}}
               </el-row>
-              <el-row v-if="this.userType != 'student'" id="ruleChange"
+              <el-row v-if="this.addOrNot === 3" id="ruleChange"
                       style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
                 <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
                            @click="changeRuleVisible = true">修改规则
@@ -268,7 +302,7 @@
   // import infiniteScroll from 'vue-infinite-scroll'
   // Vue.use(infiniteScroll)
   import manageStu from '../userManage/manageStudents'
-
+  import videoList from '../Record/videolist2'
   export default {
     data() {
       return {
@@ -292,13 +326,15 @@
         userInfo: null,
         amount: 0,
         posts: [],
-        addOrNot: false,
+        addOrNot: 0,
         userType: 'student',
+        stunum:60 //undone
 
       }
     },
     components: {
-      manageStu
+      manageStu,
+      videoList
     },
     computed: {
       noMore() {
@@ -328,15 +364,11 @@
         this.circle.detail = window.localStorage.getItem('coursedetail')
         this.rules = window.localStorage.getItem('courserule')
         this.tabName = window.localStorage.getItem('coursecircle')
-        this.getposts()
-        this.isIn()
-        // console.log(this.classId)
       }
-      console.log(this.classId)
+      this.getposts()
+      this.isIn()
       this.userType = this.$store.state.userInfo.usertype
-      //console.log(this.rules== '')
       this.userInfo = this.$store.state.userInfo
-      // console.log(this.$store.state)
     },
     methods: {
       getposts() {
@@ -348,17 +380,9 @@
             id: this.classId,
           }
         }).then(res => {
-          // console.log(res)
           if (res.data.code == 1001) {
-            //concole.log(this.$store.state.userInfo)
-            // if (this.$store.state.userInfo.usertype == 'student') {
-            //   document.getElementById("ruleChange").setAttribute("style", "display:none")
-            //   document.getElementById("star").setAttribute("style", "display:none")
-            //   document.getElementById("moreList").setAttribute("style", "display:none")
-            // }
             this.posts = res.data.data
             this.amount = this.posts.length
-            console.log(this.posts)
           } else {
             this.$message({
               showClose: true,
@@ -380,19 +404,23 @@
         }).then(res => {
           if (res.data.code == 1001) {
             this.addOrNot = res.data.data   //undone
-            if (this.userType != 'student'){
-              document.getElementById("addbtn").setAttribute("style","display:none")
-              document.getElementById("appliedbtn").setAttribute("style","display:none")
-              document.getElementById("addedbtn").setAttribute("style","display:none")
-            }else {
-              if(this.addOrNot==true){
-                document.getElementById("addbtn").setAttribute("style","display:none")
+            if (this.userType != 'student') {
+              document.getElementById("addbtn").setAttribute("style", "display:none")
+              document.getElementById("appliedbtn").setAttribute("style", "display:none")
+              document.getElementById("addedbtn").setAttribute("style", "display:none")
+            } else {
+              if (this.addOrNot == 1) {
+                document.getElementById("addbtn").setAttribute("style", "display:none")
                 document.getElementById("appliedbtn").removeAttribute("style")
-                document.getElementById("addedbtn").removeAttribute("style")
-              }else if(this.addOrNot==false){
+                document.getElementById("addedbtn").setAttribute("style", "display:none")
+              } else if (this.addOrNot == 0) {
                 document.getElementById("addbtn").removeAttribute("style")
-                document.getElementById("appliedbtn").setAttribute("style","display:none")
-                document.getElementById("addedbtn").setAttribute("style","display:none")
+                document.getElementById("appliedbtn").setAttribute("style", "display:none")
+                document.getElementById("addedbtn").setAttribute("style", "display:none")
+              } else if (this.addOrNot == 2) {
+                document.getElementById("addbtn").setAttribute("style", "display:none")
+                document.getElementById("appliedbtn").setAttribute("style", "display:none")
+                document.getElementById("addedbtn").removeAttribute("style")
               }
             }
           } else {
@@ -406,14 +434,17 @@
       },
       seeposts() {
         document.getElementById("postlist").removeAttribute("style")
+        document.getElementById("statistics").setAttribute("style", "display:none")
         document.getElementById("managepage").setAttribute("style", "display:none")
       },
-      seestatic() {
-        this.tabName = 'second'
-        console.log(this.tabName === 'second')
+      seestatistics() {
+        document.getElementById("postlist").setAttribute("style", "display:none")
+        document.getElementById("statistics").removeAttribute("style")
+        document.getElementById("managepage").setAttribute("style", "display:none")
       },
       seemanage() {
         document.getElementById("managepage").removeAttribute("style")
+        document.getElementById("statistics").setAttribute("style", "display:none")
         document.getElementById("postlist").setAttribute("style", "display:none")
       },
       handleClick(tab) {
@@ -421,8 +452,9 @@
           this.tabName = 'first'
         } else if (tab.name === 'second') {
           this.tabName = 'second'
-          this.getposts()
           this.isIn()
+          this.getposts()
+          console.log(this.posts)
         }
       },
       seePost(item) {
@@ -456,11 +488,14 @@
               type: 'success',
               message: '设置为精华帖'
             })
-            // this.posts = res.data.data
-            // this.amount = this.posts.length
-            //this.$store.commit('setUserInfo', res.data.data)
-            //this.$router.push('/inCircle')
-            //this.posts = res.data.data
+            this.posts = res.data.data
+            this.amount = this.posts.length
+          } else if (res.data.code == 3001) {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: '无操作权限'
+            })
           } else {
             this.$message({
               showClose: true,
@@ -486,19 +521,19 @@
                 type: 'success',
                 message: '置顶成功'
               })
-              //this.posts = res.data.data
-              //this.amount = this.posts.length
-              // this.$router.push({
-              //   name: '/inCircle',
-              //   params: {
-              //     course: this.circle
-              //   }
-              // })
+              this.posts = res.data.data
+              this.amount = this.posts.length
+            }else if (res.data.code == 3001) {
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: '无操作权限'
+              })
             } else {
               this.$message({
                 showClose: true,
                 type: 'error',
-                message: '设置失败'
+                message: '置顶失败'
               })
             }
           })
@@ -520,6 +555,12 @@
               })
               this.posts = res.data.data
               this.amount = this.posts.length
+            }else if (res.data.code == 3001) {
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: '无操作权限'
+              })
             } else {
               this.$message({
                 showClose: true,
@@ -547,7 +588,7 @@
                 type: 'success',
                 message: '修改成功'
               })
-            this.circle.rule = res.data.data
+            this.rules = res.data.data
             this.newRule = ''
             // alert("111")
             // console.log(res.data)
@@ -714,12 +755,12 @@
     top: -5px
   }
 
-  .applied, .added{
+  .applied, .added {
     position: relative;
     font-weight: bolder;
     color: black;
     border: 3px solid;
-    border-color:grey;
+    border-color: grey;
     top: -5px
   }
 
@@ -732,5 +773,7 @@
     font-size: 15px;
   }
 
+  .outside {
+  }
 
 </style>
