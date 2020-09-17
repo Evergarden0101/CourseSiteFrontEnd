@@ -6,18 +6,18 @@
             查看通知信息
           </el-row>
           <el-row v-for="(item,index) in this.informationList" :key="index" style="margin-top: 30px; border-bottom: #C0C4CC 1px solid">
-              <div v-if="item.type == false" >
+              <div v-if="item.read == false" >
 
                 <el-row style="min-height: 40px;">
                 <el-col span="6" style="font: bold;font-size: 20px;text-align: left;padding-left: 20px">
-                  {{item.title}} | {{item.time}}
+                  {{item.topic}} | {{item.time}}
                 </el-col>
-                <el-col offset="12" span="6" @click="alreadyRead(item.id)" style="cursor: pointer;font-size: 15px;color:cadetblue">
-                  标记为已读
+                <el-col offset="12" span="6"  style="cursor: pointer;font-size: 15px;color:cadetblue">
+                  <div @click="alreadyRead(item.id)">标记为已读</div>
                 </el-col>
                 </el-row>
                 <el-row style="padding-left: 20px;text-align:left;padding-bottom: 15px">
-                  {{item.content}}
+                  {{item.detail}}
                 </el-row>
 
               </div>
@@ -25,14 +25,14 @@
 
                 <el-row style="min-height: 40px;">
                 <el-col span="6" style="font: bold;font-size: 20px;text-align: left;padding-left: 20px;color: #C0C4CC">
-                  {{item.title}} | {{item.time}}
+                  {{item.topic}} | {{item.time}}
                 </el-col>
                 <el-col offset="12" span="6"  style="font-size: 15px;color:cadetblue">
                   消息已读
                 </el-col>
                 </el-row>
                 <el-row style="padding-left: 20px;text-align:left;padding-bottom: 15px;color: #C0C4CC">
-                  {{item.content}}
+                  {{item.detail}}
                 </el-row>
               </div>
           </el-row>
@@ -47,11 +47,12 @@
         mounted(){
           this.axios({
               method:'post',
-              url:'getAllMessages',
+              url:'receivemessage',
               headers:{'token':this.$store.state.userInfo.token},
           }).then(res=>{
               if(res.data.code == 1001){
-                  this.information = res.data.data
+                  this.informationList = res.data.data
+                  console.log(this.informationList)
               }
               else{
 
@@ -80,9 +81,10 @@
         },
         methods:{
             alreadyRead(id){
+                // alert(1212)
                 this.axios({
                     method:'post',
-                    url:'/aRead',
+                    url:'/readmessage',
                     headers:{'token':this.$store.state.userInfo.token},
                     data:{
                         id:id
