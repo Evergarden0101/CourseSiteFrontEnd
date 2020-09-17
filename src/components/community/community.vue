@@ -90,18 +90,35 @@
       </el-form>
     </el-dialog>
     <!--  教师提交认证入口-->
-    <el-dialog title="创建课程圈子" :visible.sync="visibleConfirm">
+    <el-dialog title="教师认证窗口" :visible.sync="visibleConfirm">
       <el-form ref="curriculumForm" v-model="curriculumForm" label-width="80px" inline="true">
-        <el-form-item label="教师名称" >
-          <el-input v-model="teacher.name" placeholder="请输入教师名称" ></el-input>
-        </el-form-item>
-        <el-form-item label="教师工号" >
-          <el-input v-model="teacher.id" placeholder="请输入教师工号" ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="info" @click="onSubmitCon()">提交申请</el-button>
-          <el-button type="info" plain @click="visibleConfirm = false">取消</el-button>
-        </el-form-item>
+        <el-row>
+          <el-form-item label="教师名称" >
+            <el-input v-model="teacher.name" placeholder="请输入教师名称" ></el-input>
+          </el-form-item>
+          <el-form-item label="教师工号" >
+            <el-input v-model="teacher.id" placeholder="请输入教师工号" ></el-input>
+          </el-form-item>
+        </el-row>
+        <el-row style="text-align: center">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :http-request="uploadPhoto" style="padding-bottom: 20px">
+              <img v-if="teacher.url" :src="teacher.url" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <div slot="tip" class="el-upload__tip">有效证件图片，只能上传jpg/png文件</div>
+            </el-upload>
+        </el-row>
+        <el-row>
+          <el-form-item>
+            <el-button type="info" @click="onSubmitCon()">提交申请</el-button>
+            <el-button type="info" plain @click="visibleConfirm = false">取消</el-button>
+          </el-form-item>
+        </el-row>
       </el-form>
     </el-dialog>
   </div>
@@ -115,6 +132,7 @@ import navbar from '../navbars/navbar'
           navbar
         },
         mounted(){
+            console.log(this.$store.state.userInfo)
             this.axios({
               method:'post',
               url:'/getCircles',
@@ -155,7 +173,9 @@ import navbar from '../navbars/navbar'
                 applyingCommunity:[],
                 teacher:{
                     name:'',
-                    id:''
+                    userid:'',
+                    url:'',
+                    imageid:''
                 }
             }
         },
@@ -212,25 +232,25 @@ import navbar from '../navbars/navbar'
             seeCommunity(item){
                 this.$router.push({
                     name:'inCircle',
-                    params:{
+                    query:{
                         course:item
                     }
                 })
             },
             onSubmitCon(){
-                if(this.teacher.name == '' || this.teacher.id == ''){
+                if(this.teacher.name == '' || this.teacher.id == '' || this.teacher.url == ""){
                     this.$message({
                         type:'info',
-                        message:'请输入姓名以及工号'
+                        message:'请输入姓名以及工号并且上传有效照片'
                     })
                     return
                 }
                 this.axios({
                     method:'post',
                     headers:{'token':this.$store.state.userInfo.token},
-                    url:'/confirmation',
-                    params:{
-                        teacher:this.teacher
+                    url:'/applyTeacher',
+                    data:{
+                        imageid:this.teacher.imageid
                     }
                 }).then(res => {
                     if(res.data.code == 1001){
@@ -247,6 +267,32 @@ import navbar from '../navbars/navbar'
                         })
                     }
                 })
+            },
+            uploadPhoto(fileObj){
+                console.log(fileObj.file.name)
+                let formData = new FormData();
+                formData.set("image",fileObj.file);
+                var file = formData.getAll("image");
+                this.axios.post('/imageupload',formData,{
+                    headers:{
+                        'token':this.$store.state.userInfo.token,
+                        "Content-type":"multipart/form-data"
+                    }
+                }).then(res =>{
+                    if(res.data.code == 1001){
+                        this.teacher.url = res.data.data.url
+                        this.teacher.imageid = res.data.data.id
+                        console.log(this.teacher.url)
+                    }
+                    else{
+                        this.$message({
+                            type:'info',
+                            message:'上传图片失败，请上传.jpg/.jpeg图片'
+                        })
+                    }
+                    console.log(res)
+                    console.log(this.teacher)
+                })
             }
         }
     }
@@ -258,11 +304,10 @@ import navbar from '../navbars/navbar'
   padding-right: 10%;
   background-color: #d9ecff;
   min-width: 100px;
-  min-height: 563px;
+  min-height: 600px;
 }
 .community-body{
   margin-top: 30px;
-
 }
 .el-tabs_item.is-active{
   background-color:#545c64;
@@ -284,5 +329,32 @@ import navbar from '../navbars/navbar'
   height: 95px;
   border-radius: 30px
 }
-
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /*background-color: red;*/
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+  /*background-color: red;*/
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 196px;
+  height: 180px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  /*background-color: red;*/
+}
+.avatar {
+  width: 260px;
+  height: 260px;
+  display: block;
+}
 </style>

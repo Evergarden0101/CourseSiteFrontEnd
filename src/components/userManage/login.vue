@@ -140,7 +140,8 @@
                   if(res.data.code == 1001){
                       this.$message({
                           type:'info',
-                          message:'登录成功'
+                          message:'登录成功',
+                          showClose: true
                       })
                       // alert("111")
                       // console.log(res.data)
@@ -152,7 +153,8 @@
                   else{
                       this.$message({
                           type:'info',
-                          message:'登录失败'
+                          message:'登录失败',
+                          showClose: true
                       })
                   }
               })
@@ -162,7 +164,8 @@
                 if(this.passwd != this.conPasswd){
                     this.$message({
                         type:'info',
-                        message:"两次密码不一致"
+                        message:"两次密码不一致",
+                        showClose: true
                     })
                     return
                 }
@@ -182,7 +185,8 @@
                     if(res.data.code == 1001){
                         this.$message({
                             type:'info',
-                            message:'注册成功'
+                            message:'注册成功',
+                            showClose: true
                         })
                         this.$store.commit('setUserInfo',res.data.data)
                         this.$router.push('/community')
@@ -191,7 +195,8 @@
                     else{
                         this.$message({
                             type:'info',
-                            message:'注册失败'
+                            message:'注册失败',
+                            showClose: true
                         })
                     }
                 })
