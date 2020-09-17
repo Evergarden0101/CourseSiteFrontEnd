@@ -674,7 +674,7 @@
           data: {
             courseid: this.classId,
           },
-        }), then(res => {
+        }).then(res => {
           if (res.data.code == 1001) {
             this.$message({
               showClose: true,
