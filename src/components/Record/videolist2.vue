@@ -125,7 +125,6 @@
           alert("文件大小超过1Gb.拒绝上传")
         }
         const fileend = file.name.substring(file.name.lastIndexOf("."));
-        alert(fileend)
         if(fileend != ".mp4"){
           alert("文件类型不符合规定，请重新选择文件")
         }
