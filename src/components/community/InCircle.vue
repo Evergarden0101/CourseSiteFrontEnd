@@ -17,7 +17,7 @@
         </div>
       </el-backtop>
     </template>
-    <el-tabs :tab-position="tabPosition" @tab-click="handleClick" v-model="tabName" style=";min-height: 680px;"
+    <el-tabs  :tab-position="tabPosition" @tab-click="handleClick" tyle="card" v-model="tabName" style=";min-height: 680px;"
              class="myel-tabs">
       <el-tab-pane label="课程" name="first">
         <videoList/>
@@ -235,7 +235,7 @@
                       </el-row>
                       <el-row
                         style=" overflow: hidden;text-indent:2em;word-break: break-all;margin: 15px 0;padding-left:15px;padding-right:15px;height: 100px;text-align:left;font-size: 15px;font-weight: bold;">
-                        <el-link :underline="false" href="" style="color: rgba(0,0,0,0.7);font-weight: normal"
+                        <el-link :underline="false" style="color: rgba(0,0,0,0.7);font-weight: normal"
                                  @click.native=seePost(item)>
                           {{ item.detail }}
                         </el-link>
@@ -1001,6 +1001,7 @@
   /deep/ .el-tabs__item {
     font-size: 17px;
     font-weight: bold;
+
   }
 
   /deep/ .myel-tabs > .el-tabs__header {

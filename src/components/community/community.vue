@@ -327,7 +327,7 @@ import navbar from '../navbars/navbar'
   border: 1px solid;
   padding-top: 10px;
   height: 80px;
-  border-radius: 30px
+  border-radius: 10px
 }
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
