@@ -20,7 +20,8 @@
                     multiple
                     :limit="3"
                     :http-request="submitForm"
-                    :file-list="fileList">
+                    :file-list="fileList"
+                    :show-file-list="false">
                     <el-button size="small" type="primary">导入学生</el-button>
                   </el-upload>
                 </el-col>
@@ -72,7 +73,7 @@
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="学生管理">
+            <el-tab-pane label="学生管理" >
               <el-row  class="apply-head" justify="left">
                 <el-col span="8">
                   学生姓名
@@ -238,11 +239,22 @@
                        var i = 0;
                        for(;this.applicationList[i].id != id && i < this.applicationList.length; ){
                            i++
-                           alert("12121212")
                        }
                        this.applicationList.splice(i,1)
                       // console.log(this.applicationList)
-                      this.alreadyInClass = res.data.data
+                      this.axios({
+                          method:'post',
+                          url:'getAllRelations',
+                          headers:{'token':this.$store.state.userInfo.token},
+                          data:{
+                              cid:this.courseId
+                          }
+                      }).then(res => {
+                          if(res.data.code == 1001){
+                              this.alreadyInClass = res.data.data
+                              console.log(this.alreadyInClass)
+                          }
+                      })
                   }
                   else{
                       this.$notify({
@@ -376,7 +388,7 @@
                       })
                   }
               })
-            }
+            },
         }
     }
 </script>
