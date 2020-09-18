@@ -18,7 +18,7 @@
       </el-backtop>
     </template>
     <el-tabs :tab-position="tabPosition" @tab-click="handleClick" v-model="tabName" style=";min-height: 680px;"
-             class="el-tabs">
+             class="myel-tabs">
       <el-tab-pane label="课程" name="first">
         <videoList/>
       </el-tab-pane>
@@ -97,8 +97,12 @@
             ">
                   <el-collapse v-model="activeNames" accordion>
 
-                    <el-collapse-item title="创建新帖子" name="1" style="border-radius: 6px">
-
+                    <el-collapse-item name="1" style="border-radius: 6px">
+                      <template slot="title" style="text-align: center">
+                        <el-col span="4" offset="10"
+                                style="text-align: center;font-weight:bold;font-size:20px;color:#2C8DF4;">创建新帖子
+                        </el-col>
+                      </template>
                       <!--            <el-row-->
                       <!--              style="padding-top:5px;height: 40px;background-color: #21ef00;border-top-right-radius: 6px;border-top-left-radius: 6px;text-align: center;font-size: 20px;font-weight: bolder;color: #00aeef">-->
                       <!--              新&nbsp帖&nbsp子-->
@@ -134,9 +138,9 @@
                         </el-col>
                       </el-row>
                       <el-row
-                        style="margin-bottom:0px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
+                        style="margin-top:5px;background-color: white;height: 45px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px">
                         <el-button type="primary" round class="newPost"
-                                   style="position: absolute;right: 30px;bottom: 8px" @click="post">
+                                   style="position: absolute;right: 30px;bottom: 3px" @click="post">
                           提交
                         </el-button>
                       </el-row>
@@ -155,16 +159,33 @@
                       <el-row style="height:25px;margin-bottom: 10px;margin-top: -17px">
                         <el-col v-if="item.istop === true" class="outside" span="2"
                                 style="color: #ffbb00;font-weight: bolder;font-size: 13px;overflow: hidden">
-                          <el-col class="intext" span="18" offset="3"
-                                  style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;">
+                          <!--                          <el-col class="intext" span="18" offset="3"-->
+                          <!--                                  style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;">-->
+                          <!--                            TOP-->
+                          <!--                          </el-col>-->
+                          <el-tag
+                            v-if="item.istop === true"
+                            effect="dark"
+                            type="danger"
+                            style="width: 45px"
+                          >
                             TOP
-                          </el-col>
+                          </el-tag>
                         </el-col>
+
                         <el-col v-if="item.iselite === true" class="outside" span="2"
                                 style="color: #ffbb00;font-weight: bolder;font-size: 13px;overflow: hidden">
-                          <el-col class="intext" span="18" offset="3"
-                                  style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;"><i
-                            class="el-icon-star-on"></i></el-col>
+                          <!--                          <el-col class="intext" span="18" offset="3"-->
+                          <!--                                  style="border-radius: 4px;padding-top: 5px;height: 25px;background-color: #ff0700;"><i-->
+                          <!--                            class="el-icon-star-on"></i></el-col>-->
+                          <el-tag
+                            v-if="item.iselite === true"
+                            effect="dark"
+                            type="danger"
+                            style="width: 45px;color: #ffbb00"
+                          >
+                            <i class="el-icon-star-on"></i>
+                          </el-tag>
                         </el-col>
 
                       </el-row>
@@ -228,106 +249,123 @@
               </div>
 
               <div id="statistics" style="display: none">
-                <el-card class="box-card" shadow="always" style="min-height: 450px">
-                  <!--                <el-row-->
-                  <!--                  style="height: 350px;margin: 0 50px;border-radius: 6px;border: solid 4px;border-color: #21ff00;overflow: auto">-->
-                  <!--                  <el-row style="margin-top: 10px;height: 50px;font-weight: bolder;font-size: 20px">-->
-                  <!--                    学习时长-->
-                  <!--                  </el-row>-->
-                  <!--                  <el-table-->
-                  <!--                    :data="learnTime.slice((currentPage-1)*pagesize,currentPage*pagesize)"-->
-                  <!--                    style="margin-left:40px;width: 600px;height: 200px">-->
-                  <!--                    <el-table-column type="expand">-->
-                  <!--                      <template slot-scope="props">-->
-                  <!--                        <el-form label-position="left" inline class="demo-table-expand">-->
-                  <!--&lt;!&ndash;                          v-for="(item,index) in props.row.soloTime" key="index"&ndash;&gt;-->
-                  <!--                          <el-form-item-->
-                  <!--                                        label="item.name">-->
-                  <!--                            <span>{{ item.time }}</span>-->
-                  <!--                          </el-form-item>-->
+                <el-card class="box-card" shadow="always" style="min-height: 450px;overflow: auto">
+                  <el-row
+                    style="min-height: 350px;margin: 0 0px;overflow: auto;width: 100%">
+                    <el-col span="20" offset="2" style="align-items: center">
+                      <el-row style="margin-top: 10px;height: 50px;font-weight: bolder;font-size: 20px;width: 100%">
+                        学习时长
+                      </el-row>
+                      <!--                    <el-table -->
+                      <!--                              :data="learnTime.slice((currentPage-1)*pagesize,currentPage*pagesize)"-->
+                      <!--                              row-key="id" :tree-props="{children: 'children'}"-->
+                      <!--                              border style="margin-left:40px;width: 600px;">-->
 
-                  <!--                        </el-form>-->
-                  <!--                      </template>-->
-                  <!--                    </el-table-column>-->
-                  <!--                    <el-table-column-->
-                  <!--                      prop="stuName"-->
-                  <!--                      label="姓名"-->
-                  <!--                      width="150">-->
-                  <!--                    </el-table-column>-->
-                  <!--                    <el-table-column-->
-                  <!--                      prop="totalTime"-->
-                  <!--                      label="总学习时长"-->
-                  <!--                      width="150">-->
-                  <!--                    </el-table-column>-->
-                  <!--                  </el-table>-->
-                  <!--                  <el-pagination-->
-                  <!--                    style="margin-top: 20px"-->
-                  <!--                    background-->
-                  <!--                    :current-page.sync="currentPage"-->
-                  <!--                    :pager-count="4"-->
-                  <!--                    :hide-on-single-page=true-->
-                  <!--                    :page-size="pagesize"-->
-                  <!--                    layout="prev, pager, next, jumper"-->
-                  <!--                    :total="learnTime.length"-->
-                  <!--                    @current-change="handleCurrentChange">-->
-                  <!--                  </el-pagination>-->
-                  <!--                </el-row>-->
-                </el-card>
-              </div>
+                      <el-table ref="classTable" :data="learnTime.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                                style="width: 100%;position: center" @expand-change="handleExpandChange">
+                        <el-table-column type="expand">
+                          <template slot-scope="props">
+                            <el-table :data="soloTime[props.row.id]" style="width: 100%">
+                              <el-table-column label="视频" align="center">
+                                <template slot-scope="scope">{{ scope.row.name }}</template>
+                              </el-table-column>
+                              <el-table-column label="学习时长" align="center">
+                                <template slot-scope="scope">{{ scope.row.time }}</template>
+                              </el-table-column>
+                              <el-table-column label="学习次数" align="center">
+                                <template slot-scope="scope">{{ scope.row.count }}</template>
+                              </el-table-column>
+                            </el-table>
+                          </template>
+                        </el-table-column>
+                        <el-table-column
 
-              <div id="managepage" style="display: none">
-                <manageStu/>
-              </div>
+                          label="姓名"
+                          align="center">
+                          <template slot-scope="scope">{{ scope.row.name }}</template>
+                        </el-table-column>
+                        <el-table-column
 
-            </el-col>
+                          label="学习总时长"
+                          align="center">
+                          <template slot-scope="scope">{{ scope.row.time }}</template>
+                        </el-table-column>
+                        <el-table-column
 
-            <el-col span="6" offset="1">
-              <el-card class="box-card" shadow="always"
-                       style="background-color: white;margin-bottom: 30px;min-height: 200px;text-align: center;">
-                <el-row
-                  style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 0px;color: rgba(0,0,0,0.7);">
-                  圈子规则
-                </el-row>
-                <el-row v-model="rules"
-                        style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-                  {{this.rules}}
-                </el-row>
-                <el-row v-if="this.addOrNot === 3" id="ruleChange"
-                        style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
-                  <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
-                             @click="changeRuleVisible = true">修改规则
-                  </el-button>
-                  <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
-                    <el-form :model="form">
-                      <el-form-item label="输入新规则" :label-width="formLabelWidth">
-                        <el-input type="textarea" :rows="5" v-model="newRule"
-                                  placeholder="请输入新规则"
-                                  maxlength="300" show-word-limit autocomplete="off"></el-input>
-                      </el-form-item>
-                    </el-form>
-                    <div slot="footer" class="dialog-footer">
-                      <el-button @click="changeRuleVisible = false">取 消</el-button>
-                      <el-button type="primary" @click="changeRule">确 定</el-button>
-                    </div>
-                  </el-dialog>
-                </el-row>
-              </el-card>
-              <el-card class="box-card" shadow="always"
-                       style="background-color: white;min-height: 160px;text-align: center;">
-                <el-row
-                  style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: rgba(0,0,0,0.7);">
-                  课程信息
-                </el-row>
-                <el-row v-model="classDetail"
-                        style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
-                  {{circle.detail}}
-                </el-row>
-              </el-card>
-            </el-col>
-          </el-row>
+                          label="学习总次数"
+                          align="center">
+                          <template slot-scope="scope">{{ scope.row.count }}</template>
+                        </el-table-column>
+                      </el-table>
+                      <el-pagination
+                        style="margin-top: 40px"
+                        background
+                        :current-page.sync="currentPage"
+                        :pager-count="4"
+                        :hide-on-single-page=true
+                        :page-size="pagesize"
+                        layout="prev, pager, next, jumper"
+                        :total="learnTime.length"
+                        @current-change="handleCurrentChange">
+                      </el-pagination>
+                    </el-col>
+                  </el-row>
+            </el-card>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+
+        <div id="managepage" style="display: none">
+          <manageStu/>
+        </div>
+
+        </el-col>
+
+        <el-col span="6" offset="1">
+          <el-card class="box-card" shadow="always"
+                   style="background-color: white;margin-bottom: 30px;min-height: 200px;text-align: center;">
+            <el-row
+              style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 0px;color: rgba(0,0,0,0.7);">
+              圈子规则
+            </el-row>
+            <el-row v-model="rules"
+                    style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+              {{this.rules}}
+            </el-row>
+            <el-row v-if="this.addOrNot === 3" id="ruleChange"
+                    style="height: 25px;padding-bottom:5px;font-size: 10px;font-weight: bold;margin-top: 10px;margin-bottom:10px;color: #00aeef;">
+              <el-button type="text" underline="true" style="font-weight: bold;color: red;font-size: 15px"
+                         @click="changeRuleVisible = true">修改规则
+              </el-button>
+              <el-dialog title="修改规则" :visible.sync="changeRuleVisible">
+                <el-form :model="form">
+                  <el-form-item label="输入新规则" :label-width="formLabelWidth">
+                    <el-input type="textarea" :rows="5" v-model="newRule"
+                              placeholder="请输入新规则"
+                              maxlength="300" show-word-limit autocomplete="off"></el-input>
+                  </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                  <el-button @click="changeRuleVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="changeRule">确 定</el-button>
+                </div>
+              </el-dialog>
+            </el-row>
+          </el-card>
+          <el-card class="box-card" shadow="always"
+                   style="background-color: white;min-height: 160px;text-align: center;">
+            <el-row
+              style="height: 50px;font-size: 20px;font-weight: bolder;margin-top: 5px;color: rgba(0,0,0,0.7);">
+              课程信息
+            </el-row>
+            <el-row v-model="classDetail"
+                    style="overflow: hidden;text-indent: 2em;word-break: break-all;height: 80px;font-size: 15px;font-weight: bold;margin-top: 15px;color: #00aeef;">
+              {{circle.detail}}
+            </el-row>
+          </el-card>
+        </el-col>
+        </el-row>
+  </div>
+  </el-tab-pane>
+  </el-tabs>
   </div>
 </template>
 
@@ -365,92 +403,178 @@
         addOrNot: 0,
         userType: 'student',
         stunum: 60,
-        // learnCount: [
-        //   {
-        //     stuName: 1
-        //
-        //   }
-        // ],//undone
-        // learnTime: [
-        //   {
-        //     stuName: 1,
-        //     totalTime: 50,
-        //     soloTime: [
-        //       {
-        //         name: 课1,
-        //         time: 15,
-        //       },
-        //       {
-        //         name: 课2,
-        //         time: 10,
-        //       },
-        //       {
-        //         name: 课3,
-        //         time: 13,
-        //       },
-        //       {
-        //         name: 课4,
-        //         time: 5,
-        //       },
-        //       {
-        //         name: 课5,
-        //         time: 20,
-        //       },
-        //     ]
-        //   },
-        //   {
-        //     stuName: 2,
-        //     totalTime: 20,
-        //     soloTime: [
-        //       {
-        //         name: 课1,
-        //         time: 15,
-        //       },
-        //       {
-        //         name: 课2,
-        //         time: 10,
-        //       },
-        //       {
-        //         name: 课3,
-        //         time: 13,
-        //       },
-        //       {
-        //         name: 课4,
-        //         time: 5,
-        //       },
-        //       {
-        //         name: 课5,
-        //         time: 20,
-        //       },
-        //     ]
-        //   },
-        //   {
-        //     stuName:3,
-        //     totalTime:40,
-        //     soloTime:[
-        //       {
-        //         name:课1,
-        //         time:15,
-        //       },
-        //       {
-        //         name:课2,
-        //         time:10,
-        //       },
-        //       {
-        //         name:课3,
-        //         time:13,
-        //       },
-        //       {
-        //         name:课4,
-        //         time:5,
-        //       },
-        //       {
-        //         name:课5,
-        //         time:20,
-        //       },
-        //     ]
-        //   }
-        // ]
+        soloTime: {
+          1: [
+            {
+              id: 12,
+              name: "课1",
+              time: 15,
+              count: 1,
+            },
+            {
+              id: 22,
+              name: "课2",
+              time: 10,
+              count: 1,
+            },
+            {
+              id: 32,
+              name: "课3",
+              time: 13,
+              count: 1,
+            },
+            {
+              id: 42,
+              name: "课4",
+              time: 5,
+              count: 1,
+            },
+            {
+              id: 52,
+              name: "课5",
+              time: 20,
+              count: 1,
+            },
+          ],
+          2: [
+            {
+              id: 15,
+              name: "课1",
+              time: 15,
+              count: 1,
+            },
+            {
+              id: 25,
+              name: "课2",
+              time: 10,
+              count: 1,
+            },
+            {
+              id: 35,
+              name: "课3",
+              time: 13,
+              count: 1,
+            },
+            {
+              id: 45,
+              name: "课4",
+              time: 5,
+              count: 1,
+            },
+            {
+              id: 55,
+              name: "课5",
+              time: 20,
+              count: 1,
+            },
+          ],
+          3: [
+            {
+              id: 11,
+              name: "课1",
+              time: 15,
+              count: 1,
+            },
+            {
+              id: 21,
+              name: "课2",
+              time: 10,
+              count: 1,
+            },
+            {
+              id: 31,
+              name: "课3",
+              time: 13,
+              count: 1,
+            },
+            {
+              id: 41,
+              name: "课4",
+              time: 5,
+              count: 1,
+            },
+            {
+              id: 51,
+              name: "课5",
+              time: 20,
+              count: 1,
+            },
+          ],
+        },//undone
+        learnTime: [
+          {
+            id: 1,
+            name: 1,
+            time: 50,
+            count: 4,
+          },
+          {
+            id: 2,
+            name: 2,
+            time: 20,
+            count: 5,
+          },
+          {
+            id: 3,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 4,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 5,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 6,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 7,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 8,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 9,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 10,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 11,
+            name: 3,
+            time: 40,
+            count: 4,
+          },
+          {
+            id: 12,
+            name: 3,
+            time: 40,
+            count: 4,
+          }
+        ]
       }
     },
     components: {
@@ -480,7 +604,7 @@
         window.localStorage.setItem('coursedetail', this.circle.detail)
         window.localStorage.setItem('courseid', this.classId)
         window.localStorage.setItem('coursetime', this.circle.time)
-        window.localStorage.setItem('coursecircle',this.tabName)
+        window.localStorage.setItem('coursecircle', this.tabName)
       } else {
         this.classId = window.localStorage.getItem('courseid')
         this.circle.name = window.localStorage.getItem('coursename')
@@ -494,6 +618,17 @@
       this.userInfo = this.$store.state.userInfo
     },
     methods: {
+      handleExpandChange(row, expandRows) {
+        const $classTable = this.$refs.classTable
+        if (expandRows.length > 1) {
+          expandRows.forEach(expandRow => {
+            if (row.id !== expandRow.id) {
+              $classTable.toggleRowExpansion(expandRow, false)
+            }
+          })
+        }
+        this.currentClassId = row.id
+      },
       handleCurrentChange() {
         this.currentPage = currentPage
       },
@@ -576,10 +711,10 @@
       handleClick(tab) {
         if (tab.name === 'first') {
           this.tabName = 'first'
-          window.localStorage.setItem('coursecircle',this.tabName)
+          window.localStorage.setItem('coursecircle', this.tabName)
         } else if (tab.name === 'second') {
           this.tabName = 'second'
-          window.localStorage.setItem('coursecircle',this.tabName)
+          window.localStorage.setItem('coursecircle', this.tabName)
           this.isIn()
           this.getposts()
         }
@@ -666,36 +801,41 @@
             }
           })
         } else if (command == "delPost") {
-          console.log(item.id)
-          this.axios({
-            method: 'post',
-            url: '/deletepost',
-            headers: {'token': this.$store.state.userInfo.token},
-            data: {
-              id: item.id,
-            },
-          }).then(res => {
-            if (res.data.code == 1001) {
-              this.$message({
-                showClose: true,
-                type: 'success',
-                message: '已删除'
-              })
-              this.posts = res.data.data
-              this.amount = this.posts.length
-            } else if (res.data.code == 3001) {
-              this.$message({
-                showClose: true,
-                type: 'error',
-                message: '无操作权限'
-              })
-            } else {
-              this.$message({
-                showClose: true,
-                type: 'error',
-                message: '删除失败'
-              })
-            }
+          this.$confirm('确认删除该帖子?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.axios({
+              method: 'post',
+              url: '/deletepost',
+              headers: {'token': this.$store.state.userInfo.token},
+              data: {
+                id: item.id,
+              },
+            }).then(res => {
+              if (res.data.code == 1001) {
+                this.$message({
+                  showClose: true,
+                  type: 'success',
+                  message: '已删除'
+                })
+                this.posts = res.data.data
+                this.amount = this.posts.length
+              } else if (res.data.code == 3001) {
+                this.$message({
+                  showClose: true,
+                  type: 'error',
+                  message: '无操作权限'
+                })
+              } else {
+                this.$message({
+                  showClose: true,
+                  type: 'error',
+                  message: '删除失败'
+                })
+              }
+            })
           })
         }
       },
@@ -840,23 +980,24 @@
 <style scoped>
 
   /deep/ .el-tabs__item {
-    font-size: 20px;
+    font-size: 17px;
+    font-weight: bold;
   }
 
-  /deep/ .el-tabs > .el-tabs__header {
+  /deep/ .myel-tabs > .el-tabs__header {
     border-bottom: 1px solid #E4E7ED;
-    background-color: rgba(255, 242, 109, 0.65);
+    background-color: rgba(138, 255, 149, 0.44);
     margin-top: 50px;
   }
 
   /deep/ .el-collapse-item {
-    margin: 0 90px;
-
+    text-align: center;
   }
 
   /deep/ .el-collapse-item__header {
     font-size: 20px;
-    border-radius: 6px;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
   }
 
   /deep/ .el-collapse-item__content {

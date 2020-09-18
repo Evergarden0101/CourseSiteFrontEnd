@@ -326,7 +326,7 @@ import navbar from '../navbars/navbar'
   /*background-color: aqua;*/
   border: 1px solid;
   padding-top: 10px;
-  height: 95px;
+  height: 80px;
   border-radius: 30px
 }
 .avatar-uploader .el-upload {
