@@ -10,6 +10,9 @@ import Video from 'video.js'
 import store from './store'
 import VideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
+import moment from 'moment'; //导入模块
+moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn');
+Vue.prototype.$moment = moment;//赋值使用
 Vue.use(VideoPlayer)
 require('../src/assets/scss/custom-theme.css')
 Vue.prototype.$video = Video
