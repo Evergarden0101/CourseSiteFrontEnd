@@ -47,7 +47,7 @@
         mounted(){
           this.axios({
               method:'post',
-              url:'getAllMessages',
+              url:'receivemessage',
               headers:{'token':this.$store.state.userInfo.token},
           }).then(res=>{
               if(res.data.code == 1001){
@@ -82,7 +82,7 @@
             alreadyRead(id){
                 this.axios({
                     method:'post',
-                    url:'/aRead',
+                    url:'/readmessage',
                     headers:{'token':this.$store.state.userInfo.token},
                     data:{
                         id:id
