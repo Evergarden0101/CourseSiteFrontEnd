@@ -114,7 +114,7 @@
     mounted(){
       this.submit()
       this.putLearningObj()
-      this.timer = setInterval(this.putLearningObj, 3000)
+      //this.timer = setInterval(this.putLearningObj, 3000)
     },
     methods: {
       play_the_video(i) {
@@ -138,7 +138,6 @@
               'token': this.$store.state.userInfo.token,
             }
           }).then(res => {
-            alert(this.learningDuration.durations)
           })
         }
       },
