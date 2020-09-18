@@ -116,40 +116,9 @@
         data(){
             return{
                 tabPosition:"left",
-                stuForm:[
-                    {
-                    name:'李小明',
-                    id:'123123'
-                    },
-                    {
-                        name:'张小华',
-                        id:'124124'
-                    },
-                    {
-                        name:'王小花',
-                        id:'125125'
-                    }],
-                applicationList:[
-                {
-                    name:'李小明',
-                    id:'123123'
-                },
-                {
-                    name:'张小华',
-                    id:'124124'
-                },
-                {
-                    name:'王小花',
-                    id:'125125'
-                }],
-                alreadyInClass:[{
-                    name:'张小华',
-                    id:'124124'
-                },
-                    {
-                        name:'王小花',
-                        id:'125125'
-                    }],
+                stuForm:[],
+                applicationList:[],
+                alreadyInClass:[],
                 fileList:[],
                 courseId:''
             }
