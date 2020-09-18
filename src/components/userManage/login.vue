@@ -27,7 +27,7 @@
               <el-tab-pane label="用户注册" name="second" style="color: azure">
                 <div class="input-item">
                   用户名：
-                  <el-input v-model="userName" placeholder="请输入用户名" class="input"></el-input>
+                  <el-input v-model="userName" placeholder="请输入用户名(真实姓名)" class="input"></el-input>
                 </div>
                 <div class="input-item">
                   学号：

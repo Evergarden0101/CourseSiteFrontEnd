@@ -6,12 +6,12 @@
       <div>
         <div>
           <!-- Post Header -->
-          <header class="intro-header">
+          <header class="intro-header" >
             <!--            <navbar/>-->
             <div class="header-mask"></div>
-            <div class="container">
+            <div class="container" >
               <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" >
                   <div class="post-heading">
                     <h1>{{ page.title }}</h1>
                     <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
@@ -29,7 +29,7 @@
             padding-right: 10%;
             background-color: #d9ecff;
             min-width: 100px;
-            min-height: 600px;
+            min-height: 100px;
             ">
             <div class="row">
 
@@ -37,12 +37,12 @@
               <div class="
                         col-lg-8 col-lg-offset-2
                         col-md-10 col-md-offset-1
-                        post-container">
+                        post-container" style="margin-top: 20px;min-height: 200px;color: #606266;font-size: 20px;text-align: left;border:#C0C4CC  1px solid;border-radius: 4px">
                 {{ page.detail }}
 
-                <hr style="visibility: hidden;">
+<!--                <hr style="visibility: hidden;">-->
 
-                <hr style="visibility: hidden;">
+<!--                <hr style="visibility: hidden;">-->
 
                 <!--
                 <ul class="pager">
@@ -95,10 +95,10 @@
             <el-row>
               <el-col span="3">
                 <el-row>
-                  <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                  <img src="../../assets/timg.jpg"  style="height: 60px;width: 60px;border-radius: 30px">
                 </el-row>
                 <el-row>
-                  自己的用户名
+                  {{this.$store.state.userInfo.username}}
                 </el-row>
               </el-col>
               <el-col span="18">
@@ -117,26 +117,26 @@
           <h4 style="margin:20px">{{commentSum}}条评论</h4>
           <div style="margin-bottom: 20px">
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect(1,1)" background-color="#d9ecff" text-color= "#606266">
-              <el-menu-item index="1">按热度排序</el-menu-item>
+<!--              <el-menu-item index="1">按热度排序</el-menu-item>-->
               <el-menu-item index="2">按时间排序</el-menu-item>
             </el-menu>
           </div>
           <div v-for="(per,i) in commentList" :key="i">
-            <el-row style="height: 100px;">
+            <el-row style="height: 100px;border-bottom: 1px solid #C0C4CC ">
               <el-col span="3">
                 <el-row>
-                  <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                  <img src="../../assets/timg.jpg"  style="height: 60px;width: 60px;border-radius: 30px">
                 </el-row>
                 <el-row>
                   {{per.username}}
                 </el-row>
               </el-col>
               <el-col span="18">
-                <div class="comment-Info">
-                  <span>{{per.time}}</span>
-                </div>
-                <div class="text-wrapper">
+                <div class="text-wrapper" style="text-align: left; padding-left: 10px">
                   <span class="comment-detail">{{ per.detail }}</span>
+                </div>
+                <div class="comment-Info" style="margin-top: 20px">
+                  <span>{{per.timestring}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -163,7 +163,7 @@
       return {
         page: {},
         comment: '',
-        commentSum: -1,
+        commentSum: 0,
         commentList: []
       }
     },
@@ -198,6 +198,7 @@
         }).then(res => {
           //todo: 获取commentSum
           this.commentList = res.data.data
+          this.commentSum = this.commentList.length
         })
       },
       deleteComment() {
@@ -212,7 +213,7 @@
       goback() {
         this.$router.push('/login')
       },
-      publish() {
+      publish(id) {
         if (this.comment.length >= 200) {
           alert('长度超出限制')
           return;
@@ -221,6 +222,7 @@
           method: 'post',
           headers: {'token': this.$store.state.userInfo.token},
           data: {
+            postid:this.pid,
             detail: this.comment
           },
           url: '/addcomment'
@@ -231,9 +233,19 @@
               type: 'success',
               message: '发布成功'
             })
-            this.comment = ''
+            this.comment = '',
+            this.commentList = res.data.data
+            this.commentSum = this.commentList.length
+              console.log(res)
             //this.$store.commit('pulishcomment', res.data.data),
-            this.getCommentList()
+            // this.getCommentList()
+          }
+          else{
+              this.$message({
+                  showClose: true,
+                  type: 'success',
+                  message: '发布异常'
+              })
           }
         })
       },
