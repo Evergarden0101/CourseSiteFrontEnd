@@ -28,7 +28,7 @@
           </ul>
         </div>
       </div>
-      <div class="upload-container">
+      <div class="upload-container" v-if="this.$store.state.userInfo.usertype == 'teacher'">
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -42,16 +42,10 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将想要上传的视频拖拽至此处或<em>点击上传</em></div>
-          <h5>注意：只能上传mp4文件且文件最大500Mb</h5>
+          <h5>注意：只能上传mp4文件且文件最大1Gb</h5>
         </el-upload>
       </div>
       <el-progress :stroke-width="10" :percentage="progressPercent" v-if="progressFlag==true"></el-progress>
-    </div>
-    <div class="notice">
-      <div class="notice-title">公告栏</div>
-      <div class="notice-body" v-for="item in notices">
-        <p>{{item.notice}}</p>
-      </div>
     </div>
   </div>
 </template>
@@ -126,13 +120,13 @@
         })
       },
       before_upload(file) {
-        const isOverSize = file.size / 1024 / 1024 < 500;
+        const isOverSize = file.size / 1024 / 1024 / 1024 < 1;
         if (!isOverSize) {
-          alert("文件大小超过500Mb.拒绝上传")
+          alert("文件大小超过1Gb.拒绝上传")
         }
         const fileend = file.name.substring(file.name.lastIndexOf("."));
         alert(fileend)
-        if(fileend != "mp4"){
+        if(fileend != ".mp4"){
           alert("文件类型不符合规定，请重新选择文件")
         }
       },
@@ -150,7 +144,6 @@
           })
         }, (res)=>{
           if(res.code == 1001){
-            alert("文件上传成功")
             this.progressFlag=false;
             location.reload()
           }
@@ -190,7 +183,7 @@
     .white-board{
       border-radius:25px;
       float:left;
-      width: 70%;
+      width: 100%;
       background-color:white;
       box-shadow: 10px 10px 12px 0 rgba(0, 0, 0, 0.1);//阴影
       text-align: left;
