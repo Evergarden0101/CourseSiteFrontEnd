@@ -124,7 +124,7 @@
       },
       submit() {
         let id = window.localStorage.getItem('videoid')
-        this.playerOptions.sources[0].src = 'http://49.234.83.79:8080/api/getvideostream?id=' + id
+        this.playerOptions.sources[0].src = 'http://10.251.253.31:8080/api/getvideostream?id=' + id
       },
       putLearningObj() {
         if (!this.paused) {
