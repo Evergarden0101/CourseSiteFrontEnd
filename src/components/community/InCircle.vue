@@ -93,13 +93,13 @@
 
             <el-col span="17" style="min-height: 200px;border-radius: 6px;">
               <div id="postlist">
-                <div style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
+                <div v-if="this.addOrNot==3 || this.addOrNot==2" style="border-radius: 10px;overflow: hidden;margin-bottom: 20px;text-align: center;font-size:20px;
             ">
                   <el-collapse v-model="activeNames" accordion>
 
                     <el-collapse-item name="1" style="border-radius: 6px">
                       <template slot="title" style="text-align: center">
-                        <el-col span="4" offset="10"
+                        <el-col span="24"
                                 style="text-align: center;font-weight:bold;font-size:20px;color:#2C8DF4;">创建新帖子
                         </el-col>
                       </template>
@@ -272,11 +272,14 @@
                               <el-table-column label="学习时长" align="center">
                                 <template slot-scope="scope">{{ scope.row.time }}</template>
                               </el-table-column>
-                              <el-table-column label="学习次数" align="center">
-                                <template slot-scope="scope">{{ scope.row.count }}</template>
-                              </el-table-column>
                             </el-table>
                           </template>
+                        </el-table-column>
+                        <el-table-column
+
+                          label="学号"
+                          align="center">
+                          <template slot-scope="scope">{{ scope.row.id }}</template>
                         </el-table-column>
                         <el-table-column
 
@@ -289,12 +292,6 @@
                           label="学习总时长"
                           align="center">
                           <template slot-scope="scope">{{ scope.row.time }}</template>
-                        </el-table-column>
-                        <el-table-column
-
-                          label="学习总次数"
-                          align="center">
-                          <template slot-scope="scope">{{ scope.row.count }}</template>
                         </el-table-column>
                       </el-table>
                       <el-pagination
@@ -598,7 +595,6 @@
         } else {
           this.rules = this.$route.query.course.rule
         }
-        console.log(this.$route.query.course)
         window.localStorage.setItem('courserule', this.rules)
         window.localStorage.setItem('coursename', this.circle.name)
         window.localStorage.setItem('coursedetail', this.circle.detail)
@@ -614,6 +610,7 @@
       }
       this.getposts()
       this.isIn()
+      this.getStatistics()
       this.userType = this.$store.state.userInfo.usertype
       this.userInfo = this.$store.state.userInfo
     },
@@ -631,6 +628,27 @@
       },
       handleCurrentChange() {
         this.currentPage = currentPage
+      },
+      getStatistics() {
+        this.axios({
+          method: 'post',
+          url: '/',
+          headers: {'token': this.$store.state.userInfo.token},
+          data: {
+            id: this.classId,
+          }
+        }).then(res => {
+          if (res.data.code == 1001) {
+            this.learnTime =
+            this.soloTime = {}
+          } else {
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: "获取圈子内容失败"
+            })
+          }
+        })
       },
       getposts() {
         this.axios({
@@ -654,7 +672,6 @@
         })
       },
       isIn() {
-        console.log(this.classId)
         this.axios({
           method: 'post',
           url: '/isInCourse',
@@ -717,6 +734,8 @@
           window.localStorage.setItem('coursecircle', this.tabName)
           this.isIn()
           this.getposts()
+          this.getStatistics()
+          //console.log("hre")
         }
       },
       seePost(item) {
@@ -995,7 +1014,6 @@
   }
 
   /deep/ .el-collapse-item__header {
-    font-size: 20px;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
   }
