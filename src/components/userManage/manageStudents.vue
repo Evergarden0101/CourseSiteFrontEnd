@@ -52,7 +52,7 @@
                   学生学号
                 </el-col>
                 <el-col span="8">
-                    <div style="float: right">操作选项（同意/拒绝）</div>
+                    <div style="float: right">操作选项</div>
                 </el-col>
               </el-row>
               <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 70px">
