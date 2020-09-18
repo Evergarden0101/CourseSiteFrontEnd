@@ -1,121 +1,152 @@
-<div>
-  <div>
-  <div>
-    <!-- Post Header -->
-    <header class="intro-header">
-      <!--            <navbar/>-->
-      <div class="header-mask"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-heading">
-              <h1>{{ page.title }}</h1>
-              <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
-              <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
+<template>
+  <div style="
+    background-color: #d9ecff;
+">
+    <div>
+      <div>
+        <div>
+          <!-- Post Header -->
+          <header class="intro-header">
+            <!--            <navbar/>-->
+            <div class="header-mask"></div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                  <div class="post-heading">
+                    <h1>{{ page.title }}</h1>
+                    <!-- <h2 class="subheading">{{ page.subtitle }}</h2> -->
+                    <span class="meta" style="font-weight: 700">作者 {{ page.userid }} 发布于 {{ page.time }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </header>
         </div>
-      </div>
-    </header>
-  </div>
-  <!-- Post Content -->
-  <article>
-    <div class="container">
-      <div class="row">
+        <!-- Post Content -->
+        <article>
+          <div style="
+            padding-left: 10%;
+            padding-right: 10%;
+            background-color: #d9ecff;
+            min-width: 100px;
+            min-height: 600px;
+            ">
+            <div class="row">
 
-        <!-- Post Container -->
-        <div class="
+              <!-- Post Container -->
+              <div class="
                         col-lg-8 col-lg-offset-2
                         col-md-10 col-md-offset-1
                         post-container">
+                {{ page.detail }}
 
-          {{ page.detail }}
+                <hr style="visibility: hidden;">
 
-          <hr style="visibility: hidden;">
+                <hr style="visibility: hidden;">
 
-          <hr style="visibility: hidden;">
+                <!--
+                <ul class="pager">
+                    {% if page.previous.url %}
+                    <li class="previous">
+                        <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
+                        Previous<br>
+                        <span>{{page.previous.title}}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if page.next.url %}
+                    <li class="next">
+                        <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
+                        Next<br>
+                        <span>{{page.next.title}}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                -->
+              </div>
 
-          <!--
-          <ul class="pager">
-              {% if page.previous.url %}
-              <li class="previous">
-                  <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
-                  Previous<br>
-                  <span>{{page.previous.title}}</span>
-                  </a>
-              </li>
-              {% endif %}
-              {% if page.next.url %}
-              <li class="next">
-                  <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
-                  Next<br>
-                  <span>{{page.next.title}}</span>
-                  </a>
-              </li>
-              {% endif %}
-          </ul>
-          -->
-        </div>
-
-        <!-- Side Catalog Container -->
-        <div class="
+              <!-- Side Catalog Container -->
+              <div class="
                         col-lg-2 col-lg-offset-0
                         visible-lg-block
                         sidebar-container
                         catalog-container">
-          <div class="side-catalog">
-            <hr class="hidden-sm hidden-xs">
-            <h5>
-              <a class="catalog-toggle" href="#">目录</a>
-            </h5>
-            <ul class="catalog-body"></ul>
+                <div class="side-catalog">
+                  <hr class="hidden-sm hidden-xs">
+                  <h5>
+                    <a class="catalog-toggle" href="#">目录</a>
+                  </h5>
+                  <ul class="catalog-body"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <div style="
+            padding-left: 10%;
+            padding-right: 10%;
+            background-color: #d9ecff;
+            min-width: 100px;
+            min-height: 600px;
+            ">
+          <el-divider>讨论区</el-divider>
+          <div style="margin: 20px">
+            <el-row>
+              <el-col span="3">
+                <el-row>
+                  <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                </el-row>
+                <el-row>
+                  自己的用户名
+                </el-row>
+              </el-col>
+              <el-col span="18">
+                <el-input
+                  type="textarea"
+                  rows="5"
+                  placeholder="请输入内容"
+                  v-model="comment">
+                </el-input>
+              </el-col>
+              <el-col span="3">
+                <el-button type="primary" plain @click="publish()">提交</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <h4 style="margin:20px">{{commentSum}}条评论</h4>
+          <div style="margin-bottom: 20px">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect(1,1)" background-color="#d9ecff" text-color= "#606266">
+              <el-menu-item index="1">按热度排序</el-menu-item>
+              <el-menu-item index="2">按时间排序</el-menu-item>
+            </el-menu>
+          </div>
+          <div v-for="(per,i) in commentList" :key="i">
+            <el-row style="height: 100px;">
+              <el-col span="3">
+                <el-row>
+                  <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                </el-row>
+                <el-row>
+                  {{per.username}}
+                </el-row>
+              </el-col>
+              <el-col span="18">
+                <div class="comment-Info">
+                  <span>{{per.time}}</span>
+                </div>
+                <div class="text-wrapper">
+                  <span class="comment-detail">{{ per.detail }}</span>
+                </div>
+              </el-col>
+            </el-row>
+            <el-divider></el-divider>
           </div>
         </div>
+        <footerbar/>
       </div>
     </div>
-  </article>
-  <div class="
-                        col-lg-8 col-lg-offset-2
-                        col-md-10 col-md-offset-1
-                        post-container">
-    <el-divider>讨论区</el-divider>
-    <div>
-      <el-row>
-        <el-col span="3">
-          <el-avatar :size="50" :src="circleUrl"></el-avatar>
-        </el-col>
-        <el-col span="18">
-          <el-input
-            type="textarea"
-            rows="5"
-            placeholder="请输入内容"
-            v-model="comment">
-          </el-input>
-        </el-col>
-        <el-col span="3">
-          <el-button type="primary" plain @click="publish()">提交</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect(1,1)">
-      <el-menu-item index="1">按热度排序</el-menu-item>
-      <el-menu-item index="2">按时间排序</el-menu-item>
-    </el-menu>
-    <div v-for="(per,i) in commentList" :key="i">
-      <el-row style="height: 100px;">
-        <el-col span="3">
-          <el-avatar :size="50" :src="per.avatorSite"></el-avatar>
-        </el-col>
-        <el-col span="18">
-          <span>{{ per.detail }}</span>
-        </el-col>
-      </el-row>
-      <el-divider></el-divider>
-    </div>
   </div>
-  <footerbar/>
-  </div>
-</div>
 </template>
 
 <script>
@@ -132,17 +163,8 @@
       return {
         page: {},
         comment: '',
-        commentList: [
-          {
-            id: 1,
-            username: 'abc',
-            detail: '123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321123445678900987654321',
-            isself: true,
-            time: '2020-1-10'
-          },
-          {id: 2, username: '667890--=', detail: '123445678900987654321', isself: true, time: '2020-8888'},
-          {id: 2, username: '667890--=', detail: '123445678900987654321', isself: false, time: '2020-8888'}
-        ]
+        commentSum: -1,
+        commentList: []
       }
     },
     mounted() {
@@ -174,6 +196,7 @@
           },
           url: '/getcomments'
         }).then(res => {
+          //todo: 获取commentSum
           this.commentList = res.data.data
         })
       },
@@ -227,7 +250,7 @@
 
   header.intro-header {
     position: relative;
-    background-image: url(homepage-bg.jpg)
+    background-image: url(homepage.jpg)
   }
 
   .self-input {
@@ -294,6 +317,36 @@
     .text-wrapper {
       word-break: break-all;
       word-wrap: break-word
+    }
+    .el-divider--horizontal{
+      margin: 20px;
+      background: 0 0;
+      border-top: 1px dashed #ffffff;
+    }
+    .el-divider__text {
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      background-color: #d9ecff;
+    }
+    .el-menu.el-menu--horizontal {
+      border-bottom: solid 1px #ffffff;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: #ffffff;
+    }
+    .el-textarea__inner {
+      background-color: rgba(255, 255, 255, .15);
+    }
+    .text-wrapper{
+      word-break: break-all;
+      word-wrap: break-word
+    }
+    .comment-Info {
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .comment-detail {
+      font-weight: bold;
     }
   }
 </style>

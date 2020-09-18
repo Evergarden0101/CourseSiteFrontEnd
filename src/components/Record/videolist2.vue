@@ -174,13 +174,13 @@
 
 <style lang="scss">
   .container{
-    padding: 40px 10% 100px 10%;
+    padding: 50px 10% 100px 5%;
     min-width: 100px;
     min-height: 600px;
     overflow:auto;//内容的显示模式（如果超出框，则显示滚轮）
     background-color: #d9ecff;
     .white-board{
-      border-radius:25px;
+      border-radius:4px;
       float:left;
       width: 100%;
       background-color:white;
