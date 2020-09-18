@@ -32,7 +32,7 @@
                   stripe
                   style="width: 100%;height:100%">
                   <el-table-column
-                    prop="name"
+                    prop="studentname"
                     label="学生姓名"
                     width="180">
                   </el-table-column>
@@ -57,10 +57,10 @@
               </el-row>
               <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 70px">
                 <el-col span="8" style="text-align: center;margin-top: 22px">
-                  {{item.studentname}}
+                  {{item.username}}
                 </el-col>
                 <el-col span="8" style="text-align: center;margin-top: 22px">
-                  {{item.studentid}}
+                  {{item.userid}}
                 </el-col>
                 <el-col span="8" style="text-align: center;">
                   <el-row style="height: 20px;margin-top: 3px">
@@ -92,7 +92,7 @@
                   {{item.studentid}}
                 </el-col>
                 <el-col span="8" style="text-align: center;">
-                  <el-row style="height: 20px;margin-top: 3px">
+                  <el-row v-if="this.$store.state.userInfo.usertype == 'teacher'" style="height: 20px;margin-top: 3px">
                     <div v-if="item.type==1" @click="setAssist(item.studentid)" style="cursor:pointer">设为助教</div>
                     <div v-if="item.type==2" @click="delAssist(item.studentid)" style="cursor:pointer">取消助教</div>
                   </el-row>

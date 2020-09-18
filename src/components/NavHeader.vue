@@ -12,8 +12,9 @@
 <!--      <el-menu-item index="/inCircle" style="font-size: 1.7em">处理中心</el-menu-item>-->
       <el-menu-item index="/manageTea" style="font-size: 23px" v-if="this.$store.state.userInfo.usertype == 'admin'">审核教师申请</el-menu-item>
       <el-menu-item class="logout-btn" index="/" style="font-size: 23px">退出登录</el-menu-item>
+      <el-menu-item  style="font-size: 23px;float: right;font-size:20px" >{{this.$store.state.userInfo.username}}</el-menu-item>
         <el-menu-item  index="/information">
-            <i class="el-icon-message" ><el-badge v-if="infNum != 0" :value=infNum class="item" ></el-badge></i>
+            <i class="el-icon-message" ><el-badge v-if="this.$store.state.messageNum != 0" :value=this.$store.state.messageNum class="item" ></el-badge></i>
         </el-menu-item>
     </el-menu>
   </div>
@@ -30,6 +31,9 @@ const index = new Set(['/community'])
             };
         },
         mounted(){
+            // console.log("abc")
+            // console.log(this.$store.state.messageNum)
+            // console.log("bcd")
           this.axios({
               method: 'post',
               url:'/getmessagenum',
@@ -37,6 +41,10 @@ const index = new Set(['/community'])
           }).then(res=>{
                 if(res.data.code == 1001){
                     this.infNum = res.data.data
+                    this.$store.commit('setMessageNum',res.data.data)
+                }
+                else{
+                    this.$store.commit('setMessageNum',0)
                 }
           })
         },
