@@ -44,7 +44,7 @@
           type: '0',
           examinationId: '',
           finishFlag: '0',
-          durations: '2',
+          durations: '',
         },
         isShow:[],
         lecture:{
@@ -115,7 +115,6 @@
       this.submit()
       this.putLearningObj()
       this.timer = setInterval(this.putLearningObj, 3000)
-      this.destroyed()
     },
     methods: {
       play_the_video(i) {
@@ -124,92 +123,78 @@
       },
       submit() {
         let id = window.localStorage.getItem('videoid')
-        this.playerOptions.sources[0].src = 'http://49.234.83.79:8080/api/getvideostream?id=' + id
+        this.playerOptions.sources[0].src = 'http://10.251.253.31:8080/api/getvideostream?id=' + id
       },
       putLearningObj() {
         if (!this.paused) {
           this.axios({
             method: 'post',
-            url: '/giveWatchTime',
-            data:{
-              courseid: this.lecture.id,
-              id: window.localStorage.getItem('videoid'),
-              WatchTime: this.learningDuration.durations
+            url: '/setwatchtime',
+            data: {
+              videoid: window.localStorage.getItem('videoid'),
+              watchtime: this.learningDuration.durations
             },
-            headers:{
-              'token':this.$store.state.userInfo.token,
+            headers: {
+              'token': this.$store.state.userInfo.token,
             }
-          }).then(res =>{
+          }).then(res => {
+            alert(this.learningDuration.durations)
           })
         }
       },
-      onPlayerPlay (player) {
-        var moment = require('moment');
+      onPlayerPlay(player) {
         this.paused = false
+        var moment = require('moment');
         this.beginTime = moment(new Date());
       },
-      onPlayerPause (player) {
+      onPlayerPause(player) {
         var moment = require('moment');
         this.paused = true
-        this.endTime= moment(new Date());
+        this.endTime = moment(new Date());
         this.axios({
           method: 'post',
           url: '/giveStudyTime',
-          data:{
+          data: {
             courseid: this.lecture.id,
             id: window.localStorage.getItem('videoid'),
-            StudyTime: this.endTime.diff(this.beginTime,'second'),
+            StudyTime: this.endTime.diff(this.beginTime, 'second'),
           },
-          headers:{
-            'token':this.$store.state.userInfo.token,
+          headers: {
+            'token': this.$store.state.userInfo.token,
           }
-        }).then(res =>{
+        }).then(res => {
         })
       },
-      onPlayerEnded (player) {
+      onPlayerEnded(player) {
         this.paused = false
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
       },
-      onPlayerTimeupdate (player) {
+      onPlayerTimeupdate(player) {
         this.learningDuration.durations = player.cache_.currentTime
         // console.log(' onPlayerTimeupdate!', player)
-      },
-      getbeginTime(){
-        setInterval(()=>{
-          //new Date() new一个data对象，当前日期和时间
-          //toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
-          this.beginTime = new Date().toLocaleString();
-        },1000)
-      },
-      getendTime(){
-        setInterval(()=>{
-          //new Date() new一个data对象，当前日期和时间
-          //toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
-          this.endTime= new Date().toLocaleString();
-        },1000)
       },
       playerReadied(player) {
         this.axios({
           method: 'post',
-          url: '/getWatchTime',
-          data:{
-            courseid: this.lecture.id,
-            id: window.localStorage.getItem('id'),
+          url: '/getwatchtime',
+          data: {
+            videoid: window.localStorage.getItem('videoid'),
           },
-          headers:{
-            'token':this.$store.state.userInfo.token,
+          headers: {
+            'token': this.$store.state.userInfo.token,
           }
-        }).then(res =>{
-          player.currentTime=res.data.date
+        }).then(res => {
+          if(res.data.data==null)
+            this.learningDuration.durations=0
+          else
+            this.learningDuration.durations=res.data.data[0].watchtime
+          player.currentTime(this.learningDuration.durations)
         }).catch(() => {
           alert('获取进度失败')
-      })
-    },
-      destroyed() {
-        // 如果定时器在运行则关闭
-        if (this.timer) {
-          clearInterval(this.timer)
-        }
-      }
+        })
+      },
     }
   }
 </script>
