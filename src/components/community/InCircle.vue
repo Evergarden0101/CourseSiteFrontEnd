@@ -480,6 +480,7 @@
         window.localStorage.setItem('coursedetail', this.circle.detail)
         window.localStorage.setItem('courseid', this.classId)
         window.localStorage.setItem('coursetime', this.circle.time)
+        window.localStorage.setItem('coursecircle',this.tabName)
       } else {
         this.classId = window.localStorage.getItem('courseid')
         this.circle.name = window.localStorage.getItem('coursename')
@@ -575,11 +576,12 @@
       handleClick(tab) {
         if (tab.name === 'first') {
           this.tabName = 'first'
+          window.localStorage.setItem('coursecircle',this.tabName)
         } else if (tab.name === 'second') {
           this.tabName = 'second'
+          window.localStorage.setItem('coursecircle',this.tabName)
           this.isIn()
           this.getposts()
-          console.log(this.posts)
         }
       },
       seePost(item) {
