@@ -16,8 +16,6 @@
           <br>
           <p>上传时间：{{item.time}}</p>
           <br>
-          <p>视频简介：{{item.detail}}</p>
-          <br>
         </div>
         <div class="button">
           <ul>
