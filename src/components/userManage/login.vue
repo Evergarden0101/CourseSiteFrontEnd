@@ -12,7 +12,7 @@
             <el-tabs v-model="loginType" @tab-click="handleClick" class="el-tabs__item"  :header-cell-style="{background:'#eef1f6',color:'#606266'}">
               <el-tab-pane label="用户登录" name="first" style="color: azure">
                 <div class="input-item">
-                    用户名：
+                    学号：
                     <el-input v-model="userName" placeholder="请输入用户名" class="input"></el-input>
                 </div>
                 <div class="input-item">

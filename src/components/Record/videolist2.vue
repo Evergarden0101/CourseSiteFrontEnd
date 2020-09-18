@@ -35,7 +35,7 @@
           :limit="20"
           :action="action"
           drag
-          :accept="'.mp4, .txt'"
+          :accept="'.mp4'"
           :before-upload="before_upload"
           :http-request="upload"
           :auto-upload="true"
@@ -124,29 +124,32 @@
         if (!isOverSize) {
           alert("文件大小超过1Gb.拒绝上传")
         }
-        const fileend = file.name.substring(file.name.lastIndexOf("."));
-        if(fileend != ".mp4"){
-          alert("文件类型不符合规定，请重新选择文件")
-        }
       },
       upload(File){
-        this.progressFlag=true;
-        this.progressPercent = 0;
-        let formData = new FormData();
-        formData.append("video", File.file);
-        formData.append("courseid", this.lecture.id);
-        this.uploadcallback(formData, (res)=>{
-          let loaded = res.loaded,
-            total = res.total;
-          this.$nextTick(()=>{
-            this.progressPercent = (loaded/total)*100
+        const fileend = File.file.name.substring(File.file.name.lastIndexOf("."));
+        if(fileend != ".mp4"){
+          alert("文件类型不符合规定，请重新选择文件")
+          location.reload()
+        }
+        else{
+          this.progressFlag=true;
+          this.progressPercent = 0;
+          let formData = new FormData();
+          formData.append("video", File.file);
+          formData.append("courseid", this.lecture.id);
+          this.uploadcallback(formData, (res)=>{
+            let loaded = res.loaded,
+              total = res.total;
+            this.$nextTick(()=>{
+              this.progressPercent = (loaded/total)*100
+            })
+          }, (res)=>{
+            if(res.code == 1001){
+              this.progressFlag=false;
+              location.reload()
+            }
           })
-        }, (res)=>{
-          if(res.code == 1001){
-            this.progressFlag=false;
-            location.reload()
-          }
-        })
+        }
       },
       uploadcallback(file, callback1, callback2){
         this.axios({
