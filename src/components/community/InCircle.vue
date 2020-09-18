@@ -76,10 +76,10 @@
                 <span style="margin-left: 15px"><el-link :underline="false" @click.native=seeposts()
                                                          style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
                 >讨论</el-link></span>
-                <span v-if="this.addOrNot === 3" style="margin-left: 15px"><el-link :underline="false"
-                                                                                    style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
-                                                                                    @click.native=seestatistics()
-                >学习统计</el-link></span>
+<!--                <span v-if="this.addOrNot === 3" style="margin-left: 15px"><el-link :underline="false"-->
+<!--                                                                                    style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"-->
+<!--                                                                                    @click.native=seestatistics()-->
+<!--                >学习统计</el-link></span>-->
                 <span v-if="this.addOrNot === 3" style="margin-left: 15px"><el-link :underline="false"
                                                                                     @click.native=seemanage()
                                                                                     style="font-size: 16px;font-weight: bolder;rgba(0,0,0,0.7);"
@@ -610,7 +610,7 @@
       }
       this.getposts()
       this.isIn()
-      this.getStatistics()
+      //this.getStatistics()
       this.userType = this.$store.state.userInfo.usertype
       this.userInfo = this.$store.state.userInfo
     },
@@ -629,27 +629,27 @@
       handleCurrentChange() {
         this.currentPage = currentPage
       },
-      getStatistics() {
-        this.axios({
-          method: 'post',
-          url: '/',
-          headers: {'token': this.$store.state.userInfo.token},
-          data: {
-            id: this.classId,
-          }
-        }).then(res => {
-          if (res.data.code == 1001) {
-            this.learnTime =
-            this.soloTime = {}
-          } else {
-            this.$message({
-              showClose: true,
-              type: 'error',
-              message: "获取圈子内容失败"
-            })
-          }
-        })
-      },
+      // getStatistics() {
+      //   this.axios({
+      //     method: 'post',
+      //     url: '/',
+      //     headers: {'token': this.$store.state.userInfo.token},
+      //     data: {
+      //       id: this.classId,
+      //     }
+      //   }).then(res => {
+      //     if (res.data.code == 1001) {
+      //       this.learnTime =
+      //       this.soloTime = {}
+      //     } else {
+      //       this.$message({
+      //         showClose: true,
+      //         type: 'error',
+      //         message: "获取圈子内容失败"
+      //       })
+      //     }
+      //   })
+      // },
       getposts() {
         this.axios({
           method: 'post',
@@ -715,11 +715,11 @@
         document.getElementById("statistics").setAttribute("style", "display:none")
         document.getElementById("managepage").setAttribute("style", "display:none")
       },
-      seestatistics() {
-        document.getElementById("postlist").setAttribute("style", "display:none")
-        document.getElementById("statistics").removeAttribute("style")
-        document.getElementById("managepage").setAttribute("style", "display:none")
-      },
+      // seestatistics() {
+      //   document.getElementById("postlist").setAttribute("style", "display:none")
+      //   document.getElementById("statistics").removeAttribute("style")
+      //   document.getElementById("managepage").setAttribute("style", "display:none")
+      // },
       seemanage() {
         document.getElementById("managepage").removeAttribute("style")
         document.getElementById("statistics").setAttribute("style", "display:none")
@@ -734,7 +734,7 @@
           window.localStorage.setItem('coursecircle', this.tabName)
           this.isIn()
           this.getposts()
-          this.getStatistics()
+          //this.getStatistics()
           //console.log("hre")
         }
       },
