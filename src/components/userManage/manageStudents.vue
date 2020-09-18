@@ -37,7 +37,7 @@
                     width="180">
                   </el-table-column>
                   <el-table-column
-                    prop="id"
+                    prop="studentid"
                     label="学号">
                   </el-table-column>
                 </el-table>
@@ -55,16 +55,20 @@
                     <div style="float: right">操作选项（同意/拒绝）</div>
                 </el-col>
               </el-row>
-              <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 50px">
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.name}}
+              <el-row v-for="item in applicationList" key="item.id" class="apply-container" style="height: 70px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentname}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.id}}
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentid}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  <div  @click="refuseApply(item.id)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">拒绝申请</div>
-                  <div  @click="confirmApply(item.id)" style="float: right;cursor:pointer">申请通过</div>
+                <el-col span="8" style="text-align: center;">
+                  <el-row style="height: 20px;margin-top: 3px">
+                    <div  @click="refuseApply(item.id)" style="cursor:pointer">拒绝申请</div>
+                  </el-row>
+                  <el-row style="height: 20px;margin-top: 10px">
+                    <div  @click="confirmApply(item.id)" style="cursor:pointer">申请通过</div>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
@@ -80,16 +84,22 @@
                   操作选项
                 </el-col>
               </el-row>
-              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 50px">
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.name}}
+              <el-row  v-for="item in alreadyInClass" key="item.id" class="apply-container" style="height: 70px">
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentname}}
                 </el-col>
-                <el-col span="8" style="text-align: center;margin-top: 10px">
-                  {{item.id}}
+                <el-col span="8" style="text-align: center;margin-top: 22px">
+                  {{item.studentid}}
                 </el-col>
-                <el-col span="8">
-                  <div  @click="setAssist(item.id)" style="float: right;padding-left: 20px;padding-right: 30px;cursor:pointer">设为助教</div>
-                  <div @click="delStu(item.id)" style="float: right;cursor:pointer">踢出课程</div>
+                <el-col span="8" style="text-align: center;">
+                  <el-row style="height: 20px;margin-top: 3px">
+                    <div v-if="item.type==1" @click="setAssist(item.studentid)" style="cursor:pointer">设为助教</div>
+                    <div v-if="item.type==2" @click="delAssist(item.studentid)" style="cursor:pointer">取消助教</div>
+                  </el-row>
+                  <el-row style="height: 20px;margin-top: 10px">
+                    <div v-if="item.type==1" @click="delStu(item.studentid)" style="cursor:pointer">踢出课程</div>
+                    <div v-if="item.type==2"  style="cursor:pointer;color: #C0C4CC">踢出课程</div>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
@@ -145,24 +155,47 @@
             }
         },
         mounted(){
-          courseId = window.localStorage.getItem("courseid")
+            this.courseId = window.localStorage.courseid
+            // console.log(1111)
+            // console.log(window.localStorage.courseid)
+           console.log(this.courseId)
            this.axios({
                method:'post',
-
+               url:'getAllRelations',
+               headers:{'token':this.$store.state.userInfo.token},
+               data:{
+                   cid:this.courseId
+               }
+           }).then(res => {
+               if(res.data.code == 1001){
+                   this.alreadyInClass = res.data.data
+                   console.log(this.alreadyInClass)
+               }
            })
+            this.axios({
+                method:'post',
+                url:'/getCourseApply',
+                headers:{'token':this.$store.state.userInfo.token},
+                data:{
+                    courseid:this.courseId
+                }
+            }).then(res => {
+                if(res.data.code == 1001){
+                    this.applicationList = res.data.data
+                    console.log(this.alreadyInClass)
+                }
+            })
         },
         methods:{
           submitForm(fileObj){
               console.log(fileObj)
               let formData = new FormData();
-              formData.set("image",fileObj.file);
-              var file = formData.getAll("image");
+              formData.set("file",fileObj.file);
+              formData.set("courseid",this.courseId)
+              var file = formData.getAll("file");
               console.log(formData)
-              alert("inin")
-              this.axios.post("/imageupload",{
-                  formData,
-                  courseId: this.courseId
-              },{
+              this.axios.post("/addMoreStudent",
+                  formData,{
                   // method:'post',
                   // url:'/imageupload',
                   headers:{
@@ -173,15 +206,15 @@
                   //     image:formData
                   // }
               }).then(res=>{
-                  alert("inin222")
+                  // alert("inin222")
                   console.log(res)
                   if(res.data.code == 1001){
                       this.$message({
                           type:'info',
                           message:'上传成功'
                       })
-                      this.stuForm = res.data.stuForm
-                      this.alreadyInClass = res.data.alreadyInClass
+                      this.stuForm = res.data.data
+                      this.alreadyInClass = res.data.data
                   }
                   else{
                       this.$message({
@@ -190,17 +223,18 @@
                       })
                   }
               })
-              alert("inin222")
+              // alert("inin222")
           },
            confirmApply(id){
-              alert(1112)
+              // alert(1112)
               this.axios({
                   method:'post',
-                  url:'/addApply',
+                  url:'/dealApply',
                   data:{
-                      id:id,
-                      courseId:this.courseId
-                  }
+                      applyid:id,
+                      result:1
+                  },
+                  headers:{'token':this.$store.state.userInfo.token}
               }).then(res=>{
                   if(res.code == 1001){
                       this.$notify({
@@ -227,11 +261,12 @@
             refuseApply(id){
               this.axios({
                   method:'/post',
-                  url:'/refuseAapply',
+                  url:'/dealAapply',
                   data:{
-                      id:id,
-                      courseId:this.courseId
-                  }
+                      result:0,
+                      applyid:id
+                  },
+                  headers:{'token':this.$store.state.userInfo.token}
               }).then(res=>{
                   if(res.data.code == 1001){
                       this.$notify({
@@ -258,10 +293,11 @@
             setAssist(id){
               this.axios({
                   method:'post',
-                  url:'/setAssist',
+                  url:'/addAssistant',
+                  headers:{'token':this.$store.state.userInfo.token},
                   data:{
-                      id:id,
-                      courseId:this.courseId
+                      studentid:id,
+                      courseid:this.courseId
                   }
               }).then(res=>{
                   if(res.data.code == 1001){
@@ -270,6 +306,7 @@
                           message:'助教设置成功',
                           duration:4500
                       })
+                      this.alreadyInClass = res.data.data
                   }
                   else{
                       this.$notify({
@@ -280,14 +317,42 @@
                   }
               })
             },
+            delAssist(id){
+                this.axios({
+                    method:'post',
+                    url:'/deleteAssistant',
+                    headers:{'token':this.$store.state.userInfo.token},
+                    data:{
+                        studentid:id,
+                        courseid:this.courseId
+                    }
+                }).then(res=>{
+                    if(res.data.code == 1001){
+                        this.$notify({
+                            type:'info',
+                            message:'助教已取消',
+                            duration:4500
+                        })
+                        this.alreadyInClass = res.data.data
+                    }
+                    else{
+                        this.$notify({
+                            type:'info',
+                            message:'助教取消失败',
+                            duration:4500
+                        })
+                    }
+                })
+            },
         //    将学生踢出课程
             delStu(id){
               this.axios({
                   method:'post',
-                  url:'/delStu',
+                  url:'/deleteStudent',
+                  headers:{'token':this.$store.state.userInfo.token},
                   data:{
-                      id:id,
-                      courseId:this.courseId
+                      studentid:id,
+                      courseid:this.courseId
                   }
               }).then(res=>{
                   if(res.data.code == 1001){
@@ -296,7 +361,7 @@
                           message:'学生已从课程中移除',
                           duration:4500
                       })
-                      this.alreadyInClass = res.data.alreadyInClass
+                      this.alreadyInClass = res.data.data
                   }
                   else{
                       this.$notify({
