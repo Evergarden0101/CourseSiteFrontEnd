@@ -7,7 +7,7 @@
       <br>
       <p style="font-size:15px">创建时间：{{lecture.date}}</p>
       <el-divider></el-divider>
-      <div class="videolist" v-for="(item,i) in videos">
+      <div class="videolist" v-for="(item,i) in videos" v-if="videolistFlag">
 <!--        <div class="videoimage">-->
 <!--          <img src="../../assets/logo.png">-->
 <!--        </div>-->
@@ -53,6 +53,7 @@
     name: 'videolist2',
     data() {
       return {
+        videolistFlag: false,
         progressFlag: false,
         progressPercent: 0,
         lecture: {
@@ -73,6 +74,20 @@
       this.lecture.date = window.localStorage.getItem('coursetime')
       this.lecture.detail = window.localStorage.getItem('coursedetail')
       this.lecture.name = window.localStorage.getItem('coursename')
+      this.axios({
+        method: 'post',
+        url: '/isInCourse',
+        headers: {'token': this.$store.state.userInfo.token},
+        data: {
+          courseid: this.lecture.id,
+        }
+      }).then(res =>{
+        if(res.data.code == 1001){
+          if(res.data.data == 2|| res.data.data == 3){
+            this.videolistFlag = true
+          }
+        }
+      })
       this.axios({
         method: 'post',
         url: '/getvideos',
