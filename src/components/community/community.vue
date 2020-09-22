@@ -36,8 +36,6 @@
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="已申请圈子">
-            </el-tab-pane>
             <el-tab-pane label="所有圈子">
               <el-row>
                 <el-col span="6" class="community-list" v-for="(item , index) in allCommunity" :key="index">
